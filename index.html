@@ -19,10 +19,10 @@
       --border: #e2e2ea;
       --card-bg: #ffffff;
     }
- 
+
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; font-size: 16px; }
- 
+
     body {
       background: var(--cream);
       color: var(--ink);
@@ -30,7 +30,7 @@
       font-weight: 300;
       overflow-x: hidden;
     }
- 
+
     /* ===================== NAV ===================== */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
@@ -51,7 +51,7 @@
       letter-spacing: 0.02em;
     }
     .nav-logo .bracket { color: var(--muted); font-size: 0.75rem; }
- 
+
     .nav-links {
       display: flex; gap: 2.5rem; list-style: none;
     }
@@ -66,7 +66,7 @@
       position: relative;
     }
     .nav-links a:hover { color: var(--accent); }
- 
+
     /* hamburger */
     .hamburger {
       display: none;
@@ -85,7 +85,7 @@
     .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
- 
+
     /* mobile menu */
     .mobile-menu {
       display: none;
@@ -115,7 +115,7 @@
       color: var(--muted);
       font-family: 'DM Mono', monospace;
     }
- 
+
     /* ===================== HERO ===================== */
     #hero {
       min-height: 100vh;
@@ -217,7 +217,7 @@
       display: inline-block;
     }
     .btn-ghost:hover { border-color: rgba(255,255,255,0.6); color: #ffffff; transform: translateY(-1px); }
- 
+
     .hero-right {
       display: flex; justify-content: center; align-items: center;
     }
@@ -288,7 +288,7 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
     }
- 
+
     /* ===================== SECTIONS ===================== */
     .section-wrap {
       max-width: 1200px;
@@ -309,7 +309,7 @@
       color: var(--ink);
     }
     .section-title em { font-style: italic; color: var(--accent); }
- 
+
     /* warm highlight strip on section kickers */
     .section-kicker {
       display: inline-block;
@@ -322,7 +322,7 @@
       background: rgba(26,86,219,0.07);
       padding: 0.15rem 0.5rem 0.15rem 0;
     }
- 
+
     /* ===================== ABOUT ===================== */
     #about { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .about-grid {
@@ -408,7 +408,7 @@
       color: var(--ink2);
       letter-spacing: 0.05em;
     }
- 
+
     /* ===================== SKILLS ===================== */
     #skills { background: var(--cream); }
     .skills-grid {
@@ -446,7 +446,7 @@
     }
     .chip.red { background: rgba(200,71,43,0.06); color: var(--accent); border-color: rgba(200,71,43,0.2); }
     .chip.blue { background: rgba(43,95,200,0.06); color: var(--accent2); border-color: rgba(43,95,200,0.2); }
- 
+
     /* ===================== PROJECTS ===================== */
     #projects { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .projects-list { display: flex; flex-direction: column; gap: 0; }
@@ -486,7 +486,7 @@
     .badge-cyber { color: var(--accent); border-color: rgba(200,71,43,0.3); background: rgba(200,71,43,0.04); }
     .badge-full  { color: #2a7a3b; border-color: rgba(42,122,59,0.3); background: rgba(42,122,59,0.04); }
     .badge-mob   { color: #6a2fb0; border-color: rgba(106,47,176,0.3); background: rgba(106,47,176,0.04); }
- 
+
     .project-row-title {
       font-family: 'Playfair Display', serif;
       font-size: 1.3rem;
@@ -518,7 +518,7 @@
       text-align: center;
       line-height: 1;
     }
- 
+
     /* ===================== CONTACT ===================== */
     #contact { background: var(--cream); }
     .contact-grid {
@@ -559,7 +559,7 @@
     .social-row:hover { color: var(--accent); }
     .social-row svg { flex-shrink: 0; }
     .social-row span { font-family: 'DM Mono', monospace; font-size: 0.72rem; }
- 
+
     /* ---- contact form ---- */
     .contact-form-box {
       background: var(--white);
@@ -623,13 +623,26 @@
     .form-status {
       margin-top: 1rem;
       font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       text-align: center;
       color: var(--muted);
+      line-height: 1.5;
+      min-height: 1.5rem;
+      transition: all 0.3s;
     }
-    .form-status.success { color: #2a7a3b; }
-    .form-status.error { color: var(--accent); }
- 
+    .form-status.success {
+      color: #166534;
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      padding: 0.6rem 0.8rem;
+    }
+    .form-status.error {
+      color: #991b1b;
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      padding: 0.6rem 0.8rem;
+    }
+
     /* ===================== FOOTER ===================== */
     footer {
       background: var(--ink);
@@ -644,7 +657,7 @@
       letter-spacing: 0.08em;
     }
     footer em { color: rgba(255,255,255,0.7); font-style: normal; }
- 
+
     /* ===================== ANIMATIONS ===================== */
     .reveal {
       opacity: 0;
@@ -652,19 +665,19 @@
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
     .reveal.in { opacity: 1; transform: translateY(0); }
- 
+
     /* ===================== RESPONSIVE ===================== */
     @media (max-width: 900px) {
       .skills-grid { grid-template-columns: repeat(2, 1fr); }
     }
- 
+
     @media (max-width: 768px) {
       nav { padding: 0 1.5rem; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
- 
+
       .section-wrap { padding: 4rem 1.5rem; }
- 
+
       #hero {
         padding: 1.5rem;
         padding-top: 80px;
@@ -673,12 +686,12 @@
       }
       .hero-left { padding: 0; }
       .hero-name { font-size: clamp(2.4rem, 11vw, 4rem); }
- 
+
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .about-img-box { aspect-ratio: 4/3; max-width: 280px; margin: 0 auto; }
- 
+
       .skills-grid { grid-template-columns: 1fr 1fr; }
- 
+
       .project-row {
         grid-template-columns: 1fr;
         gap: 0.8rem;
@@ -688,21 +701,21 @@
       .project-row-num { display: none; }
       .project-row-stack { justify-content: flex-start; }
       .project-row-icon { display: none; }
- 
+
       .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
- 
+
       footer { padding: 1.5rem; flex-direction: column; text-align: center; }
- 
+
       .section-header { flex-direction: column; align-items: flex-start; }
     }
- 
+
     @media (max-width: 480px) {
       .skills-grid { grid-template-columns: 1fr; }
       .about-stats { grid-template-columns: 1fr 1fr; }
       .hero-actions { flex-direction: column; }
       .btn-solid, .btn-ghost { text-align: center; }
     }
- 
+
     /* line divider decoration */
     .ruled {
       border: none;
@@ -712,7 +725,7 @@
   </style>
 </head>
 <body>
- 
+
 <!-- NAV -->
 <nav>
   <a href="#hero" class="nav-logo">
@@ -728,7 +741,7 @@
     <span></span><span></span><span></span>
   </button>
 </nav>
- 
+
 <div class="mobile-menu" id="mobileMenu">
   <a href="#about" class="mobile-link">About</a>
   <a href="#skills" class="mobile-link">Skills</a>
@@ -736,7 +749,7 @@
   <a href="#contact" class="mobile-link">Contact</a>
   <p class="menu-sub">© 2025 Khem Bahadur Chhetri</p>
 </div>
- 
+
 <!-- HERO -->
 <section id="hero">
   <div class="hero-left">
@@ -755,7 +768,7 @@
     </div>
   </div>
 </section>
- 
+
 <!-- ABOUT -->
 <section id="about">
   <div class="section-wrap">
@@ -801,7 +814,7 @@
     </div>
   </div>
 </section>
- 
+
 <!-- SKILLS -->
 <section id="skills">
   <div class="section-wrap">
@@ -896,7 +909,7 @@
     </div>
   </div>
 </section>
- 
+
 <!-- PROJECTS -->
 <section id="projects">
   <div class="section-wrap">
@@ -907,7 +920,7 @@
       </div>
     </div>
     <div class="projects-list reveal">
- 
+
       <div class="project-row">
         <div class="project-row-icon">🛒</div>
         <div class="project-row-body">
@@ -919,7 +932,7 @@
           <span>React</span><span>Node.js</span><span>MongoDB</span><span>Stripe</span>
         </div>
       </div>
- 
+
       <div class="project-row">
         <div class="project-row-icon">📊</div>
         <div class="project-row-body">
@@ -931,7 +944,7 @@
           <span>Next.js</span><span>TypeScript</span><span>PostgreSQL</span><span>Chart.js</span>
         </div>
       </div>
- 
+
       <div class="project-row">
         <div class="project-row-icon">🍅</div>
         <div class="project-row-body">
@@ -943,7 +956,7 @@
           <span>TensorFlow</span><span>Keras</span><span>CNN</span><span>OpenCV</span>
         </div>
       </div>
- 
+
       <div class="project-row">
         <div class="project-row-icon">🎓</div>
         <div class="project-row-body">
@@ -955,7 +968,7 @@
           <span>MongoDB</span><span>Express</span><span>React</span><span>Node.js</span>
         </div>
       </div>
- 
+
       <div class="project-row">
         <div class="project-row-icon">🛡️</div>
         <div class="project-row-body">
@@ -967,7 +980,7 @@
           <span>Python</span><span>Nmap</span><span>Flask</span><span>OWASP</span>
         </div>
       </div>
- 
+
       <div class="project-row">
         <div class="project-row-icon">💬</div>
         <div class="project-row-body">
@@ -979,7 +992,7 @@
           <span>React</span><span>Socket.io</span><span>Node.js</span><span>Redis</span>
         </div>
       </div>
- 
+
       <div class="project-row">
         <div class="project-row-icon">🏨</div>
         <div class="project-row-body">
@@ -991,7 +1004,7 @@
           <span>React Native</span><span>Django</span><span>Firebase</span>
         </div>
       </div>
- 
+
       <div class="project-row">
         <div class="project-row-icon">🗺️</div>
         <div class="project-row-body">
@@ -1003,11 +1016,11 @@
           <span>React</span><span>Mapbox</span><span>Node.js</span><span>MongoDB</span>
         </div>
       </div>
- 
+
     </div>
   </div>
 </section>
- 
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-wrap">
@@ -1036,13 +1049,13 @@
           </a>
         </div>
       </div>
- 
+
       <!-- CONTACT FORM -->
       <div class="contact-right reveal">
         <div class="contact-form-box">
           <div class="form-row">
             <label for="fname">Your Name</label>
-            <input type="text" id="fname" placeholder="e.g. Ram Sharma" autocomplete="off"/>
+            <input type="text" id="fname" placeholder="e.g. Abhimat Chhetri" autocomplete="off"/>
           </div>
           <div class="form-row">
             <label for="femail">Your Email</label>
@@ -1063,13 +1076,13 @@
     </div>
   </div>
 </section>
- 
+
 <!-- FOOTER -->
 <footer>
   <span>© 2025 <em>Khem Bahadur Chhetri</em></span>
   <span>Designed & built in <em>Pokhara, Nepal</em></span>
 </footer>
- 
+
 <script>
   // ---- Hamburger ----
   const ham = document.getElementById('hamburger');
@@ -1086,7 +1099,7 @@
       document.body.style.overflow = '';
     });
   });
- 
+
   // ---- Scroll reveal ----
   const reveals = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver(entries => {
@@ -1098,74 +1111,98 @@
     });
   }, { threshold: 0.08 });
   reveals.forEach(el => obs.observe(el));
- 
+
   // Stagger child reveals in grids
   document.querySelectorAll('.skills-grid .skill-item, .projects-list .project-row').forEach((el, i) => {
     el.style.transitionDelay = (i * 0.05) + 's';
   });
- 
-  // ---- Contact form via EmailJS ----
-  // Uses EmailJS free tier — sign up at emailjs.com, plug in your IDs below
-  const EMAILJS_SERVICE  = 'YOUR_SERVICE_ID';   // replace
-  const EMAILJS_TEMPLATE = 'YOUR_TEMPLATE_ID';  // replace
-  const EMAILJS_KEY      = 'YOUR_PUBLIC_KEY';   // replace
- 
+
+  // ---- Contact form ----
   const submitBtn = document.getElementById('formSubmit');
   const statusEl  = document.getElementById('formStatus');
- 
-  // Load EmailJS SDK
-  const ejsScript = document.createElement('script');
-  ejsScript.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-  ejsScript.onload = () => emailjs.init(EMAILJS_KEY);
-  document.head.appendChild(ejsScript);
- 
-  submitBtn.addEventListener('click', async () => {
+
+  submitBtn.addEventListener('click', () => {
     const name    = document.getElementById('fname').value.trim();
     const email   = document.getElementById('femail').value.trim();
     const subject = document.getElementById('fsubject').value.trim();
     const message = document.getElementById('fmsg').value.trim();
- 
-    if (!name || !email || !message) {
-      statusEl.textContent = 'Please fill in name, email, and message.';
-      statusEl.className = 'form-status error';
-      return;
-    }
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      statusEl.textContent = 'Please enter a valid email address.';
-      statusEl.className = 'form-status error';
-      return;
-    }
- 
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
+
+    // Clear previous status
     statusEl.textContent = '';
- 
-    try {
-      await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
-        from_name: name,
-        from_email: email,
-        subject: subject || 'Portfolio contact',
-        message: message,
-        to_email: 'khemchhetri10@gmail.com'
-      });
-      statusEl.textContent = '✓ Message sent! I\'ll get back to you soon.';
-      statusEl.className = 'form-status success';
-      document.getElementById('fname').value = '';
-      document.getElementById('femail').value = '';
-      document.getElementById('fsubject').value = '';
-      document.getElementById('fmsg').value = '';
-    } catch (err) {
-      // Fallback: open Gmail compose
-      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=khemchhetri10@gmail.com&su=${encodeURIComponent(subject || 'Portfolio inquiry')}&body=${encodeURIComponent(`From: ${name} (${email})\n\n${message}`)}`;
-      window.open(gmailUrl, '_blank');
-      statusEl.textContent = 'Opened Gmail as fallback. Set up EmailJS for direct sending.';
+    statusEl.className = 'form-status';
+
+    // Validate — name
+    if (!name) {
+      statusEl.textContent = '✗ Please enter your name.';
+      statusEl.className = 'form-status error';
+      document.getElementById('fname').focus();
+      return;
+    }
+
+    // Validate — email format strictly
+    const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+    if (!email) {
+      statusEl.textContent = '✗ Please enter your email address.';
+      statusEl.className = 'form-status error';
+      document.getElementById('femail').focus();
+      return;
+    }
+    if (!emailRegex.test(email)) {
+      statusEl.textContent = '✗ That doesn\'t look like a valid email — check the format (e.g. you@gmail.com).';
+      statusEl.className = 'form-status error';
+      document.getElementById('femail').focus();
+      return;
+    }
+
+    // Validate — message
+    if (!message) {
+      statusEl.textContent = '✗ Please write a message before sending.';
+      statusEl.className = 'form-status error';
+      document.getElementById('fmsg').focus();
+      return;
+    }
+    if (message.length < 10) {
+      statusEl.textContent = '✗ Message is too short — say a little more!';
+      statusEl.className = 'form-status error';
+      return;
+    }
+
+    // All good — open Gmail pre-filled and show success on page
+    const body = `Hi Khem,\n\nName: ${name}\nEmail: ${email}\n\n${message}`;
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=khemchhetri10@gmail.com&su=${encodeURIComponent(subject || 'Portfolio Inquiry — ' + name)}&body=${encodeURIComponent(body)}`;
+    window.open(gmailUrl, '_blank');
+
+    // Show success message on page
+    statusEl.innerHTML = '✓ Message sent! Gmail opened with your message — just hit Send there. I\'ll get back to you soon.';
+    statusEl.className = 'form-status success';
+
+    // Clear fields
+    document.getElementById('fname').value = '';
+    document.getElementById('femail').value = '';
+    document.getElementById('fsubject').value = '';
+    document.getElementById('fmsg').value = '';
+
+    // Reset success message after 8 seconds
+    setTimeout(() => {
+      statusEl.textContent = '';
       statusEl.className = 'form-status';
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Send Message →';
+    }, 8000);
+  });
+
+  // Live email validation feedback as user types
+  document.getElementById('femail').addEventListener('blur', () => {
+    const email = document.getElementById('femail').value.trim();
+    const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+    if (email && !emailRegex.test(email)) {
+      statusEl.textContent = '✗ Invalid email format — check again (e.g. you@gmail.com)';
+      statusEl.className = 'form-status error';
+    } else if (email && emailRegex.test(email)) {
+      statusEl.textContent = '✓ Email looks good.';
+      statusEl.className = 'form-status success';
+      setTimeout(() => { statusEl.textContent = ''; statusEl.className = 'form-status'; }, 2000);
     }
   });
- 
+
   // ---- Active nav on scroll ----
   const sections = document.querySelectorAll('section[id]');
   const navAs = document.querySelectorAll('.nav-links a');
