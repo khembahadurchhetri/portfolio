@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Khem Chhetri // Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#0a0a0f; --ink2:#2c2c38; --muted:#8a8a9c; --light:#16161f; --white:#ffffff;
+  --cream:#0d0d13; --card-bg:#12121a; --border:#26262f;
+  --accent:#baff29; --accent-dim:rgba(186,255,41,0.12); --accent-glow:rgba(186,255,41,0.35);
+  --accent2:#7ef29c;
+}
+html[data-theme="light"]{
+  --ink:#0a0a0f; --ink2:#33333f; --muted:#6b6b7c; --light:#f0f0f5; --white:#ffffff;
+  --cream:#f6f6fa; --card-bg:#ffffff; --border:#e2e2ea;
+  --accent:#5c9c00; --accent-dim:rgba(92,156,0,0.08); --accent-glow:rgba(92,156,0,0.25);
+  --accent2:#2f7a4a;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;transition:background .3s,color .3s;}
+
+/* ============ SCROLL RAIL (signature element) ============ */
+#scroll-rail{
+  position:fixed; left:14px; top:50%; transform:translateY(-50%);
+  width:2px; height:60vh; background:var(--border); z-index:950;
+}
+#scroll-rail .track-fill{
+  position:absolute; top:0; left:0; width:100%; height:0%;
+  background:linear-gradient(var(--accent),var(--accent2));
+  box-shadow:0 0 10px var(--accent-glow);
+}
+#scroll-rail .rail-car{
+  position:absolute; left:50%; top:0%; transform:translate(-50%,-50%);
+  font-size:1.1rem; filter:drop-shadow(0 0 6px var(--accent-glow));
+  transition:top .05s linear;
+}
+#scroll-rail .rail-pct{
+  position:absolute; left:16px; top:100%; margin-top:6px;
+  font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--muted);
+  writing-mode:vertical-rl;
+}
+@media (max-width:900px){ #scroll-rail{display:none;} }
+
+/* ============ FLOATING NAV (small pop, top-left) ============ */
+#nav-pop{
+  position:fixed; top:18px; left:18px; z-index:960;
+  display:flex; align-items:center; gap:0.6rem;
+  background:var(--card-bg); border:1px solid var(--border);
+  padding:0.5rem 0.9rem; border-radius:100px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.25);
+  cursor:pointer; user-select:none;
+  transition:box-shadow .25s, border-color .25s;
+}
+#nav-pop:hover{border-color:var(--accent);}
+#nav-pop.scrolled{box-shadow:0 0 0 2px var(--accent-dim),0 4px 20px rgba(0,0,0,.3);}
+#nav-pop .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent-glow);}
+#nav-pop .logo-txt{font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--ink);letter-spacing:0.03em;}
+#nav-pop .burger{display:flex;flex-direction:column;gap:3px;margin-left:0.2rem;}
+#nav-pop .burger span{width:14px;height:1.5px;background:var(--ink2);display:block;}
+
+/* theme toggle - sun/moon */
+#theme-toggle{
+  position:fixed; top:18px; right:18px; z-index:960;
+  width:52px; height:28px; border-radius:100px;
+  background:var(--card-bg); border:1px solid var(--border);
+  cursor:pointer; display:flex; align-items:center; padding:2px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.2);
+}
+#theme-toggle .knob{
+  width:22px; height:22px; border-radius:50%;
+  background:var(--accent); display:flex; align-items:center; justify-content:center;
+  font-size:0.75rem; transition:transform .3s ease; transform:translateX(0);
+  box-shadow:0 0 10px var(--accent-glow);
+}
+html[data-theme="light"] #theme-toggle .knob{transform:translateX(24px);}
+
+/* fullscreen menu */
+#menu-overlay{
+  position:fixed; inset:0; background:var(--ink); z-index:940;
+  display:none; flex-direction:column; justify-content:center; padding:3rem 3rem 3rem 5rem;
+}
+#menu-overlay.open{display:flex;}
+#menu-overlay a{
+  font-family:'Playfair Display',serif; font-size:clamp(2rem,6vw,3.6rem); font-weight:700;
+  color:#fff; text-decoration:none; padding:0.4rem 0; display:block; opacity:0.85;
+  transition:opacity .2s, color .2s;
+}
+#menu-overlay a:hover{opacity:1; color:var(--accent);}
+#menu-overlay .menu-foot{margin-top:2rem; font-family:'DM Mono',monospace; font-size:0.75rem; color:#666; letter-spacing:.08em;}
+
+/* ============ HERO ============ */
+#hero{min-height:100vh; padding:0 2.5rem; display:flex; align-items:center; background:var(--ink); position:relative; overflow:hidden;}
+#hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,var(--accent-dim) 0%,transparent 65%);pointer-events:none;}
+.hero-grid{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.1fr 0.9fr;gap:3rem;align-items:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem;background:var(--accent-dim);padding:0.3rem 0.7rem;border:1px solid var(--accent-glow);}
+.hero-eyebrow::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:breathe 2s ease-in-out infinite;}
+@keyframes breathe{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero-name{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,5vw,4.8rem);font-weight:900;line-height:1;letter-spacing:-0.02em;color:#fff;margin-bottom:0.2rem;}
+.hero-name em{font-style:italic;color:var(--accent);display:block;}
+.hero-desc{font-size:1rem;color:rgba(255,255,255,0.6);line-height:1.7;margin:1.8rem 0 2.5rem;max-width:480px;font-weight:300;}
+.hero-desc strong{font-weight:500;color:rgba(255,255,255,0.9);}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-solid{padding:0.8rem 1.8rem;background:var(--accent);color:#0a0a0f;font-size:0.8rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;transition:transform .2s,filter .2s;display:inline-block;border-radius:2px;}
+.btn-solid:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.btn-ghost{padding:0.8rem 1.8rem;background:transparent;color:rgba(255,255,255,0.85);font-size:0.8rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(255,255,255,0.25);transition:border-color .2s,color .2s,transform .2s;display:inline-block;}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
+
+/* animated dot-portrait placeholder */
+.portrait-box{
+  position:relative; width:100%; aspect-ratio:3/4; max-width:340px; margin:0 auto;
+  background:#000; border:1px solid rgba(186,255,41,0.25); overflow:hidden;
+}
+.portrait-box canvas{width:100%;height:100%;display:block;}
+.portrait-tag{position:absolute;bottom:0.8rem;left:0.8rem;font-family:'DM Mono',monospace;font-size:0.58rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;background:rgba(0,0,0,0.5);padding:0.25rem 0.5rem;border:1px solid var(--accent-glow);}
+
+/* ============ SECTIONS ============ */
+.section-wrap{max-width:1200px;margin:0 auto;padding:6rem 2.5rem 6rem 5rem;}
+@media (max-width:900px){.section-wrap{padding-left:2.5rem;}}
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3.5rem;flex-wrap:wrap;gap:1rem;}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:900;line-height:1;letter-spacing:-0.02em;color:var(--ink);}
+.section-title em{font-style:italic;color:var(--accent);}
+.section-kicker{display:inline-block;font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.5rem;}
+
+/* ============ ABOUT ============ */
+#about{background:var(--card-bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+.about-text p{color:var(--ink2);line-height:1.8;font-size:0.95rem;margin-bottom:1.2rem;font-weight:300;}
+.about-text p strong{font-weight:500;color:var(--ink);}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:2.5rem;border:1px solid var(--border);}
+.stat-item{padding:1.5rem;background:var(--cream);transition:background .2s;}
+.stat-item:hover{background:var(--accent-dim);}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;color:var(--ink);line-height:1;}
+.stat-num sup{font-size:1rem;color:var(--accent);}
+.stat-label{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.3rem;}
+.about-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem;}
+.about-tag{font-family:'DM Mono',monospace;font-size:0.65rem;padding:0.3rem 0.7rem;background:var(--cream);border:1px solid var(--border);color:var(--ink2);letter-spacing:0.05em;}
+
+/* ============ SKILLS ============ */
+#skills{background:var(--cream);}
+.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+@media (max-width:900px){.skills-grid{grid-template-columns:repeat(2,1fr);}}
+.skill-item{background:var(--card-bg);padding:2rem 1.8rem;transition:background .2s;}
+.skill-item:hover{background:var(--accent-dim);}
+.skill-item-icon{font-size:1.6rem;margin-bottom:1rem;}
+.skill-item-name{font-size:0.9rem;font-weight:500;color:var(--ink);margin-bottom:1rem;}
+.skill-chips{display:flex;flex-wrap:wrap;gap:0.35rem;}
+.chip{font-family:'DM Mono',monospace;font-size:0.58rem;padding:0.2rem 0.45rem;background:var(--light);color:var(--ink2);letter-spacing:0.04em;border:1px solid var(--border);}
+
+/* ============ EXPERIENCE ============ */
+#experience{background:var(--card-bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.exp-row{display:grid;grid-template-columns:140px 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--border);}
+.exp-row:first-child{border-top:1px solid var(--border);}
+.exp-period{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;padding-top:0.3rem;}
+.exp-role{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.exp-org{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--muted);margin-bottom:0.8rem;}
+.exp-desc{font-size:0.88rem;color:var(--ink2);line-height:1.7;max-width:620px;}
+@media (max-width:700px){.exp-row{grid-template-columns:1fr;gap:0.5rem;}}
+
+/* ============ PROJECTS ============ */
+#projects{background:var(--cream);}
+.project-card{
+  border:1px solid var(--border); background:var(--card-bg);
+  margin-bottom:1.5rem; padding:2rem; display:grid; grid-template-columns:auto 1fr auto; gap:2rem; align-items:center;
+  transition:border-color .2s;
+}
+.project-card:hover{border-color:var(--accent);}
+@media (max-width:800px){.project-card{grid-template-columns:1fr;}}
+.project-row-icon{font-size:2.4rem;text-align:center;}
+.project-row-badge{display:inline-block;font-family:'DM Mono',monospace;font-size:0.55rem;padding:0.15rem 0.5rem;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;border:1px solid var(--accent-glow);color:var(--accent);background:var(--accent-dim);}
+.project-row-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:0.4rem;}
+.project-row-desc{font-size:0.85rem;color:var(--muted);line-height:1.6;max-width:520px;margin-bottom:0.8rem;}
+.project-row-stack{display:flex;flex-wrap:wrap;gap:0.35rem;}
+.project-row-stack span{font-family:'DM Mono',monospace;font-size:0.58rem;padding:0.15rem 0.4rem;background:var(--light);border:1px solid var(--border);color:var(--ink2);}
+.project-links{display:flex;flex-direction:column;gap:0.6rem;min-width:140px;}
+.plink{font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.05em;text-decoration:none;padding:0.55rem 1rem;text-align:center;border:1px solid var(--border);color:var(--ink2);transition:all .2s;}
+.plink.live{background:var(--accent);color:#0a0a0f;border-color:var(--accent);font-weight:600;}
+.plink.live:hover{filter:brightness(1.1);}
+.plink.code:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ============ CONTACT ============ */
+#contact{background:var(--card-bg);}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+@media (max-width:800px){.contact-grid{grid-template-columns:1fr;gap:3rem;}}
+.contact-intro{font-size:0.95rem;color:var(--ink2);line-height:1.8;margin-bottom:2rem;font-weight:300;}
+.contact-email-link{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--accent);text-decoration:none;display:block;margin-bottom:2rem;word-break:break-all;}
+.social-row{display:flex;align-items:center;gap:0.75rem;text-decoration:none;color:var(--ink2);font-size:0.85rem;padding:0.6rem 0;border-bottom:1px solid var(--border);transition:color .2s;}
+.social-row:hover{color:var(--accent);}
+.social-row span{font-family:'DM Mono',monospace;font-size:0.72rem;}
+
+/* ============ MUSIC WIDGET ============ */
+#music-widget{
+  position:fixed; bottom:20px; right:20px; z-index:955;
+  display:flex; align-items:center; gap:0.6rem;
+  background:var(--card-bg); border:1px solid var(--border);
+  padding:0.6rem 0.9rem; border-radius:100px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.25);
+}
+#music-widget .m-btn{
+  width:34px;height:34px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:#0a0a0f;
+  box-shadow:0 0 10px var(--accent-glow);
+}
+#music-widget .m-label{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--muted);letter-spacing:0.06em;max-width:110px;}
+#music-widget .bars{display:flex;gap:2px;align-items:flex-end;height:14px;}
+#music-widget .bars span{width:2px;background:var(--accent);animation:eq 0.8s ease-in-out infinite;height:4px;}
+#music-widget.playing .bars span:nth-child(1){animation-delay:0s;}
+#music-widget.playing .bars span:nth-child(2){animation-delay:0.15s;}
+#music-widget.playing .bars span:nth-child(3){animation-delay:0.3s;}
+#music-widget .bars span{animation-play-state:paused;}
+#music-widget.playing .bars span{animation-play-state:running;}
+@keyframes eq{0%,100%{height:4px;}50%{height:14px;}}
+
+/* ============ FOOTER ============ */
+footer{background:var(--ink);color:rgba(255,255,255,0.4);padding:1.5rem 2.5rem 1.5rem 5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;}
+footer span{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;}
+footer em{color:rgba(255,255,255,0.7);font-style:normal;}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+@media (max-width:900px){
+  .hero-grid{grid-template-columns:1fr;}
+  .about-grid{grid-template-columns:1fr;gap:2.5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- SCROLL RAIL: signature element, a marker travels the rail as you scroll -->
+<div id="scroll-rail">
+  <div class="track-fill" id="rail-fill"></div>
+  <div class="rail-car" id="rail-car">🚗</div>
+</div>
+
+<!-- COMPACT FLOATING NAV -->
+<div id="nav-pop" onclick="document.getElementById('menu-overlay').classList.toggle('open')">
+  <span class="dot"></span>
+  <span class="logo-txt">KC</span>
+  <span class="burger"><span></span><span></span><span></span></span>
+</div>
+
+<!-- THEME TOGGLE -->
+<div id="theme-toggle" onclick="toggleTheme()" title="Toggle light / dark">
+  <div class="knob" id="theme-knob">🌙</div>
+</div>
+
+<div id="menu-overlay">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#skills" onclick="closeMenu()">Skills</a>
+  <a href="#experience" onclick="closeMenu()">Experience</a>
+  <a href="#projects" onclick="closeMenu()">Projects</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <div class="menu-foot">POKHARA, NEPAL &middot; AVAILABLE FOR WORK</div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow">Available for freelance & internships</div>
+      <h1 class="hero-name">Khem<em>Chhetri</em></h1>
+      <p class="hero-desc">Full-stack developer based in Pokhara, Nepal. I build <strong>Next.js</strong> products end-to-end &mdash; from chatbot widgets with payment integration to e-commerce platforms with admin dashboards.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-solid">See my work</a>
+        <a href="#contact" class="btn-ghost">Get in touch</a>
+      </div>
+    </div>
+    <div>
+      <div class="portrait-box">
+        <canvas id="portrait-canvas"></canvas>
+        <div class="portrait-tag">// upload photo to replace</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section-wrap reveal">
+  <div class="section-header">
+    <div>
+      <span class="section-kicker">Who I am</span>
+      <h2 class="section-title">About <em>me</em></h2>
+    </div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm a <strong>full-stack developer</strong> who likes shipping real, working products rather than half-finished demos &mdash; things with payments, logins, and admin panels that actually function.</p>
+      <p>My recent focus has been <strong>Next.js</strong>, building chatbot platforms and e-commerce systems with a strong eye on clean UI and real business logic underneath.</p>
+      <div class="about-stats">
+        <div class="stat-item"><div class="stat-num">2<sup>+</sup></div><div class="stat-label">Shipped Products</div></div>
+        <div class="stat-item"><div class="stat-num">3<sup>mo</sup></div><div class="stat-label">Next.js Internship</div></div>
+      </div>
+      <div class="about-tags">
+        <span class="about-tag">Next.js</span>
+        <span class="about-tag">React</span>
+        <span class="about-tag">Node.js</span>
+        <span class="about-tag">Payments</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section-wrap reveal">
+  <div class="section-header">
+    <div>
+      <span class="section-kicker">Toolbox</span>
+      <h2 class="section-title">Skills & <em>stack</em></h2>
+    </div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-item">
+      <div class="skill-item-icon">🖥️</div>
+      <div class="skill-item-name">Frontend</div>
+      <div class="skill-chips"><span class="chip">React</span><span class="chip">Next.js</span><span class="chip">Tailwind</span></div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-item-icon">⚙️</div>
+      <div class="skill-item-name">Backend</div>
+      <div class="skill-chips"><span class="chip">Node.js</span><span class="chip">APIs</span><span class="chip">Auth</span></div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-item-icon">🗄️</div>
+      <div class="skill-item-name">Data</div>
+      <div class="skill-chips"><span class="chip">MongoDB</span><span class="chip">SQL</span></div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-item-icon">💳</div>
+      <div class="skill-item-name">Commerce</div>
+      <div class="skill-chips"><span class="chip">Payments</span><span class="chip">Cart</span><span class="chip">Admin</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="section-wrap reveal">
+  <div class="section-header">
+    <div>
+      <span class="section-kicker">Where I've worked</span>
+      <h2 class="section-title">Experience</h2>
+    </div>
+  </div>
+  <div class="exp-row">
+    <div class="exp-period">2025</div>
+    <div>
+      <div class="exp-role">Frontend Developer Intern</div>
+      <div class="exp-org">Easy Innovation &middot; 3-month Next.js internship</div>
+      <div class="exp-desc">Built and shipped UI features in Next.js as part of a small product team, working across component design, API integration, and day-to-day feature delivery. <em style="color:var(--muted);">(Edit this line with your real details.)</em></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section-wrap reveal">
+  <div class="section-header">
+    <div>
+      <span class="section-kicker">Selected work</span>
+      <h2 class="section-title">Projects</h2>
+    </div>
+  </div>
+
+  <div class="project-card">
+    <div class="project-row-icon">🤖</div>
+    <div>
+      <span class="project-row-badge">AI · SaaS</span>
+      <div class="project-row-title">HamroChatbot</div>
+      <div class="project-row-desc">A Next.js chatbot platform with an embeddable widget, knowledge-base upload, and payment integration for selling chatbot access.</div>
+      <div class="project-row-stack"><span>Next.js</span><span>Stripe</span><span>Widget SDK</span><span>KB Upload</span></div>
+    </div>
+    <div class="project-links">
+      <a class="plink live" href="https://hamrochatbot.vercel.app" target="_blank" rel="noopener">Live Demo ↗</a>
+      <a class="plink code" href="#" target="_blank" rel="noopener">View Code ↗</a>
+    </div>
+  </div>
+
+  <div class="project-card">
+    <div class="project-row-icon">🛒</div>
+    <div>
+      <span class="project-row-badge">Full-Stack · E-commerce</span>
+      <div class="project-row-title">Product Catalog</div>
+      <div class="project-row-desc">A full e-commerce app with product upload/delete, cart, login &amp; signup, and a separate admin login and dashboard.</div>
+      <div class="project-row-stack"><span>Next.js</span><span>Auth</span><span>Cart</span><span>Admin Panel</span></div>
+    </div>
+    <div class="project-links">
+      <a class="plink live" href="https://product-catalog-q88b.vercel.app" target="_blank" rel="noopener">Live Demo ↗</a>
+      <a class="plink code" href="#" target="_blank" rel="noopener">View Code ↗</a>
+    </div>
+  </div>
+
+  <p style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted);margin-top:1rem;">// "View Code" links go to # &mdash; send me your GitHub repo URLs and I'll wire them up.</p>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section-wrap reveal">
+  <div class="section-header">
+    <div>
+      <span class="section-kicker">Let's talk</span>
+      <h2 class="section-title">Get in <em>touch</em></h2>
+    </div>
+  </div>
+  <div class="contact-grid">
+    <div>
+      <p class="contact-intro">Open to freelance projects and internship opportunities. Reach out and I'll get back to you.</p>
+      <a href="mailto:you@example.com" class="contact-email-link">you@example.com</a>
+      <div class="contact-socials">
+        <a class="social-row" href="#" target="_blank"><span>GitHub</span></a>
+        <a class="social-row" href="#" target="_blank"><span>LinkedIn</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 <em>Khem Chhetri</em></span>
+  <span>BUILT WITH NEXT.JS</span>
+</footer>
+
+<!-- MUSIC WIDGET -->
+<div id="music-widget">
+  <button class="m-btn" id="music-btn" onclick="toggleMusic()">▶</button>
+  <div class="bars"><span></span><span></span><span></span></div>
+  <div class="m-label">Flute theme</div>
+  <!-- Drop an mp3 named flute-theme.mp3 into an /assets folder next to this file -->
+  <audio id="bg-audio" loop src="assets/flute-theme.mp3"></audio>
+</div>
+
+<script>
+// ---- theme toggle ----
+function toggleTheme(){
+  const html=document.documentElement;
+  const isLight=html.getAttribute('data-theme')==='light';
+  html.setAttribute('data-theme', isLight?'dark':'light');
+  document.getElementById('theme-knob').textContent = isLight ? '🌙' : '☀️';
+  try{ localStorage.setItem('kc-theme', isLight?'dark':'light'); }catch(e){}
+}
+(function initTheme(){
+  let saved='dark';
+  try{ saved = localStorage.getItem('kc-theme') || 'dark'; }catch(e){}
+  if(saved==='light'){
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('theme-knob').textContent='☀️';
+  }
+})();
+
+function closeMenu(){ document.getElementById('menu-overlay').classList.remove('open'); }
+
+// ---- scroll rail ----
+const railFill=document.getElementById('rail-fill');
+const railCar=document.getElementById('rail-car');
+const navPop=document.getElementById('nav-pop');
+window.addEventListener('scroll', ()=>{
+  const h=document.documentElement;
+  const pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  railFill.style.height=pct+'%';
+  railCar.style.top=pct+'%';
+  navPop.classList.toggle('scrolled', h.scrollTop>40);
+});
+
+// ---- reveal on scroll ----
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// ---- music widget ----
+function toggleMusic(){
+  const audio=document.getElementById('bg-audio');
+  const widget=document.getElementById('music-widget');
+  const btn=document.getElementById('music-btn');
+  if(audio.paused){
+    audio.play().catch(()=>{ alert('Add assets/flute-theme.mp3 next to this file to enable music.'); });
+    widget.classList.add('playing'); btn.textContent='❚❚';
+  } else {
+    audio.pause();
+    widget.classList.remove('playing'); btn.textContent='▶';
+  }
+}
+
+// ---- animated dot portrait placeholder ----
+const canvas=document.getElementById('portrait-canvas');
+const ctx=canvas.getContext('2d');
+function resizeCanvas(){
+  const box=canvas.parentElement.getBoundingClientRect();
+  canvas.width=box.width; canvas.height=box.height;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const DOTS=Array.from({length:140},()=>({
+  x:Math.random(), y:Math.random(),
+  r:Math.random()*1.8+0.6,
+  vy:(Math.random()*0.15+0.03),
+  phase:Math.random()*Math.PI*2
+}));
+function drawDots(t){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const w=canvas.width, hgt=canvas.height;
+  ctx.save();
+  for(const d of DOTS){
+    const y=((d.y*hgt) + t*d.vy*20) % hgt;
+    const glow=0.4+0.6*Math.abs(Math.sin(t*0.001+d.phase));
+    ctx.beginPath();
+    ctx.fillStyle=`rgba(186,255,41,${0.15+glow*0.5})`;
+    ctx.shadowColor='rgba(186,255,41,0.8)';
+    ctx.shadowBlur=6*glow;
+    ctx.arc(d.x*w, y, d.r, 0, Math.PI*2);
+    ctx.fill();
+  }
+  ctx.restore();
+  requestAnimationFrame(drawDots);
+}
+requestAnimationFrame(drawDots);
+</script>
+</body>
+</html>
