@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Khem Bahadur Chhetri — Full Stack Developer</title>
+<meta name="description" content="Khem Bahadur Chhetri — Full Stack Developer & Computer Engineer from Pokhara, Nepal. React, Next.js, Python, AI/ML, Cybersecurity." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   STYLES — organized top to bottom: theme tokens, nav, hero,
+   ticker, about, skills, experience, projects, resume, contact,
+   footer, responsive. Search for the ALL-CAPS section headers.
+   ============================================================ */
+/* =========================================================
+   THEME TOKENS
+   Every color used anywhere below is a var() reference to
+   one of these two blocks, so light/dark never lose contrast.
+   ========================================================= */
+:root {
+  --bg: #E7EBF3;
+  --bg-alt: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-2: #DEE4F0;
+  --text: #0B1220;
+  --text-muted: #3A4256;
+  --text-soft: #6B7288;
+  --border: #C7CEDE;
+  --accent: #2F6FED;
+  --accent-strong: #1D4FC4;
+  --accent-soft: rgba(47, 111, 237, 0.11);
+  --cyber: #0E9E70;
+  --cyber-soft: rgba(14, 158, 112, 0.11);
+  --on-accent: #FFFFFF;
+  --shadow: rgba(11, 18, 32, 0.14);
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme="dark"] {
+  --bg: #06080D;
+  --bg-alt: #0C111C;
+  --surface: #161E30;
+  --surface-2: #202A44;
+  --text: #F4F6FB;
+  --text-muted: #C0C6D6;
+  --text-soft: #8891A6;
+  --border: #34405C;
+  --accent: #7BA0FF;
+  --accent-strong: #9DBCFF;
+  --accent-soft: rgba(123, 160, 255, 0.16);
+  --cyber: #38EFB0;
+  --cyber-soft: rgba(56, 239, 176, 0.14);
+  --on-accent: #06080D;
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
+* , *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
+
+/* Prevents CSS Grid's default behavior of letting a column grow past
+   its track to fit unbroken content — this was the cause of the About
+   section (and anything else in a grid) dragging the whole page
+   sideways on narrow phone screens. */
+.about-grid, .contact-grid,
+.about-grid > *, .contact-grid > * {
+  min-width: 0;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  overflow-x: hidden;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+::selection { background: var(--accent-soft); color: var(--accent-strong); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+
+/* =========================================================
+   TRAIL RAIL — scroll progress. The music toggle itself rides
+   the rail up/down as you scroll (replaces the old car icon).
+   ========================================================= */
+#trail-rail {
+  position: fixed;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 46vh;
+  width: 20px;
+  z-index: 850;
+  display: flex;
+  justify-content: center;
+}
+.rail-track {
+  position: relative;
+  width: 2px;
+  height: 100%;
+  background: var(--border);
+  border-radius: 2px;
+}
+.rail-fill {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 0%;
+  background: linear-gradient(var(--accent), var(--cyber));
+  border-radius: 2px;
+}
+.rail-music-btn {
+  position: absolute;
+  left: 50%; top: 0%;
+  transform: translate(-50%, -50%);
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--accent); border: none; cursor: pointer;
+  color: var(--on-accent); font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: top 0.05s linear, box-shadow 0.2s ease;
+  box-shadow: 0 3px 10px var(--shadow);
+}
+.rail-music-btn.playing {
+  box-shadow: 0 0 0 4px var(--accent-soft), 0 3px 10px var(--shadow);
+  animation: railPulse 1.4s ease-in-out infinite;
+}
+@keyframes railPulse {
+  0%, 100% { box-shadow: 0 0 0 3px var(--accent-soft), 0 3px 10px var(--shadow); }
+  50% { box-shadow: 0 0 0 7px transparent, 0 3px 10px var(--shadow); }
+}
+@media (max-width: 768px) {
+  #trail-rail { left: 6px; height: 38vh; }
+  .rail-music-btn { width: 26px; height: 26px; font-size: 0.7rem; }
+}
+
+/* =========================================================
+   NAV
+   ========================================================= */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 900;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 14px var(--shadow);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 2.5rem;
+  height: 64px;
+}
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 0.95rem; font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.nav-logo .bracket { color: var(--text-soft); font-size: 0.75rem; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-size: 0.78rem; font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-actions { display: flex; align-items: center; gap: 0.9rem; }
+
+#theme-toggle {
+  width: 44px; height: 24px; border-radius: 100px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  cursor: pointer; display: flex; align-items: center; padding: 2px;
+}
+#theme-toggle .knob {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--accent); display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; transition: transform 0.25s ease; transform: translateX(0);
+}
+html[data-theme="dark"] #theme-toggle .knob { transform: translateX(20px); }
+
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 4px; background: none; border: none;
+}
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--text); transition: all 0.3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none; position: fixed; top: 64px; right: 1.5rem;
+  width: min(280px, calc(100vw - 3rem));
+  background: var(--surface); z-index: 800; flex-direction: column;
+  padding: 1rem 1.25rem; border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: 0 12px 32px var(--shadow);
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-size: 1rem; font-weight: 500; color: var(--text); text-decoration: none;
+  padding: 0.65rem 0.25rem; border-bottom: 1px solid var(--border);
+}
+.mobile-menu a:last-of-type { border-bottom: none; }
+.mobile-menu a:hover { color: var(--accent); }
+.menu-sub { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.7rem; color: var(--text-soft); font-family: var(--font-mono); }
+
+/* =========================================================
+   HERO — single stacked column: name, description, photo,
+   then the action buttons
+   ========================================================= */
+#hero {
+  min-height: 92vh;
+  padding: 64px 2.5rem 3rem;
+  display: flex; align-items: center;
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--border);
+}
+.hero-inner {
+  max-width: 640px; margin: 0 auto; width: 100%;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1.4rem;
+  background: var(--accent-soft); padding: 0.3rem 0.7rem; border: 1px solid var(--accent-soft);
+}
+.hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: breathe 2s ease-in-out infinite; }
+@keyframes breathe { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5vw, 4.6rem);
+  font-weight: 700; line-height: 1.02; letter-spacing: -0.02em;
+  color: var(--text);
+}
+.hero-name span { color: var(--accent); }
+.hero-desc {
+  font-size: 1.02rem; color: var(--text-muted); line-height: 1.7;
+  margin: 1.6rem 0 2rem; max-width: 500px; font-weight: 300;
+}
+.hero-desc strong { font-weight: 600; color: var(--text); }
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+.btn-solid {
+  padding: 0.8rem 1.7rem; background: var(--accent); color: var(--on-accent);
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  text-decoration: none; border-radius: 6px; transition: background 0.2s, transform 0.2s;
+  display: inline-block; border: none; cursor: pointer;
+}
+.btn-solid:hover { background: var(--accent-strong); transform: translateY(-1px); }
+.btn-ghost {
+  padding: 0.8rem 1.7rem; background: transparent; color: var(--text);
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  text-decoration: none; border: 1px solid var(--border); border-radius: 6px;
+  transition: border-color 0.2s, transform 0.2s; display: inline-block;
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+.hero-meta {
+  margin-top: 1.8rem; font-family: var(--font-mono); font-size: 0.7rem;
+  color: var(--text-soft); letter-spacing: 0.02em;
+}
+.hero-meta .dot { margin: 0 0.5rem; }
+
+.hero-photo-frame {
+  position: relative; width: 100%; max-width: 300px; aspect-ratio: 3/4;
+  border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
+  box-shadow: 0 20px 50px var(--shadow);
+}
+.hero-photo { width: 100%; height: 100%; object-fit: cover; object-position: 60% 30%; }
+.hero-photo-tag {
+  position: absolute; bottom: 0.9rem; left: 0.9rem;
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em;
+  color: #fff; background: rgba(10,13,22,0.55); backdrop-filter: blur(4px);
+  padding: 0.3rem 0.6rem; border-radius: 4px;
+}
+
+/* =========================================================
+   TICKER — two rows, opposite directions, pure motion (no
+   drag needed here; the horizontal *scroll* section is below)
+   ========================================================= */
+.ticker-block { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0.6rem 0; }
+.ticker-row { overflow: hidden; white-space: nowrap; padding: 0.4rem 0; }
+.ticker-track { display: inline-flex; gap: 2rem; }
+.ticker-row[data-dir="left"] .ticker-track { animation: scrollLeft 32s linear infinite; }
+.ticker-row[data-dir="right"] .ticker-track { animation: scrollRight 28s linear infinite; }
+.ticker-row:hover .ticker-track { animation-play-state: paused; }
+@keyframes scrollLeft { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes scrollRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.ticker-row[data-dir="left"] span {
+  font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-soft);
+  letter-spacing: 0.04em;
+}
+.ticker-row[data-dir="right"] a {
+  font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent);
+  letter-spacing: 0.04em; text-decoration: none;
+}
+.ticker-row[data-dir="right"] a:hover { color: var(--accent-strong); }
+
+/* =========================================================
+   SECTION SHELL
+   ========================================================= */
+.section-wrap { max-width: 1200px; margin: 0 auto; padding: 5.5rem 2.5rem; }
+.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem; }
+.section-title {
+  font-family: var(--font-display); font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+  font-weight: 700; line-height: 1.05; letter-spacing: -0.01em; color: var(--text);
+}
+.section-title span { color: var(--accent); }
+.section-kicker {
+  display: inline-block; font-family: var(--font-mono); font-size: 0.68rem;
+  color: var(--accent); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 0.6rem;
+}
+.scroll-hint { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-soft); letter-spacing: 0.08em; }
+
+/* =========================================================
+   ABOUT
+   ========================================================= */
+#about { background: var(--bg-alt); border-bottom: 1px solid var(--border); }
+.about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: start; }
+.about-text p { color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 1.1rem; font-weight: 300; }
+.about-text p strong { font-weight: 600; color: var(--text); }
+.about-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.3rem; }
+.about-tag {
+  font-family: var(--font-mono); font-size: 0.65rem; padding: 0.35rem 0.7rem;
+  background: var(--surface-2); border: 1px solid var(--border); color: var(--text-muted); letter-spacing: 0.04em; border-radius: 5px;
+}
+
+/* horizontal-scroll "quick facts" — native scroll, no dots/toggles */
+.facts-scroll {
+  display: flex; gap: 0.9rem; overflow-x: auto; padding: 0.3rem 0.1rem 1rem;
+  -webkit-overflow-scrolling: touch;
+}
+.facts-scroll::-webkit-scrollbar { height: 6px; }
+.facts-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.fact-card {
+  flex: 0 0 200px;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1.2rem 1.1rem;
+}
+.fact-label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.fact-value { font-size: 0.92rem; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+/* =========================================================
+   SKILLS
+   ========================================================= */
+#skills { background: var(--bg); }
+.skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.skill-item { background: var(--surface); padding: 1.1rem 1.2rem; transition: background 0.2s; display: flex; flex-direction: column; gap: 0.6rem; }
+.skill-item:hover { background: var(--accent-soft); }
+.skill-item-head { display: flex; align-items: center; gap: 0.55rem; }
+.skill-item-icon { font-size: 1.15rem; line-height: 1; }
+.skill-item-name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.skill-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.chip { font-family: var(--font-mono); font-size: 0.58rem; padding: 0.2rem 0.45rem; background: var(--surface-2); color: var(--text-muted); letter-spacing: 0.03em; border: 1px solid var(--border); border-radius: 4px; }
+.chip.cyber { background: var(--cyber-soft); color: var(--cyber); border-color: var(--cyber-soft); }
+.chip.accent { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-soft); }
+
+/* =========================================================
+   EXPERIENCE
+   ========================================================= */
+#experience { background: var(--bg-alt); border-bottom: 1px solid var(--border); }
+.exp-row { display: grid; grid-template-columns: 130px 1fr; gap: 2rem; padding: 1.6rem 0; border-top: 1px solid var(--border); }
+.exp-period { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; padding-top: 0.2rem; }
+.exp-role { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 0.25rem; }
+.exp-org { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-soft); margin-bottom: 0.6rem; }
+.exp-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; max-width: 640px; }
+
+/* =========================================================
+   PROJECTS — horizontal scroll strip, plain native scroll
+   ========================================================= */
+#projects { background: var(--bg); }
+.projects-scroll {
+  display: flex; gap: 1.2rem; overflow-x: auto; padding: 0.3rem 0.1rem 1.2rem;
+  -webkit-overflow-scrolling: touch;
+}
+.projects-scroll::-webkit-scrollbar { height: 6px; }
+.projects-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.project-card {
+  flex: 0 0 300px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem;
+}
+.project-badge { align-self: flex-start; font-family: var(--font-mono); font-size: 0.55rem; padding: 0.2rem 0.55rem; text-transform: uppercase; letter-spacing: 0.08em; border-radius: 4px; }
+.project-badge.saas { color: var(--accent); background: var(--accent-soft); }
+.project-badge.ai   { color: #C07A00; background: rgba(192,122,0,0.09); }
+.project-badge.full { color: var(--cyber); background: var(--cyber-soft); }
+.project-icon { font-size: 1.8rem; }
+.project-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--text); }
+.project-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; flex-grow: 1; }
+.project-stack { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.project-stack span { font-family: var(--font-mono); font-size: 0.58rem; padding: 0.18rem 0.45rem; background: var(--surface-2); border: 1px solid var(--border); color: var(--text-muted); border-radius: 4px; }
+.project-links { margin-top: 0.4rem; }
+.project-links a { font-family: var(--font-mono); font-size: 0.68rem; text-decoration: none; padding: 0.4rem 0.8rem; border: 1px solid var(--border); border-radius: 5px; color: var(--text-muted); display: inline-block; transition: all 0.15s; }
+.project-links a.live { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.project-links a.live:hover { background: var(--accent-strong); }
+.project-links a.code:hover { border-color: var(--accent); color: var(--accent); }
+
+/* =========================================================
+   RESUME
+   ========================================================= */
+#resume { background: var(--bg-alt); border-bottom: 1px solid var(--border); }
+.resume-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.resume-hint { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.6rem; max-width: 420px; }
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
+#contact { background: var(--bg); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.contact-intro { font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 1.6rem; font-weight: 300; }
+.contact-email-link { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--accent); text-decoration: none; display: block; margin-bottom: 1.8rem; word-break: break-all; }
+.contact-email-link:hover { text-decoration: underline; }
+.contact-socials { display: flex; flex-direction: column; }
+.social-row { display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: var(--text-muted); font-size: 0.85rem; padding: 0.7rem 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
+.social-row:hover { color: var(--accent); }
+.social-row span { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-soft); }
+
+.contact-form-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2.2rem; }
+.form-row { margin-bottom: 1.1rem; }
+.form-row label { display: block; font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+.form-row input, .form-row textarea {
+  width: 100%; padding: 0.75rem 1rem; background: var(--surface-2); border: 1px solid var(--border);
+  color: var(--text); font-family: var(--font-body); font-size: 0.9rem; font-weight: 400;
+  outline: none; resize: vertical; border-radius: 6px; transition: border-color 0.2s;
+}
+.form-row input:focus, .form-row textarea:focus { border-color: var(--accent); }
+.form-row textarea { min-height: 120px; }
+.form-submit {
+  width: 100%; padding: 0.85rem; background: var(--text); color: var(--bg);
+  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+  border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s;
+}
+.form-submit:hover { background: var(--accent); color: var(--on-accent); }
+.form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.form-status { margin-top: 0.9rem; font-family: var(--font-mono); font-size: 0.75rem; text-align: center; color: var(--text-soft); min-height: 1.3rem; }
+.form-status.success { color: var(--cyber); }
+.form-status.error { color: #D64545; }
+
+/* =========================================================
+   MUSIC WIDGET
+   ========================================================= */
+/* The music toggle now lives on the trail rail (see above) —
+   styles for it are in the TRAIL RAIL block. Nothing needed here. */
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+footer {
+  background: var(--bg-alt); border-top: 1px solid var(--border); color: var(--text-soft);
+  padding: 1.5rem 2.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;
+}
+footer span { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.05em; }
+footer em { color: var(--text-muted); font-style: normal; }
+
+/* =========================================================
+   REVEAL ANIMATION
+   ========================================================= */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* focus visibility */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 1.2rem; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .section-wrap { padding: 3.5rem 1.4rem 3.5rem calc(1.4rem + 20px); }
+  #hero { padding: 88px 1.4rem 3rem calc(1.4rem + 20px); min-height: auto; }
+  .ticker-block, footer { padding-left: calc(1.4rem + 20px); }
+  .exp-row { grid-template-columns: 1fr; gap: 0.4rem; }
+  footer { padding: 1.4rem 1.4rem 1.4rem calc(1.4rem + 20px); flex-direction: column; text-align: center; }
+  .section-header { flex-direction: column; align-items: flex-start; }
+  .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  .resume-actions { width: 100%; }
+  .resume-actions a { flex: 1; text-align: center; }
+}
+@media (max-width: 480px) {
+  .skill-item { padding: 0.9rem 0.9rem; }
+  .skill-item-name { font-size: 0.76rem; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- TRAIL / SCROLL PROGRESS RAIL — doubles as the music toggle -->
+<div id="trail-rail">
+  <div class="rail-track">
+    <div class="rail-fill" id="railFill"></div>
+  </div>
+  <button class="rail-music-btn" id="railMusicBtn" aria-label="Play background music">▶</button>
+</div>
+<audio id="bgAudio" loop preload="none" src="assets/home-was-you.mp3"></audio>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo"><span class="bracket">[</span>KBC<span class="bracket">]</span></a>
+
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#resume">Resume</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <button id="theme-toggle" title="Toggle light / dark" aria-label="Toggle theme">
+      <span class="knob" id="themeKnob">🌙</span>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about">About</a>
+  <a href="#skills">Skills</a>
+  <a href="#experience">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#resume">Resume</a>
+  <a href="#contact">Contact</a>
+  <p class="menu-sub">© 2026 Khem Bahadur Chhetri</p>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow reveal">Open to work &middot; Pokhara, Nepal</div>
+    <h1 class="hero-name reveal">Khem Bahadur<br /><span>Chhetri</span></h1>
+    <p class="hero-desc reveal">
+      <strong>Full Stack Developer</strong> &amp; Computer Engineering student.
+      I build fast, well-structured web apps end to end — React/Next.js on the front,
+      Node &amp; Python on the back — with a growing focus on <strong>cloud</strong> and
+      <strong>cybersecurity</strong>.
+    </p>
+
+    <div class="hero-photo-frame reveal">
+      <img src="assets/khem-photo.jpg" alt="Khem Bahadur Chhetri" class="hero-photo" />
+      <span class="hero-photo-tag">Pokhara, Nepal &middot; 28°14'N</span>
+    </div>
+
+    <div class="hero-actions reveal">
+      <a href="#projects" class="btn-solid">View My Work</a>
+      <a href="#resume" class="btn-ghost">View Resume →</a>
+    </div>
+    <div class="hero-meta reveal">
+      <span>3+ mo. internship</span><span class="dot">·</span>
+      <span>Pokhara University</span><span class="dot">·</span>
+      <span>React · Next.js · Python</span>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER : tech stack (left) + links (right, opposite direction) -->
+<div class="ticker-block">
+  <div class="ticker-row" data-dir="left">
+    <div class="ticker-track">
+      <span>Next.js</span><span>React</span><span>TypeScript</span><span>Python</span>
+      <span>Node.js</span><span>Django</span><span>Docker</span><span>Linux</span>
+      <span>AWS</span><span>MongoDB</span><span>PostgreSQL</span><span>TensorFlow</span>
+      <span>OWASP</span><span>Kali Linux</span><span>Git</span>
+      <!-- duplicate for seamless loop -->
+      <span>Next.js</span><span>React</span><span>TypeScript</span><span>Python</span>
+      <span>Node.js</span><span>Django</span><span>Docker</span><span>Linux</span>
+      <span>AWS</span><span>MongoDB</span><span>PostgreSQL</span><span>TensorFlow</span>
+      <span>OWASP</span><span>Kali Linux</span><span>Git</span>
+    </div>
+  </div>
+  <div class="ticker-row" data-dir="right">
+    <div class="ticker-track">
+      <a href="https://github.com/khembahadurchhetri" target="_blank" rel="noopener">↗ GitHub</a>
+      <a href="https://www.linkedin.com/in/khemchhetri" target="_blank" rel="noopener">↗ LinkedIn</a>
+      <a href="mailto:khemchhetri10@gmail.com">↗ Email</a>
+      <a href="assets/Khem_Chhetri_CV.pdf" download>↗ Resume</a>
+      <a href="https://hamrobot.vercel.app" target="_blank" rel="noopener">↗ HamroChatbot</a>
+      <!-- duplicate for seamless loop -->
+      <a href="https://github.com/khembahadurchhetri" target="_blank" rel="noopener">↗ GitHub</a>
+      <a href="https://www.linkedin.com/in/khemchhetri" target="_blank" rel="noopener">↗ LinkedIn</a>
+      <a href="mailto:khemchhetri10@gmail.com">↗ Email</a>
+      <a href="assets/Khem_Chhetri_CV.pdf" download>↗ Resume</a>
+      <a href="https://hamrobot.vercel.app" target="_blank" rel="noopener">↗ HamroChatbot</a>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-wrap">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="section-kicker">About me</div>
+        <h2 class="section-title">Building things<br />that <span>matter.</span></h2>
+        <p>I'm <strong>Khem Bahadur Chhetri</strong>, a Computer Engineering student and developer based in <strong>Pokhara, Nepal</strong>. I build web apps end to end — the kind that people actually enjoy using.</p>
+        <p>My work spans web development, AI/ML experiments, and cybersecurity fundamentals. I care about clean, well-structured code and closing the gap between a working prototype and something production-ready.</p>
+        <p>Outside of code, I'm usually on Pokhara's trails or working through a new security lab.</p>
+        <div class="about-tags">
+          <span class="about-tag">Full Stack</span>
+          <span class="about-tag">AI / ML</span>
+          <span class="about-tag">Cybersecurity</span>
+          <span class="about-tag">Cloud (learning)</span>
+        </div>
+      </div>
+
+      <div class="about-right reveal">
+        <div class="section-kicker">Quick facts</div>
+        <div class="facts-scroll">
+          <div class="fact-card">
+            <div class="fact-label">Based in</div>
+            <div class="fact-value">Pokhara, Nepal</div>
+          </div>
+          <div class="fact-card">
+            <div class="fact-label">Studying</div>
+            <div class="fact-value">B.E. Computer Engineering</div>
+          </div>
+          <div class="fact-card">
+            <div class="fact-label">Currently</div>
+            <div class="fact-value">Learning cloud &amp; deepening cybersecurity</div>
+          </div>
+          <div class="fact-card">
+            <div class="fact-label">Stack of choice</div>
+            <div class="fact-value">Next.js + Python</div>
+          </div>
+          <div class="fact-card">
+            <div class="fact-label">Off duty</div>
+            <div class="fact-value">Trail hikes around Pokhara</div>
+          </div>
+        </div>
+        <p class="scroll-hint">← swipe / scroll →</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-kicker">What I work with</div>
+        <h2 class="section-title">Skills &amp;<br /><span>technologies</span></h2>
+      </div>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="skill-item">
+        <div class="skill-item-head">
+          <span class="skill-item-icon">⚛️</span>
+          <span class="skill-item-name">Frontend</span>
+        </div>
+        <div class="skill-chips">
+          <span class="chip">React</span><span class="chip">Next.js</span>
+          <span class="chip">TypeScript</span><span class="chip">Tailwind</span>
+          <span class="chip">HTML / CSS</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-item-head">
+          <span class="skill-item-icon">🖥️</span>
+          <span class="skill-item-name">Backend</span>
+        </div>
+        <div class="skill-chips">
+          <span class="chip">Node.js</span><span class="chip">Express</span>
+          <span class="chip">Django</span><span class="chip">Python</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-item-head">
+          <span class="skill-item-icon">🗄️</span>
+          <span class="skill-item-name">Database &amp; Cloud</span>
+        </div>
+        <div class="skill-chips">
+          <span class="chip">MongoDB</span><span class="chip">PostgreSQL</span>
+          <span class="chip">MySQL</span><span class="chip">AWS</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-item-head">
+          <span class="skill-item-icon">🤖</span>
+          <span class="skill-item-name">AI / ML</span>
+        </div>
+        <div class="skill-chips">
+          <span class="chip cyber">TensorFlow</span><span class="chip cyber">Keras</span>
+          <span class="chip cyber">CNN</span><span class="chip cyber">OpenCV</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-item-head">
+          <span class="skill-item-icon">🔐</span>
+          <span class="skill-item-name">Cybersecurity</span>
+        </div>
+        <div class="skill-chips">
+          <span class="chip accent">Pen Testing</span><span class="chip accent">OWASP</span>
+          <span class="chip accent">Wireshark</span><span class="chip accent">Kali Linux</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-item-head">
+          <span class="skill-item-icon">🔧</span>
+          <span class="skill-item-name">Dev Tools</span>
+        </div>
+        <div class="skill-chips">
+          <span class="chip">Git</span><span class="chip">Docker</span>
+          <span class="chip">Linux</span><span class="chip">CI/CD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-kicker">Where I've worked</div>
+        <h2 class="section-title">Work<br /><span>experience</span></h2>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="exp-row">
+        <div class="exp-period">2025</div>
+        <div>
+          <div class="exp-role">Frontend Developer Intern</div>
+          <div class="exp-org">Easy Innovation, Srijana Chowk, Pokhara &middot; 3 months</div>
+          <div class="exp-desc">Developed and maintained React/Next.js features for a real estate platform. Built reusable UI components with TypeScript and Tailwind CSS, integrated REST APIs, fixed UI/UX issues, and collaborated through Git/GitHub code reviews.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS : horizontal scroll strip -->
+<section id="projects">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-kicker">My work</div>
+        <h2 class="section-title">Featured<br /><span>projects</span></h2>
+      </div>
+      <p class="scroll-hint">← swipe / scroll →</p>
+    </div>
+
+    <div class="projects-scroll reveal">
+      <div class="project-card">
+        <span class="project-badge saas">AI &middot; SaaS</span>
+        <div class="project-icon">🤖</div>
+        <div class="project-title">HamroChatbot</div>
+        <p class="project-desc">Next.js chatbot platform with an embeddable widget, knowledge-base upload, and payment integration for selling chatbot access.</p>
+        <div class="project-stack"><span>Next.js</span><span>Stripe</span><span>Widget SDK</span></div>
+        <div class="project-links">
+          <a class="live" href="https://hamrobot.vercel.app" target="_blank" rel="noopener">Live ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <span class="project-badge full">Full Stack</span>
+        <div class="project-icon">🛍️</div>
+        <div class="project-title">Product Catalog</div>
+        <p class="project-desc">E-commerce app with product upload/delete, cart, login &amp; signup, and a separate admin dashboard.</p>
+        <div class="project-stack"><span>Next.js</span><span>Auth</span><span>Cart</span></div>
+        <div class="project-links">
+          <a class="live" href="https://product-catalog-q88b.vercel.app" target="_blank" rel="noopener">Live ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <span class="project-badge full">Full Stack</span>
+        <div class="project-icon">🏠</div>
+        <div class="project-title">Real Estate Platform</div>
+        <p class="project-desc">Production real estate site built during my internship — listing pages, CMS-driven content, and responsive UI.</p>
+        <div class="project-stack"><span>Next.js</span><span>TypeScript</span><span>Sanity CMS</span></div>
+        <div class="project-links">
+          <a class="code" href="https://github.com/khembahadurchhetri" target="_blank" rel="noopener">Code ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <span class="project-badge ai">AI / ML</span>
+        <div class="project-icon">🍅</div>
+        <div class="project-title">Tomato Disease Detection</div>
+        <p class="project-desc">CNN-based image classifier that detects tomato leaf disease, wrapped in a Flutter mobile app.</p>
+        <div class="project-stack"><span>TensorFlow</span><span>CNN</span><span>Flutter</span></div>
+        <div class="project-links">
+          <a class="code" href="https://github.com/khembahadurchhetri" target="_blank" rel="noopener">Code ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <span class="project-badge ai">AI / ML</span>
+        <div class="project-icon">📈</div>
+        <div class="project-title">Stock Volatility Prediction</div>
+        <p class="project-desc">Predicts stock volatility from historical data using classic ML models.</p>
+        <div class="project-stack"><span>Python</span><span>Scikit-learn</span></div>
+        <div class="project-links">
+          <a class="code" href="https://github.com/khembahadurchhetri" target="_blank" rel="noopener">Code ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <span class="project-badge full">Full Stack</span>
+        <div class="project-icon">🛒</div>
+        <div class="project-title">E-commerce Platform</div>
+        <p class="project-desc">MERN e-commerce build deployed on Vercel — product listings, cart, and checkout flow.</p>
+        <div class="project-stack"><span>MongoDB</span><span>Express</span><span>React</span><span>Node</span></div>
+        <div class="project-links">
+          <a class="code" href="https://github.com/khembahadurchhetri" target="_blank" rel="noopener">Code ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-kicker">Get the details</div>
+        <h2 class="section-title">Resume /<br /><span>CV</span></h2>
+        <p class="resume-hint">One page, always current — view it in your browser or grab the PDF.</p>
+      </div>
+      <div class="resume-actions">
+        <a href="assets/Khem_Chhetri_CV.pdf" target="_blank" rel="noopener" class="btn-ghost">View Full Screen ↗</a>
+        <a href="assets/Khem_Chhetri_CV.pdf" download class="btn-solid" id="resumeCvBtn">Download CV ↓</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-wrap">
+    <div class="contact-grid">
+      <div class="contact-left reveal">
+        <div class="section-kicker">Let's talk</div>
+        <h2 class="section-title" style="margin-bottom:1.2rem;">Get in<br /><span>touch.</span></h2>
+        <p class="contact-intro">Have a project, an internship, or just want to say hi? My inbox is open.</p>
+        <a href="mailto:khemchhetri10@gmail.com" class="contact-email-link">khemchhetri10@gmail.com</a>
+        <div class="contact-socials">
+          <a class="social-row" href="https://github.com/khembahadurchhetri" target="_blank" rel="noopener">GitHub <span>khembahadurchhetri</span></a>
+          <a class="social-row" href="https://www.linkedin.com/in/khemchhetri" target="_blank" rel="noopener">LinkedIn <span>khemchhetri</span></a>
+          <a class="social-row" href="tel:+9779819127305">Phone <span>+977&nbsp;98191&nbsp;27305</span></a>
+        </div>
+      </div>
+
+      <div class="contact-form-box reveal">
+        <form id="contactForm">
+          <div class="form-row">
+            <label for="fName">Name</label>
+            <input type="text" id="fName" name="from_name" required />
+          </div>
+          <div class="form-row">
+            <label for="fEmail">Email</label>
+            <input type="email" id="fEmail" name="reply_to" required />
+          </div>
+          <div class="form-row">
+            <label for="fMsg">Message</label>
+            <textarea id="fMsg" name="message" required></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="formSubmitBtn">Send Message</button>
+          <div class="form-status" id="formStatus"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 <em>Khem Bahadur Chhetri</em> — Built with Next.js energy, shipped as plain HTML.</span>
+  <span>Pokhara, Nepal 🇳🇵</span>
+</footer>
+
+<!-- CHATBOT WIDGET (HamroChatbot) -->
+<script src="https://hamrochatbot.vercel.app/widget.js" data-org="portfolio-khem" data-key="ba939fe4ebf1aefb30293c5bd97fd013e0293df14d13266a"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+/* ============================================================
+   BEHAVIOR — EmailJS config, theme, mobile menu, scroll rail,
+   reveal-on-scroll, contact form, CV-download notice.
+   ============================================================ */
+/* =========================================================
+   CONFIG — fill these in to enable direct-to-Gmail delivery
+   -----------------------------------------------------------
+   1. Create a free account at https://www.emailjs.com
+   2. Add an Email Service (connect your Gmail) -> copy its ID
+   3. Create an Email Template -> copy its ID
+      Suggested template vars: {{from_name}} {{reply_to}} {{message}}
+   4. Account > General -> copy your Public Key
+   5. Paste all three below. That's it — no server needed.
+
+   Until you fill these in, the contact form and the CV-download
+   notice fall back to a plain "mailto:" link, so nothing breaks.
+   ========================================================= */
+const EMAILJS_CONFIG = {
+  serviceId: "service_2qbip04",
+  contactTemplateId: "template_8fe31qv",
+  downloadTemplateId: "template_viekl2o",
+  publicKey: "YOUR_PUBLIC_KEY",
+};
+const OWNER_EMAIL = "khemchhetri10@gmail.com";
+
+const isEmailJsConfigured = () =>
+  window.emailjs &&
+  !Object.values(EMAILJS_CONFIG).some((v) => v.startsWith("YOUR_"));
+
+if (isEmailJsConfigured()) {
+  emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+}
+
+/* =========================================================
+   THEME TOGGLE (persisted, respects system preference on first visit)
+   ========================================================= */
+const root = document.documentElement;
+const themeToggle = document.getElementById("theme-toggle");
+const themeKnob = document.getElementById("themeKnob");
+
+function applyTheme(theme) {
+  root.setAttribute("data-theme", theme);
+  themeKnob.textContent = theme === "dark" ? "🌞" : "🌙";
+  localStorage.setItem("kbc-theme", theme);
+}
+// Default is always light mode on first visit — dark only applies
+// once the visitor explicitly toggles it (then it's remembered).
+// Default is dark mode on first visit. Remembered after that via the toggle.
+const savedTheme = localStorage.getItem("kbc-theme") || "dark";
+applyTheme(savedTheme);
+
+themeToggle.addEventListener("click", () => {
+  const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  applyTheme(next);
+});
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+const hamburger = document.getElementById("hamburger");
+const mobileMenu = document.getElementById("mobileMenu");
+hamburger.addEventListener("click", () => {
+  hamburger.classList.toggle("open");
+  mobileMenu.classList.toggle("open");
+});
+mobileMenu.querySelectorAll("a").forEach((link) =>
+  link.addEventListener("click", () => {
+    hamburger.classList.remove("open");
+    mobileMenu.classList.remove("open");
+  })
+);
+
+/* =========================================================
+   TRAIL RAIL — progress fill; the music toggle button itself
+   rides up/down the rail to mark scroll position (no more car).
+   ========================================================= */
+const railFill = document.getElementById("railFill");
+const railMusicBtn = document.getElementById("railMusicBtn");
+
+function updateRail() {
+  const scrollY = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = docHeight > 0 ? Math.min(100, (scrollY / docHeight) * 100) : 0;
+
+  railFill.style.height = progress + "%";
+  railMusicBtn.style.top = progress + "%";
+}
+window.addEventListener("scroll", updateRail, { passive: true });
+updateRail();
+
+/* =========================================================
+   MUSIC — the rail button toggles the background track
+   ========================================================= */
+const bgAudio = document.getElementById("bgAudio");
+railMusicBtn.addEventListener("click", () => {
+  if (bgAudio.paused) {
+    bgAudio.play();
+    railMusicBtn.textContent = "⏸";
+    railMusicBtn.classList.add("playing");
+  } else {
+    bgAudio.pause();
+    railMusicBtn.textContent = "▶";
+    railMusicBtn.classList.remove("playing");
+  }
+});
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.12 }
+);
+document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+
+/* =========================================================
+   CONTACT FORM -> sends straight to Gmail via EmailJS,
+   falls back to a pre-filled mailto: if not configured yet
+   ========================================================= */
+const contactForm = document.getElementById("contactForm");
+const formStatus = document.getElementById("formStatus");
+const submitBtn = document.getElementById("formSubmitBtn");
+
+contactForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("fName").value.trim();
+  const email = document.getElementById("fEmail").value.trim();
+  const message = document.getElementById("fMsg").value.trim();
+
+  if (isEmailJsConfigured()) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+    formStatus.className = "form-status";
+    formStatus.textContent = "";
+    try {
+      await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.contactTemplateId, {
+        from_name: name,
+        reply_to: email,
+        message,
+        to_email: OWNER_EMAIL,
+      });
+      formStatus.textContent = "Message sent — thanks! I'll get back to you soon.";
+      formStatus.classList.add("success");
+      contactForm.reset();
+    } catch (err) {
+      formStatus.textContent = "Couldn't send automatically — opening your email app instead.";
+      formStatus.classList.add("error");
+      openMailtoFallback(name, email, message);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Send Message";
+    }
+  } else {
+    // EmailJS not set up yet — use mailto so the form still works.
+    openMailtoFallback(name, email, message);
+    formStatus.textContent = "Opening your email app to send this to Khem...";
+  }
+});
+
+function openMailtoFallback(name, email, message) {
+  const subject = encodeURIComponent(`Portfolio message from ${name}`);
+  const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
+  window.location.href = `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
+}
+
+/* =========================================================
+   CV DOWNLOAD NOTICE — silently emails Khem when the CV is
+   downloaded (no popup for the visitor). Only fires if
+   EmailJS is configured above; otherwise the download just
+   happens normally with no notice.
+   ========================================================= */
+function notifyCvDownload(source) {
+  if (!isEmailJsConfigured()) return;
+  emailjs
+    .send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.downloadTemplateId, {
+      to_email: OWNER_EMAIL,
+      source,
+      time: new Date().toLocaleString(),
+      referrer: document.referrer || "direct / unknown",
+      user_agent: navigator.userAgent,
+    })
+    .catch(() => {
+      /* fail silently — never block the actual download */
+    });
+}
+document.getElementById("resumeCvBtn").addEventListener("click", () => notifyCvDownload("resume section"));
+
+/* =========================================================
+   HORIZONTAL AUTO-SCROLL — drifts left/right slowly on its own
+   for any strip that needs it, so people who don't think to
+   swipe still see everything. Pauses instantly on touch/hover.
+   ========================================================= */
+function enableAutoScroll(el, speed) {
+  if (!el) return;
+  let direction = 1; // 1 = right, -1 = left
+  let autoScrolling = true;
+  let resumeTimer = null;
+
+  function step() {
+    if (autoScrolling) {
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (maxScroll > 0) {
+        el.scrollLeft += speed * direction;
+        if (el.scrollLeft >= maxScroll) direction = -1;
+        if (el.scrollLeft <= 0) direction = 1;
+      }
+    }
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+
+  const pause = () => {
+    autoScrolling = false;
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => (autoScrolling = true), 2500);
+  };
+  ["mouseenter", "touchstart", "wheel"].forEach((evt) =>
+    el.addEventListener(evt, pause, { passive: true })
+  );
+}
+
+enableAutoScroll(document.querySelector(".projects-scroll"), 0.35);
+enableAutoScroll(document.querySelector(".facts-scroll"), 0.45);
+
+</script>
+</body>
+</html>
