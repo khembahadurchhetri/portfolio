@@ -1,7 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Restore Light/Dark before paint; dark is the default.
+      try {
+        const recent = localStorage.getItem("kbc-appearance");
+        const appearance = ["light", "dark"].includes(recent) ? recent : localStorage.getItem("kbc-theme");
+        if (["light", "dark"].includes(appearance)) {
+          document.documentElement.dataset.theme = appearance;
+        }
+      } catch { /* Storage may be disabled; retain the default. */ }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Khem Bahadur Chhetri — Full Stack Developer</title>
     <meta
@@ -10,6 +20,7 @@
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://hamrochatbot.vercel.app" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
@@ -259,33 +270,6 @@
         gap: 0.9rem;
       }
 
-      #theme-toggle {
-        width: 44px;
-        height: 24px;
-        border-radius: 100px;
-        background: var(--surface-2);
-        border: 1px solid var(--border);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        padding: 2px;
-      }
-      #theme-toggle .knob {
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: var(--accent);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.6rem;
-        transition: transform 0.25s ease;
-        transform: translateX(0);
-      }
-      html[data-theme="dark"] #theme-toggle .knob {
-        transform: translateX(20px);
-      }
-
       .hamburger {
         display: none;
         flex-direction: column;
@@ -533,15 +517,6 @@
       .ticker-track {
         display: inline-flex;
         gap: 2rem;
-      }
-      .ticker-row[data-dir="left"] .ticker-track {
-        animation: scrollLeft 32s linear infinite;
-      }
-      .ticker-row[data-dir="right"] .ticker-track {
-        animation: scrollRight 28s linear infinite;
-      }
-      .ticker-row:hover .ticker-track {
-        animation-play-state: paused;
       }
       @keyframes scrollLeft {
         from {
@@ -1187,7 +1162,91 @@
           font-size: 0.76rem;
         }
       }
+      /* Consistent spacing and a wider desktop composition. */
+      html { scroll-padding-top: 88px; }
+      .section-wrap { padding-block: clamp(3rem, 6vw, 5rem); }
+      .section-header { margin-bottom: 2rem; }
+      .section-kicker, .hero-meta, .form-row label, .form-submit {
+        font-family: var(--font-body);
+        text-transform: none;
+        letter-spacing: 0;
+      }
+      .section-kicker { font-size: .8rem; font-weight: 600; }
+      .btn-solid, .btn-ghost { text-transform: none; letter-spacing: 0; font-size: .9rem; }
+      #hero { padding-top: 112px; padding-bottom: 64px; min-height: min(820px, 95svh); }
+      .hero-inner { max-width: 1120px; }
+      .hero-eyebrow {
+        background: none; border: 0; padding: 0; font-family: var(--font-body);
+        font-size: .85rem; letter-spacing: .02em; text-transform: none;
+      }
+      .hero-eyebrow::before { animation: none; }
+      .hero-photo-tag { display: none; }
+      .facts-scroll, .projects-scroll {
+        cursor: grab;
+        touch-action: pan-x pan-y pinch-zoom;
+      }
+      .facts-scroll.is-dragging, .projects-scroll.is-dragging,
+      .facts-scroll.is-dragging *, .projects-scroll.is-dragging * {
+        cursor: grabbing;
+        user-select: none;
+      }
+      .hero-photo-frame { max-width: 260px; border-radius: 32px; }
+      .hero-desc { font-weight: 400; }
+      .hero-meta { font-size: .78rem; line-height: 1.8; }
+      .ticker-track { display: flex; width: max-content; gap: 0; }
+      .ticker-group {
+        display: flex; align-items: center; flex-shrink: 0;
+        gap: 2rem; padding-right: 2rem; min-width: 100vw;
+        justify-content: space-around;
+      }
+      .ticker-row[data-dir="left"] span,
+      .ticker-row[data-dir="right"] a { font-family: var(--font-body); font-size: .8rem; }
+      .contact-grid { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: clamp(2rem, 5vw, 4rem); }
+      .contact-form-box { padding: 1.5rem; border-radius: 10px; }
+      .contact-intro { margin-bottom: 1.2rem; font-weight: 400; }
+      .form-row { margin-bottom: 1rem; }
+      .form-row label { font-size: .8rem; color: var(--text-muted); }
+      .form-row input, .form-row textarea { padding: .65rem .8rem; font-size: 1rem; }
+      .form-row textarea { min-height: 100px; }
+      .form-submit { width: 100%; padding: .75rem 1.25rem; font-size: .85rem; }
+      .social-row { gap: 1rem; padding: .85rem 0; flex-wrap: wrap; }
+      .social-row .social-label { display: inline-flex; align-items: center; gap: .7rem; font: 500 .85rem var(--font-body); color: var(--text); }
+      .social-row .social-handle { font: .78rem var(--font-body); overflow-wrap: anywhere; }
+      .social-icon { width: 20px; height: 20px; flex: 0 0 20px; }
+      footer { gap: 1.5rem; padding: 1.5rem 2.5rem; font-family: var(--font-body); flex-wrap: wrap; }
+      .footer-links { display: flex; align-items: center; flex-wrap: wrap; gap: 1.25rem; }
+      .footer-links a { display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; font-size: .75rem; }
+      a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+      @media (min-width: 901px) {
+        .about-right { align-self: center; }
+        .hero-inner { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, 1fr); column-gap: clamp(2rem, 6vw, 6rem); align-items: start; }
+        .hero-inner > * { grid-column: 1; }
+        .hero-photo-frame { grid-column: 2; grid-row: 1 / 6; max-width: 260px; justify-self: end; align-self: center; }
+        .hero-actions { margin-top: 0; }
+        .hero-desc { margin-bottom: 1.5rem; }
+      }
+      @media (max-width: 1050px) and (min-width: 769px) {
+        nav { padding-inline: 1.5rem; }
+        .nav-links { gap: 1rem; }
+      }
+      @media (max-width: 900px) {
+        .hero-inner { max-width: 640px; }
+        #hero { min-height: auto; }
+        .contact-grid { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 768px) {
+        #hero { padding-top: 104px; padding-bottom: 48px; }
+        .contact-form-box { padding: 1.15rem; }
+        footer { padding: 1.5rem 1.4rem 1.5rem calc(1.4rem + 20px); }
+        .footer-links { justify-content: center; gap: 1rem; }
+      }
+      @media (hover: hover) and (pointer: fine) {
+        body { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M4 3 19 12 12 14 9 21Z' fill='%237ba0ff' stroke='%230c111c' stroke-width='1.5'/%3E%3C/svg%3E") 4 3, auto; }
+        a, button { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='11' cy='11' r='7' fill='%23267d78' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 11 11, pointer; }
+      }
     </style>
+    <link rel="stylesheet" href="assets/scenery.css" />
+    <script src="assets/scenery.js" defer></script>
   </head>
   <body>
     <!-- TRAIL / SCROLL PROGRESS RAIL — doubles as the music toggle -->
@@ -1226,12 +1285,8 @@
       </ul>
 
       <div class="nav-actions">
-        <button
-          id="theme-toggle"
-          title="Toggle light / dark"
-          aria-label="Toggle theme"
-        >
-          <span class="knob" id="themeKnob">🌙</span>
+        <button id="theme-toggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+          <span id="themeKnob" aria-hidden="true">&#9728;</span>
         </button>
         <button class="hamburger" id="hamburger" aria-label="Menu">
           <span></span><span></span><span></span>
@@ -1251,9 +1306,40 @@
 
     <!-- HERO -->
     <section id="hero">
+      <div class="landscape" aria-hidden="true">
+        <div class="landscape-layer landscape-sky" data-depth="0.14">
+          <svg class="moon-disc" viewBox="0 0 80 80" focusable="false">
+            <path class="moon" d="M52 8A30 30 0 1 0 68 57A30 30 0 0 1 52 8Z"/>
+          </svg>
+          <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <g class="day-sky">
+              <circle class="sun-ring" cx="1190" cy="160" r="66"/>
+              <circle class="sun" cx="1190" cy="160" r="48"/>
+              <g class="sky-drift cloud"><path d="M870 120h100m-75-12h115M1250 320h110m-80-12h45M80 230h75"/></g>
+            </g>
+            <g class="night-sky">
+              <g class="stars"><circle cx="990" cy="88" r="2"/><circle cx="1330" cy="290" r="2"/><circle cx="850" cy="170" r="1.6"/><circle cx="1100" cy="260" r="2"/><circle cx="250" cy="95" r="1.6"/></g>
+              <g class="stars delayed"><path d="m1320 110 2-6 2 6 6 2-6 2-2 6-2-6-6-2Z"/><circle cx="740" cy="110" r="2"/><circle cx="1020" cy="330" r="1.5"/><circle cx="80" cy="310" r="1.8"/></g>
+            </g>
+          </svg>
+        </div>
+        <div class="landscape-layer landscape-far" data-depth="0.30">
+          <svg viewBox="0 0 1440 400" preserveAspectRatio="none" focusable="false">
+            <path class="mountain-fill" d="M0 250 180 130 290 200 505 65 670 215 820 125 965 210 1170 40 1440 210V400H0Z"/>
+            <path class="mountain-line" d="m0 250 180-120 110 70L505 65l165 150 150-90 145 85 205-170 270 170M430 112l75-47 58 53-49-13-20 20-18-15Z"/>
+          </svg>
+        </div>
+        <div class="landscape-layer landscape-near" data-depth="0.48">
+          <svg viewBox="0 0 1440 320" preserveAspectRatio="none" focusable="false">
+            <path class="hill-fill" d="M0 135Q170 45 350 170T740 150T1120 115T1440 120V320H0Z"/>
+            <g class="tree-fill"><path d="m45 40-24 48h15l-25 43h25l-24 40h66l-23-40h23L55 88h14ZM1310 20l-30 56h18l-32 54h30l-28 46h84l-30-46h26l-30-54h18ZM1380 68l-23 43h14l-26 44h24l-21 35h64l-22-35h23l-25-44h15Z"/></g>
+            <g class="tree-line"><path d="M45 97v115m1265-121v121m70-86v85"/></g>
+          </svg>
+        </div>
+      </div>
       <div class="hero-inner">
         <div class="hero-eyebrow reveal">
-          Open to work &middot; Pokhara, Nepal
+          Building from Pokhara
         </div>
         <h1 class="hero-name reveal">Khem Bahadur<br /><span>Chhetri</span></h1>
         <p class="hero-desc reveal">
@@ -1274,7 +1360,7 @@
         </div>
 
         <div class="hero-actions reveal">
-          <a href="#projects" class="btn-solid">View My Work</a>
+          <a href="#projects" class="btn-solid">Explore my projects</a>
           <a href="#resume" class="btn-ghost">View Resume →</a>
         </div>
         <div class="hero-meta reveal">
@@ -1287,60 +1373,8 @@
 
     <!-- TICKER : tech stack (left) + links (right, opposite direction) -->
     <div class="ticker-block">
-      <div class="ticker-row" data-dir="left">
-        <div class="ticker-track">
-          <span>Next.js</span><span>React</span><span>TypeScript</span
-          ><span>Python</span> <span>Node.js</span><span>Django</span
-          ><span>Docker</span><span>Linux</span> <span>AWS</span
-          ><span>MongoDB</span><span>PostgreSQL</span><span>TensorFlow</span>
-          <span>OWASP</span><span>Kali Linux</span><span>Git</span>
-          <!-- duplicate for seamless loop -->
-          <span>Next.js</span><span>React</span><span>TypeScript</span
-          ><span>Python</span> <span>Node.js</span><span>Django</span
-          ><span>Docker</span><span>Linux</span> <span>AWS</span
-          ><span>MongoDB</span><span>PostgreSQL</span><span>TensorFlow</span>
-          <span>OWASP</span><span>Kali Linux</span><span>Git</span>
-        </div>
-      </div>
-      <div class="ticker-row" data-dir="right">
-        <div class="ticker-track">
-          <a
-            href="https://github.com/khembahadurchhetri"
-            target="_blank"
-            rel="noopener"
-            >↗ GitHub</a
-          >
-          <a
-            href="https://www.linkedin.com/in/khemchhetri"
-            target="_blank"
-            rel="noopener"
-            >↗ LinkedIn</a
-          >
-          <a href="mailto:khemchhetri10@gmail.com">↗ Email</a>
-          <a href="assets/Khem_Chhetri_CV.pdf" download>↗ Resume</a>
-          <a href="https://hamrobot.vercel.app" target="_blank" rel="noopener"
-            >↗ HamroChatbot</a
-          >
-          <!-- duplicate for seamless loop -->
-          <a
-            href="https://github.com/khembahadurchhetri"
-            target="_blank"
-            rel="noopener"
-            >↗ GitHub</a
-          >
-          <a
-            href="https://www.linkedin.com/in/khemchhetri"
-            target="_blank"
-            rel="noopener"
-            >↗ LinkedIn</a
-          >
-          <a href="mailto:khemchhetri10@gmail.com">↗ Email</a>
-          <a href="assets/Khem_Chhetri_CV.pdf" download>↗ Resume</a>
-          <a href="https://hamrobot.vercel.app" target="_blank" rel="noopener"
-            >↗ HamroChatbot</a
-          >
-        </div>
-      </div>
+<div class="ticker-row" data-dir="left"><div class="ticker-track"><div class="ticker-group"><span>Next.js</span><span>React</span><span>TypeScript</span><span>Python</span><span>Node.js</span><span>Django</span><span>Docker</span><span>Linux</span><span>AWS</span><span>MongoDB</span><span>PostgreSQL</span><span>TensorFlow</span><span>OWASP</span><span>Kali Linux</span><span>Git</span></div><div class="ticker-group" aria-hidden="true"><span>Next.js</span><span>React</span><span>TypeScript</span><span>Python</span><span>Node.js</span><span>Django</span><span>Docker</span><span>Linux</span><span>AWS</span><span>MongoDB</span><span>PostgreSQL</span><span>TensorFlow</span><span>OWASP</span><span>Kali Linux</span><span>Git</span></div></div></div>
+<div class="ticker-row" data-dir="right"><div class="ticker-track"><div class="ticker-group"><a href="https://github.com/khembahadurchhetri" target="_blank" rel="noopener">GitHub &#8599;</a><a href="https://www.linkedin.com/in/khemchhetri" target="_blank" rel="noopener">LinkedIn &#8599;</a><a href="mailto:khemchhetri10@gmail.com">Email &#8599;</a><a href="assets/Khem_Chhetri_CV.pdf" download>Resume &#8599;</a><a href="https://hamrobot.vercel.app" target="_blank" rel="noopener">HamroChatbot &#8599;</a><a href="https://threftnepal.vercel.app" target="_blank" rel="noopener">Theftshop &#8599;</a><a href="https://stockvolatilitydetector.vercel.app" target="_blank" rel="noopener">AI Stock &#8599;</a><a href="https://www.instagram.com/abhimatchhetri/" target="_blank" rel="noopener">Instagram &#8599;</a></div><div class="ticker-group" aria-hidden="true"><a tabindex="-1" href="https://github.com/khembahadurchhetri" target="_blank" rel="noopener">GitHub &#8599;</a><a tabindex="-1" href="https://www.linkedin.com/in/khemchhetri" target="_blank" rel="noopener">LinkedIn &#8599;</a><a tabindex="-1" href="mailto:khemchhetri10@gmail.com">Email &#8599;</a><a tabindex="-1" href="assets/Khem_Chhetri_CV.pdf" download>Resume &#8599;</a><a tabindex="-1" href="https://hamrobot.vercel.app" target="_blank" rel="noopener">HamroChatbot &#8599;</a><a tabindex="-1" href="https://threftnepal.vercel.app" target="_blank" rel="noopener">Theftshop &#8599;</a><a tabindex="-1" href="https://stockvolatilitydetector.vercel.app" target="_blank" rel="noopener">AI Stock &#8599;</a><a tabindex="-1" href="https://www.instagram.com/abhimatchhetri/" target="_blank" rel="noopener">Instagram &#8599;</a></div></div></div>
     </div>
 
     <!-- ABOUT -->
@@ -1350,7 +1384,7 @@
           <div class="about-text reveal">
             <div class="section-kicker">About me</div>
             <h2 class="section-title">
-              Building things<br />that <span>matter.</span>
+              A little about<br /><span>my work.</span>
             </h2>
             <p>
               I'm <strong>Khem Bahadur Chhetri</strong>, a Computer Engineering
@@ -1671,10 +1705,9 @@
         <div class="section-header reveal">
           <div>
             <div class="section-kicker">Get the details</div>
-            <h2 class="section-title">Resume /<br /><span>CV</span></h2>
+            <h2 class="section-title">Resume / <span>CV</span></h2>
             <p class="resume-hint">
-              One page, always current — view it in your browser or grab the
-              PDF.
+              View my resume online or download the PDF.
             </p>
           </div>
           <div class="resume-actions">
@@ -1702,36 +1735,15 @@
       <div class="section-wrap">
         <div class="contact-grid">
           <div class="contact-left reveal">
-            <div class="section-kicker">Let's talk</div>
+
             <h2 class="section-title" style="margin-bottom: 1.2rem">
-              Get in<br /><span>touch.</span>
+              Get in <span>touch.</span>
             </h2>
             <p class="contact-intro">
               Have a project, an internship, or just want to say hi? My inbox is
               open.
             </p>
-            <a href="mailto:khemchhetri10@gmail.com" class="contact-email-link"
-              >khemchhetri10@gmail.com</a
-            >
-            <div class="contact-socials">
-              <a
-                class="social-row"
-                href="https://github.com/khembahadurchhetri"
-                target="_blank"
-                rel="noopener"
-                >GitHub <span>khembahadurchhetri</span></a
-              >
-              <a
-                class="social-row"
-                href="https://www.linkedin.com/in/khemchhetri"
-                target="_blank"
-                rel="noopener"
-                >LinkedIn <span>khemchhetri</span></a
-              >
-              <a class="social-row" href="tel:+9779819127305"
-                >Phone <span>+977&nbsp;98191&nbsp;27305</span></a
-              >
-            </div>
+<div class="contact-socials"><a class="social-row" href="https://github.com/khembahadurchhetri" target="_blank" rel="noopener"><span class="social-label"><svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.86c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>GitHub</span><span class="social-handle">khembahadurchhetri</span></a><a class="social-row" href="mailto:khemchhetri10@gmail.com"><span class="social-label"><svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7M7 10v9m10-9v9"/></svg>Gmail</span><span class="social-handle">khemchhetri10@gmail.com</span></a><a class="social-row" href="https://www.linkedin.com/in/khemchhetri" target="_blank" rel="noopener"><span class="social-label"><svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7m4 0v-7m0 3c0-4 6-4 6 0v4"/><circle cx="7" cy="7" r=".7" fill="currentColor"/></svg>LinkedIn</span><span class="social-handle">khemchhetri</span></a><a class="social-row" href="tel:+9779819127305"><span class="social-label"><svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 2a14 14 0 0 1-7-7l2-2-2-5Z"/></svg>Phone</span><span class="social-handle">+977 98191 27305</span></a><a class="social-row" href="https://www.instagram.com/abhimatchhetri/" target="_blank" rel="noopener"><span class="social-label"><svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>Instagram</span><span class="social-handle">@abhimatchhetri</span></a></div>
           </div>
 
           <div class="contact-form-box reveal">
@@ -1759,13 +1771,8 @@
     </section>
 
     <footer>
-      <span
-        >© 2026 <em>Khem Bahadur Chhetri</em>
-        <a href="mailto:khemchhetri10@gmail.com" class="contact-email-link"
-          >khemchhetri10@gmail.com</a
-        ></span
-      >
-      <span>Pokhara, Nepal 🇳🇵</span>
+      <span>&copy; 2026 Khem Bahadur Chhetri &middot; Pokhara, Nepal &#127475;&#127477;</span>
+      <div class="footer-links"><a href="https://github.com/khembahadurchhetri" aria-label="GitHub" target="_blank" rel="noopener"><svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.86c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg><span>GitHub</span></a><a href="mailto:khemchhetri10@gmail.com" aria-label="Gmail"><svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7M7 10v9m10-9v9"/></svg><span>Gmail</span></a><a href="https://www.instagram.com/abhimatchhetri/" aria-label="Instagram" target="_blank" rel="noopener"><svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg><span>@abhimatchhetri</span></a></div>
     </footer>
 
     <!-- CHATBOT WIDGET (HamroChatbot) -->
@@ -1810,29 +1817,25 @@
         emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
       }
 
-      /* =========================================================
-   THEME TOGGLE (persisted, respects system preference on first visit)
-   ========================================================= */
+      // The original two-mode control, with optional persistence.
       const root = document.documentElement;
       const themeToggle = document.getElementById("theme-toggle");
       const themeKnob = document.getElementById("themeKnob");
-
       function applyTheme(theme) {
-        root.setAttribute("data-theme", theme);
-        themeKnob.textContent = theme === "dark" ? "🌞" : "🌙";
-        localStorage.setItem("kbc-theme", theme);
+        const appearance = theme === "light" ? "light" : "dark";
+        root.dataset.theme = appearance;
+        const label = appearance === "dark" ? "Switch to light mode" : "Switch to dark mode";
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.title = label;
+        themeKnob.textContent = appearance === "dark" ? "\u2600" : "\u263e";
+        try {
+          localStorage.setItem("kbc-theme", appearance);
+          localStorage.setItem("kbc-appearance", appearance);
+        } catch {}
+        document.dispatchEvent(new Event("appearancechange"));
       }
-      // Default is always light mode on first visit — dark only applies
-      // once the visitor explicitly toggles it (then it's remembered).
-      // Default is dark mode on first visit. Remembered after that via the toggle.
-      const savedTheme = localStorage.getItem("kbc-theme") || "dark";
-      applyTheme(savedTheme);
-
-      themeToggle.addEventListener("click", () => {
-        const next =
-          root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-        applyTheme(next);
-      });
+      applyTheme(root.dataset.theme);
+      themeToggle.addEventListener("click", () => applyTheme(root.dataset.theme === "dark" ? "light" : "dark"));
 
       /* =========================================================
    MOBILE MENU
@@ -1889,20 +1892,33 @@
       /* =========================================================
    REVEAL ON SCROLL
    ========================================================= */
-      const revealObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("in");
-              revealObserver.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.12 },
-      );
-      document
-        .querySelectorAll(".reveal")
-        .forEach((el) => revealObserver.observe(el));
+      const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const revealTargets = document.querySelectorAll(".reveal");
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("in");
+          entry.target.classList.remove("pending-reveal");
+          revealObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.06, rootMargin: "0px 0px -24px 0px" });
+      revealTargets.forEach((el) => {
+        // Never make visitors wait for the intro or content already on screen.
+        if (el.closest("#hero") || motionPreference.matches || el.getBoundingClientRect().top < window.innerHeight) {
+          el.classList.add("in");
+        } else {
+          el.classList.add("pending-reveal");
+          revealObserver.observe(el);
+        }
+      });
+      motionPreference.addEventListener("change", () => {
+        if (!motionPreference.matches) return;
+        revealTargets.forEach((el) => {
+          el.classList.remove("pending-reveal");
+          el.classList.add("in");
+        });
+        revealObserver.disconnect();
+      });
 
       /* =========================================================
    CONTACT FORM -> sends straight to Gmail via EmailJS,
@@ -1985,42 +2001,117 @@
         .getElementById("resumeCvBtn")
         .addEventListener("click", () => notifyCvDownload("resume section"));
 
-      /* =========================================================
-   HORIZONTAL AUTO-SCROLL — drifts left/right slowly on its own
-   for any strip that needs it, so people who don't think to
-   swipe still see everything. Pauses instantly on touch/hover.
-   ========================================================= */
-      function enableAutoScroll(el, speed) {
-        if (!el) return;
-        let direction = 1; // 1 = right, -1 = left
-        let autoScrolling = true;
-        let resumeTimer = null;
+      // Move horizontal strips back and forth on every screen size.
+      function enableAutoScroll(el, pixelsPerSecond) {
+        let direction = 1;
+        let position = el.scrollLeft;
+        let previousTime = null;
+        let pausedUntil = 0;
+        let interacting = false;
+        let dragPointer = null;
+        let startX = 0;
+        let startScroll = 0;
+        let dragged = false;
 
-        function step() {
-          if (autoScrolling) {
-            const maxScroll = el.scrollWidth - el.clientWidth;
-            if (maxScroll > 0) {
-              el.scrollLeft += speed * direction;
-              if (el.scrollLeft >= maxScroll) direction = -1;
-              if (el.scrollLeft <= 0) direction = 1;
-            }
+        function step(time) {
+          const elapsed = previousTime === null ? 0 : Math.min(time - previousTime, 50);
+          previousTime = time;
+          const maxScroll = el.scrollWidth - el.clientWidth;
+
+          if (!interacting && time >= pausedUntil && maxScroll > 0) {
+            position = Math.max(0, Math.min(maxScroll,
+              position + direction * pixelsPerSecond * elapsed / 1000));
+            el.scrollLeft = position;
+            if (position >= maxScroll) direction = -1;
+            if (position <= 0) direction = 1;
+          } else {
+            position = el.scrollLeft;
           }
           requestAnimationFrame(step);
         }
-        requestAnimationFrame(step);
 
         const pause = () => {
-          autoScrolling = false;
-          clearTimeout(resumeTimer);
-          resumeTimer = setTimeout(() => (autoScrolling = true), 2500);
+          pausedUntil = performance.now() + 900;
+          position = el.scrollLeft;
         };
-        ["mouseenter", "touchstart", "wheel"].forEach((evt) =>
-          el.addEventListener(evt, pause, { passive: true }),
-        );
+        el.addEventListener("pointerdown", (event) => {
+          if (!event.isPrimary || event.button !== 0) return;
+          interacting = true;
+          dragged = false;
+          // Touch scrolling stays native, including momentum and vertical page swipes.
+          if (event.pointerType === "touch") return;
+          dragPointer = event.pointerId;
+          startX = event.clientX;
+          startScroll = el.scrollLeft;
+        }, { passive: true });
+        window.addEventListener("pointermove", (event) => {
+          if (event.pointerId !== dragPointer) return;
+          if (event.buttons === 0) { release(); return; }
+          const delta = event.clientX - startX;
+          if (!dragged && Math.abs(delta) < 5) return;
+          if (!dragged) {
+            dragged = true;
+            el.setPointerCapture(event.pointerId);
+            el.classList.add("is-dragging");
+          }
+          event.preventDefault();
+          el.scrollLeft = startScroll - delta;
+          position = el.scrollLeft;
+        }, { passive: false });
+        const release = () => {
+          if (!interacting) return;
+          interacting = false;
+          if (dragPointer !== null && el.hasPointerCapture(dragPointer)) {
+            el.releasePointerCapture(dragPointer);
+          }
+          dragPointer = null;
+          el.classList.remove("is-dragging");
+          pause();
+        };
+        window.addEventListener("pointerup", release, { passive: true });
+        window.addEventListener("pointercancel", release, { passive: true });
+        window.addEventListener("blur", release);
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) release();
+        });
+        el.addEventListener("lostpointercapture", release);
+        el.addEventListener("dragstart", (event) => event.preventDefault());
+        el.addEventListener("click", (event) => {
+          if (!dragged || event.detail === 0) return;
+          event.preventDefault();
+          event.stopPropagation();
+          dragged = false;
+        }, true);
+        el.addEventListener("wheel", pause, { passive: true });
+        el.addEventListener("keydown", pause);
+        requestAnimationFrame(step);
       }
 
-      enableAutoScroll(document.querySelector(".projects-scroll"), 0.35);
-      enableAutoScroll(document.querySelector(".facts-scroll"), 0.45);
+      document.querySelectorAll(".projects-scroll, .facts-scroll").forEach((el) => {
+        enableAutoScroll(el, el.matches(".projects-scroll") ? 21 : 27);
+      });
+
+      // Animate both ticker rows with the same frame clock as the card strips.
+      // Measure one complete group so each wrap lands on its identical copy.
+      document.querySelectorAll(".ticker-row").forEach((row) => {
+        const track = row.querySelector(".ticker-track");
+        const group = track.querySelector(".ticker-group");
+        let distance = 0;
+        let previousTime = null;
+
+        function moveTicker(time) {
+          const elapsed = previousTime === null ? 0 : Math.min(time - previousTime, 50);
+          previousTime = time;
+          const width = group.getBoundingClientRect().width;
+          if (width > 0) {
+            distance = (distance + elapsed * 0.035) % width;
+            const offset = row.dataset.dir === "right" ? distance - width : -distance;
+            track.style.transform = `translateX(${offset}px)`;
+          }
+          requestAnimationFrame(moveTicker);
+        }
+        requestAnimationFrame(moveTicker);
+      });
     </script>
   </body>
 </html>
