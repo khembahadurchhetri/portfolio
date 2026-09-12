@@ -1,0 +1,298 @@
+
+@import url('mode.css');
+
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+    font-family: "Instrument Sans", sans-serif;
+    scroll-behavior: smooth;
+}
+:root{
+    --backgroundcolor: #E6E6E6;
+    --nav-button-color:rgb(98, 98, 98);
+    --font-color:black;
+    --main-font:3rem;
+    --link-font:0.9rem;
+    --p-font:1.2rem;
+   
+}
+:root{
+    --font-200:200;
+    --font-300:300;
+    --font-400:400;
+    --font-500:500;
+    --font-600:600;
+    --font-700:700;
+}
+
+body{
+    background-color: var(--backgroundcolor);
+}
+nav{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    padding: 54px 0px 32px 0px;
+}
+
+ul{
+    display: flex;
+    gap: 8px;
+    border: 1px solid var(--nav-button-color);
+    padding: 10px 18px;
+    border-radius:1.2rem;
+    align-items: center;
+    justify-content: center;
+}
+ul a{
+    font-size: var(--link-font);
+    color: rgb(60, 60, 60);
+    cursor: pointer;
+}
+
+ul img {
+    height: 12px;
+    width: 12px;
+    cursor: pointer;;
+}
+.right_nav{
+    border: 1px solid var(--nav-button-color);
+    padding: 12px 12px;
+    border-radius:2rem;
+    display: flex;
+    cursor: url(react.png),pointer;
+}
+.right_nav img{
+    height: 16px;
+    width: 16px;
+    text-align: center;
+}
+header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+}
+header img{
+    height: 130px;
+    width: 130px;
+}
+
+header h1{
+    font-size: 2rem;
+    font-size: clamp(2rem, 1.528023598820059rem + 2.359882005899705vw, 3rem);
+    font-weight: 400;
+    width: 40%;
+    text-align: center;
+    margin-top: 14px;
+    font-weight: var(--font-500);
+}
+header p{
+    font-size: var(--p-font);
+    font-weight: var(--font-400)
+}
+
+.skills{
+     display: flex;
+     flex-wrap: wrap;
+     gap: 14px;
+     border-radius: 0.6rem;
+    border: 2px solid rgb(184, 184, 184);
+     padding: 14px 12px;
+     background-color: rgba(246, 243, 243, 0.2);
+     margin-top: 28px;
+     /* grid-template-columns: repeat(1,1fr);
+     gap: 14px;
+     margin-top: 22px; */
+}
+
+/* @media (width <=600px) {
+    .skills{
+     grid-template-columns: repeat(2,1fr)
+    }
+    
+}
+@media (width <=340px) {
+    .skills{
+     grid-template-columns: repeat(1,1fr)
+    }
+    
+} */
+.skills_box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 0.4rem;
+    flex-grow: 1;
+}
+.skills_box img{
+    height: 18px;
+    width: 18px;
+}
+.skills_box p{
+    font-size: var(--link-font);
+}
+
+.skills_box:hover{
+    transform:  scale(1.04);
+    transition: 0.5s;
+    cursor: pointer; 
+    padding: 8px 16px;
+    color: rgb(48, 48, 48);
+}
+/* 
+.skills1{
+    transform: rotate(-6deg);
+    transition: 0.4s;
+}
+.skills2{
+    transform: rotate(4deg);
+    transition: 0.4s;
+
+}
+.skills3{
+    transform: rotate(-6deg);
+    transition: 0.4s;
+
+}
+.skills4{
+    transform: rotate(-3deg);
+    transition: 0.4s;
+    
+}
+.skills5{
+    transform: rotate(-1deg);
+    transition: 0.4s;
+}
+.skills6{
+    transform: rotate(4deg);
+    transition: 0.4s;
+}
+
+.skills:hover{
+.skills1{
+    transform: rotate(0deg);
+    transition: 0.4s;
+}
+.skills2{
+    transform: rotate(0deg);
+    transition: 0.4s;
+}
+.skills3{
+    transform: rotate(0deg);
+    transition: 0.4s;
+}
+.skills4{
+    transform: rotate(0deg);
+    transition: 0.4s;
+}
+.skills5{
+    transform: rotate(0deg);
+    transition: 0.4s;
+
+}
+.skills6{
+    transform: rotate(0deg);
+    transition: 0.4s;
+}
+
+} */
+
+@media (width<=730px) {
+    /* .skills{
+     display: grid;
+     grid-template-columns: repeat(2,1fr);
+     gap: 14px;
+     margin-top: 22px;
+} */
+
+.skills{
+    width: 90%;
+
+}
+
+header h1{
+    width: 60%;
+/* }
+.skills1{
+    transform: rotate(-8deg);
+    transition: 0.4s;
+}
+.skills2{
+    transform: rotate(6deg);
+    transition: 0.4s;
+
+}
+.skills3{
+    transform: rotate(-8deg);
+    transition: 0.4s;
+
+}
+.skills4{
+    transform: rotate(-3deg);
+    transition: 0.4s;
+    
+}
+.skills5{
+    transform: rotate(-1deg);
+    transition: 0.4s;
+}
+.skills6{
+    transform: rotate(4deg);
+    transition: 0.4s;
+}
+
+.skills{
+.skills1{
+    transform: rotate(0deg);
+    transition: 0.4s;
+}
+.skills2{
+    transform: rotate(0deg);
+    transition: 0.4s;
+}
+.skills3{
+    transform: rotate(0deg);
+    transition: 0.4s;
+}
+.skills4{
+    transform: rotate(0deg);
+    transition: 0.4s;
+}
+.skills5{
+    transform: rotate(0deg);
+    transition: 0.4s;
+
+}
+.skills6{
+    transform: rotate(0deg);
+    transition: 0.4s;
+}
+} */
+header p{
+    font-size: 16px;
+    
+}
+nav{
+    padding: 36px 0px 28px 0px;
+}
+}
+}
+
+@media (width<=430px){
+    header h1{
+        font-size: 32px;
+           width: 80%;
+    }
+    .skills_box{
+          padding: 10px 34px 10px 4px;
+
+}
+}

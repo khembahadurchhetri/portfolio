@@ -1247,6 +1247,7 @@
     </style>
     <link rel="stylesheet" href="assets/scenery.css" />
     <script src="assets/scenery.js" defer></script>
+    <script src="assets/journal.js" defer></script>
   </head>
   <body>
     <!-- TRAIL / SCROLL PROGRESS RAIL — doubles as the music toggle -->
@@ -1280,6 +1281,7 @@
         <li><a href="#skills">Skills</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#projects">Projects</a></li>
+        <li><a href="#journal">Journal</a></li>
         <li><a href="#resume">Resume</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -1299,6 +1301,7 @@
       <a href="#skills">Skills</a>
       <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
+      <a href="#journal">Journal</a>
       <a href="#resume">Resume</a>
       <a href="#contact">Contact</a>
       <p class="menu-sub">© 2026 Khem Bahadur Chhetri</p>
@@ -1566,7 +1569,7 @@
         <div class="projects-scroll reveal">
           <div class="project-card">
             <span class="project-badge saas">AI &middot; SaaS</span>
-            <div class="project-icon">🤖</div>
+            <img class="project-preview project-preview--screen project-preview--chat" src="assets/hamrochatbot.png" alt="HamroChatbot dashboard with its embedded chat assistant" loading="lazy" width="1363" height="626" />
             <div class="project-title">HamroChatbot</div>
             <p class="project-desc">
               Next.js chatbot platform with an embeddable widget, knowledge-base
@@ -1588,7 +1591,7 @@
 
           <div class="project-card">
             <span class="project-badge full">Full Stack</span>
-            <div class="project-icon">🛒</div>
+            <img class="project-preview project-preview--screen project-preview--shop" src="assets/threft.png" alt="Threft Nepal ShopCo catalog with product cards and category filters" loading="lazy" width="1342" height="697" />
             <div class="project-title">Threft Nepal</div>
             <p class="project-desc">
               E-commerce app with product upload/delete, cart, login &amp;
@@ -1610,7 +1613,7 @@
 
           <div class="project-card">
             <span class="project-badge ai">AI / ML</span>
-            <div class="project-icon">📈</div>
+            <img class="project-preview project-preview--screen project-preview--stock" src="assets/stockvolatility.png" alt="Stock Vision Predictor upload and forecasting model interface" loading="lazy" width="953" height="404" />
             <div class="project-title">Stock Volatility Prediction</div>
             <p class="project-desc">
               Predicts stock volatility from historical data using classic ML
@@ -1632,7 +1635,7 @@
 
           <div class="project-card">
             <span class="project-badge full">Full Stack</span>
-            <div class="project-icon">🛍️</div>
+            <img class="project-preview project-preview--screen project-preview--services" src="assets/itservices.png" alt="IT Services website with Build a brighter tomorrow headline" loading="lazy" width="1236" height="493" />
             <div class="project-title">IT Services</div>
             <p class="project-desc">React site for providing IT services.</p>
             <div class="project-stack">
@@ -1652,7 +1655,7 @@
 
           <div class="project-card">
             <span class="project-badge ai">AI / ML</span>
-            <div class="project-icon">🍅</div>
+            <img class="project-preview project-preview--photo" src="assets/tomato.png" alt="Ripe red tomatoes among green leaves" loading="lazy" width="176" height="134" />
             <div class="project-title">Tomato Disease Detection</div>
             <p class="project-desc">
               CNN-based image classifier that detects tomato leaf disease,
@@ -1673,27 +1676,41 @@
           </div>
 
           <div class="project-card">
-            <span class="project-badge full">Full Stack</span>
-            <div class="project-icon">🏠</div>
-            <div class="project-title">Real Estate Platform</div>
-            <p class="project-desc">
-              Production real estate site built during my internship — listing
-              pages, CMS-driven content, and responsive UI.
-            </p>
-            <div class="project-stack">
-              <span>Next.js</span><span>TypeScript</span><span>Sanity CMS</span>
-            </div>
-            <div class="project-links">
-              <a
-                class="code"
-                href="https://github.com/khembahadurchhetri"
-                target="_blank"
-                rel="noopener"
-                >Code ↗</a
-              >
-            </div>
+            <span class="project-badge full">Cybersecurity</span>
+            <img class="project-preview project-preview--security" src="assets/passwordmanagement.png" alt="Android mascot with a colourful key representing password security" loading="lazy" width="261" height="193" />
+            <div class="project-title">Security Toolkit</div>
+            <p class="project-desc">A project concept bringing together network vulnerability assessment, password management, and password strength checking.</p>
+            <div class="project-stack"><span>Network security</span><span>Passwords</span></div>
+            <p class="project-status">Details coming soon</p>
+          </div>
+
+          <div class="project-card">
+            <span class="project-badge full">WordPress</span>
+            <img class="project-preview project-preview--photo" src="assets/travelguide.png" alt="Illustrated Himalayan peaks and a lake for the Nepal Travel Guide" loading="lazy" width="978" height="537" />
+            <div class="project-title">Nepal Travel Guide</div>
+            <p class="project-desc">A WordPress travel guide for exploring Nepal, with destinations, local experiences, and practical trip planning.</p>
+            <div class="project-stack"><span>WordPress</span><span>Travel</span></div>
+            <p class="project-status">Link coming soon</p>
+          </div>
+
+          <div class="project-card">
+            <span class="project-badge full">UI / UX</span>
+            <img class="project-preview project-preview--screen project-preview--design" src="assets/uuiuxx.png" alt="Figma canvas with website layout explorations and mountain imagery" loading="lazy" width="416" height="353" />
+            <div class="project-title">Interface Design Studies</div>
+            <p class="project-desc">A collection of interface explorations, from aviation landing pages to responsive website layouts and visual systems.</p>
+            <div class="project-stack"><span>Figma</span><span>UI / UX</span></div>
+            <p class="project-status">Case study coming soon</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section id="journal">
+      <div class="section-wrap">
+        <div class="section-header reveal"><div><div class="section-kicker">Away from the keyboard</div><h2 class="section-title">The <span>Journal</span></h2></div><p class="journal-intro">Places I go. Things I read.<br />Little moments worth keeping.</p></div>
+        <div class="journal-filters" role="group" aria-label="Filter journal"></div>
+        <div class="journal-grid" aria-live="polite"></div>
+        <noscript>Enable JavaScript to browse the journal.</noscript>
       </div>
     </section>
 
