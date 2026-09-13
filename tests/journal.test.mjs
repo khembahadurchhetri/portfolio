@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 
-test('journal mobile pagination, filters, desktop resize and empty content', async () => {
+test('journal renders all entries, filters categories and resets the scroll position', async () => {
   class Element {
     constructor(){this.children=[];this.handlers={};this.attrs={};this.textContent='';}
     append(...items){this.children.push(...items);}
@@ -21,13 +21,14 @@ test('journal mobile pagination, filters, desktop resize and empty content', asy
   vm.runInNewContext(code,{window:{},document:{querySelector:s=>elements[s],createElement:()=>new Element()},matchMedia:()=>media,fetch:async()=>({ok:true,headers:{get:()=> 'application/json'},json:async()=>entries})});
   await new Promise(resolve=>setImmediate(resolve));
   const grid=elements['.journal-grid'];
-  assert.equal(grid.children.length,1);assert.equal(elements['#journal-page'].textContent,'1 / 6');
+  assert.equal(grid.children.length,6);
   assert.equal(grid.children[0].children[3].textContent,'Open entry \u2192');
-  assert.equal(elements['#journal-prev'].disabled,true);
-  elements['#journal-next'].click();assert.equal(elements['#journal-page'].textContent,'2 / 6');
-  assert.equal(grid.children[0].children[1].textContent,'Entry 1');
+  grid.scrollTop=200;
   elements['.journal-filters'].children.find(b=>b.textContent==='Books').click();
-  assert.equal(elements['#journal-page'].textContent,'1 / 3');assert.equal(grid.children[0].children[0].textContent,'Books · Sample');
-  media.matches=false;media.change();assert.equal(grid.children.length,3);assert.equal(elements['#journal-next'].disabled,true);
-  entries.splice(0);media.change();assert.equal(grid.textContent,'No entries here yet.');assert.equal(elements['#journal-page'].textContent,'1 / 1');
+  assert.equal(grid.children.length,3);
+  assert.equal(grid.scrollTop,0);
+  assert.ok(grid.children.every(card=>card.children[0].textContent.startsWith('Books')));
+  elements['.journal-filters'].children.find(b=>b.textContent==='Movies').click();
+  assert.equal(grid.children.length,0);
+  assert.equal(grid.textContent,'No entries here yet.');
 });

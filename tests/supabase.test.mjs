@@ -3,10 +3,11 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
 test('Supabase adapter separates public reads, owner auth and uploads',async()=>{
-  const calls=[];let allowOwner=true;
+  const calls=[];let allowOwner=true, summariesMissing=false;
   const window={JOURNAL_CONFIG:{url:'https://example.supabase.co',publishableKey:'sb_publishable_test',bucket:'portfolio-journal-media'}};
-  vm.runInNewContext(await readFile('assets/journal-backend.js','utf8'),{window,Blob,Date,encodeURIComponent,crypto:{randomUUID:()=> '11111111-1111-4111-8111-111111111111'},fetch:async(url,options)=>{
+  vm.runInNewContext(await readFile('assets/journal-backend.js','utf8'),{window,Blob,Date,AbortSignal,encodeURIComponent,crypto:{randomUUID:()=> '11111111-1111-4111-8111-111111111111'},fetch:async(url,options)=>{
     calls.push({url,...options});let data=[];
+    if(summariesMissing&&url.includes('portfolio_journal_summaries'))return {ok:false,status:404,json:async()=>({message:'Missing view'})};
     if(url.includes('/token?'))data={access_token:'owner-token',expires_in:3600};
     else if(url.includes('portfolio_journal_owners'))data=allowOwner?[{user_id:'owner'}]:[];
     else if(url.includes('/object/sign/'))data={signedURL:'/object/sign/portfolio-journal-media/file?token=short-lived'};
@@ -16,6 +17,8 @@ test('Supabase adapter separates public reads, owner auth and uploads',async()=>
   const backend=window.JournalBackend;
   await assert.rejects(backend.request('/api/admin/posts'),{status:401});
   await backend.request('/api/posts');assert.equal(calls.at(-1).headers.Authorization,undefined);assert.match(calls.at(-1).url,/visibility=eq.public/);
+  summariesMissing=true;
+  await backend.request('/api/posts');assert.match(calls.at(-1).url,/portfolio_journal_posts\?visibility=eq.public/);assert.equal(calls.at(-1).headers.Authorization,undefined);
   await backend.request('/api/login',{body:JSON.stringify({email:'owner@example.com',password:'test'})});
   await backend.request('/api/admin/posts');assert.equal(calls.at(-1).headers.Authorization,'Bearer owner-token');
   await backend.request('/api/admin/posts',{method:'POST',body:JSON.stringify({title:'Test',category:'Notes',visibility:'private'})});

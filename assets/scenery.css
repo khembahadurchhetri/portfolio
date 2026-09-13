@@ -135,7 +135,7 @@ html[data-theme="dark"] :is(.social-row, .footer-links a)[href*="linkedin.com"] 
   .nav-actions { gap: .65rem; }
 }
 
-/* Slowly drifting light pools behind the section content. */
+/* Large translucent triangles drift behind the content, clipped at the edges. */
 #about, #skills, #experience, #projects, #journal, #contact {
   position: relative;
   isolation: isolate;
@@ -144,17 +144,36 @@ html[data-theme="dark"] :is(.social-row, .footer-links a)[href*="linkedin.com"] 
 #about::before, #skills::before, #experience::before, #projects::before, #journal::before, #contact::before {
   content: "";
   position: absolute;
-  inset: -40px;
+  top: 12%;
+  right: -100px;
+  width: clamp(280px, 38vw, 560px);
+  aspect-ratio: 1;
   z-index: -1;
   pointer-events: none;
-  background-image: radial-gradient(ellipse at 15% 30%, var(--accent-soft), transparent 55%), radial-gradient(ellipse at 85% 75%, var(--cyber-soft), transparent 55%);
-  opacity: .8;
-  animation: ambient-drift 18s ease-in-out infinite alternate;
+  background: var(--text);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  opacity: .065;
+  transform-origin: 50% 65%;
+  animation: triangle-drift 24s ease-in-out infinite alternate;
 }
-#skills::before, #journal::before { animation-delay: -9s; animation-direction: alternate-reverse; }
-@keyframes ambient-drift {
-  from { transform: translate3d(-18px, -16px, 0) scale(1); }
-  to { transform: translate3d(18px, 16px, 0) scale(1.06); }
+#skills::before, #journal::before {
+  right: auto;
+  left: -120px;
+  top: 25%;
+  animation-delay: -12s;
+  animation-direction: alternate-reverse;
+}
+#experience::before, #contact::before { animation-delay: -8s; }
+@keyframes triangle-drift {
+  from { transform: translate3d(-24px, -35px, 0) rotate(-12deg); }
+  to { transform: translate3d(28px, 45px, 0) rotate(14deg); }
+}
+@media (max-width: 768px) {
+  #about::before, #skills::before, #experience::before, #projects::before, #journal::before, #contact::before {
+    width: 290px;
+    opacity: .05;
+    animation-duration: 30s;
+  }
 }
 .project-card { flex-basis: 340px; overflow: hidden; }
 .project-preview { order: -1; display: block; width: calc(100% + 3rem); max-width: none; height: auto; aspect-ratio: 16 / 9; object-fit: cover; margin: -1.5rem -1.5rem .6rem; border-bottom: 1px solid var(--border); }
@@ -180,11 +199,8 @@ html[data-theme="dark"] :is(.social-row, .footer-links a)[href*="linkedin.com"] 
 .journal-window-bar span { color: var(--text-soft); font-size: .65rem; }
 .journal-window .journal-filters { flex-wrap: nowrap; overflow-x: auto; margin: 0; padding: 1rem; }
 .journal-window .journal-filters button { flex-shrink: 0; }
-.journal-window .journal-grid { padding: 0 1rem 1rem; }
+.journal-window .journal-grid { padding: 0 1rem 1rem; max-height: 440px; overflow-y: auto; align-content: start; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
 .journal-window { border: 5px solid var(--border); border-bottom-width: 10px; }
-.journal-pagination { display: flex; align-items: center; justify-content: space-between; padding: .75rem 1rem; border-top: 1px solid var(--border); font-size: .75rem; }
-.journal-pagination button { min-height: 44px; padding: .5rem .8rem; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
-.journal-pagination button:disabled { opacity: .4; cursor: default; }
 .journal-private { display: flex; justify-content: space-between; gap: 1rem; font-size: .75rem; color: var(--text-muted); padding: 1rem .25rem; }
 .journal-private a { color: var(--accent); text-underline-offset: 4px; }
 .journal-window .journal-card { height: 240px; display: flex; flex-direction: column; overflow: hidden; }
@@ -206,7 +222,7 @@ html[data-theme="dark"] :is(.social-row, .footer-links a)[href*="linkedin.com"] 
   #hero { padding-top: 96px; padding-bottom: 44px; min-height: 100svh; align-items: center; }
   .hero-inner { display: flex; flex-direction: column; align-items: flex-start; gap: 0; }
   .hero-inner > * { min-width: 0; }
-  .hero-photo-frame { width: 100%; max-width: 100px; margin: 0; border-radius: 14px; }
+  .hero-photo-frame { width: clamp(160px, 45vw, 210px); max-width: 100%; aspect-ratio: 1; align-self: center; margin: .5rem auto; border-radius: 50%; }
   .hero-actions { display: flex; flex-wrap: wrap; }
   .hero-actions a { padding: .8rem 1rem; font-size: .8rem; }
   .hero-meta { margin-top: 1.2rem; flex-wrap: wrap; gap: .5rem; }
@@ -218,7 +234,7 @@ html[data-theme="dark"] :is(.social-row, .footer-links a)[href*="linkedin.com"] 
   .project-preview { width: calc(100% + 2rem); margin: -1rem -1rem .35rem; aspect-ratio: 2 / 1; }
   .project-title { font-size: 1rem; }
   .project-links, .project-status { padding-top: .4rem; }
-  .journal-window .journal-grid { grid-template-columns: 1fr; }
+  .journal-window .journal-grid { grid-template-columns: 1fr; max-height: min(380px, 55svh); }
   #journal .section-wrap { padding-top: 3rem; padding-bottom: 2.5rem; }
   #journal .section-header { margin-bottom: 1.25rem; gap: .75rem; }
   .journal-intro { font-size: .85rem; }
@@ -231,7 +247,7 @@ html[data-theme="dark"] :is(.social-row, .footer-links a)[href*="linkedin.com"] 
   .journal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 420px) {
-  .hero-photo-frame { max-width: 76px; }
+
   .journal-grid { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -4,3 +4,10 @@ node_modules/
 data/
 .test-data-*/
 public-dist/
+
+.next/
+public/
+.vercel/
+
+.vercel
+.env*

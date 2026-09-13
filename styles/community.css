@@ -1,0 +1,76 @@
+.community-journal {
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--border);
+}
+.community-journal .section-wrap {
+  padding-top: 1rem;
+  padding-bottom: 3rem;
+}
+.community-journal details {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.2rem;
+}
+.community-journal summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.community-journal summary span {
+  float: right;
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+.community-journal p {
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+.community-journal form {
+  max-width: 650px;
+}
+.community-journal label {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.community-journal input,
+.community-journal textarea,
+.community-journal select {
+  font: inherit;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.8rem;
+  border-radius: 8px;
+  width: 100%;
+}
+.community-journal .submission-consent {
+  display: flex;
+  align-items: flex-start;
+  font-size: 0.85rem;
+}
+.submission-consent input {
+  width: auto;
+  margin-top: 0.2rem;
+}
+@media (max-width: 600px) {
+  .community-journal summary span {
+    display: block;
+    float: none;
+    margin-top: 0.5rem;
+  }
+}
+
+.chat-launcher {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 950;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  padding: 0.9rem 1.2rem;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}

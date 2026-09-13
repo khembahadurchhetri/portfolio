@@ -6,9 +6,20 @@
     "node": ">=24.14.0"
   },
   "scripts": {
-    "start": "node server.mjs",
+    "start": "next start",
     "setup": "node server.mjs --setup",
     "test": "node --test tests/*.test.mjs",
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/prepare-public.mjs && next build",
+    "dev": "node scripts/prepare-public.mjs && next dev",
+    "start:legacy": "node server.mjs"
+  },
+  "dependencies": {
+    "html-react-parser": "^6.1.7",
+    "next": "^16.3.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6"
   }
 }
