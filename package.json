@@ -1,0 +1,14 @@
+{
+  "name": "khem-portfolio-journal",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.14.0"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "setup": "node server.mjs --setup",
+    "test": "node --test tests/*.test.mjs",
+    "build": "node scripts/build.mjs"
+  }
+}

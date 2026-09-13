@@ -1247,7 +1247,7 @@
     </style>
     <link rel="stylesheet" href="assets/scenery.css" />
     <script src="assets/scenery.js" defer></script>
-    <script src="assets/journal.js" defer></script>
+<script src="/assets/journal-config.js" defer></script><script src="/assets/journal-backend.js" defer></script>    <script src="assets/journal.js" defer></script>
   </head>
   <body>
     <!-- TRAIL / SCROLL PROGRESS RAIL — doubles as the music toggle -->
@@ -1701,6 +1701,14 @@
             <div class="project-stack"><span>Figma</span><span>UI / UX</span></div>
             <p class="project-status">Case study coming soon</p>
           </div>
+          <div class="project-card">
+            <div class="project-preview studio-preview" aria-hidden="true"><span>JOURNAL STUDIO</span><strong>A little room<br />to create.</strong><small>Write · Upload · Publish</small></div>
+            <span class="project-badge full">Full stack</span>
+            <div class="project-title">Journal Studio</div>
+            <p class="project-desc">A personal publishing dashboard with owner authentication, photo and video uploads, and public, private or draft entries.</p>
+            <div class="project-stack"><span>Node.js</span><span>SQLite</span><span>Authentication</span></div>
+            <div class="project-links"><a class="live" href="/admin">Open Studio</a><a class="code" href="#journal">Public journal</a></div>
+          </div>
         </div>
       </div>
     </section>
@@ -1708,8 +1716,13 @@
     <section id="journal">
       <div class="section-wrap">
         <div class="section-header reveal"><div><div class="section-kicker">Away from the keyboard</div><h2 class="section-title">The <span>Journal</span></h2></div><p class="journal-intro">Places I go. Things I read.<br />Little moments worth keeping.</p></div>
-        <div class="journal-filters" role="group" aria-label="Filter journal"></div>
-        <div class="journal-grid" aria-live="polite"></div>
+        <div class="journal-window">
+          <div class="journal-window-bar"><strong>My personal journal</strong><span id="journal-mode">Little moments</span></div>
+          <div class="journal-filters" role="group" aria-label="Filter journal"></div>
+          <div class="journal-grid" role="region" aria-label="Personal journal entries" aria-live="polite"></div>
+          <div class="journal-pagination"><button id="journal-prev" type="button" disabled>← Previous</button><span id="journal-page" aria-live="polite">1 / 1</span><button id="journal-next" type="button" disabled>Next →</button></div>
+        </div>
+        <div class="journal-private"><span>My private corner</span><a href="/admin">Owner sign in ↗</a></div>
         <noscript>Enable JavaScript to browse the journal.</noscript>
       </div>
     </section>

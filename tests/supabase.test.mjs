@@ -1,0 +1,30 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFile} from 'node:fs/promises';
+test('Supabase adapter separates public reads, owner auth and uploads',async()=>{
+  const calls=[];let allowOwner=true;
+  const window={JOURNAL_CONFIG:{url:'https://example.supabase.co',publishableKey:'sb_publishable_test',bucket:'portfolio-journal-media'}};
+  vm.runInNewContext(await readFile('assets/journal-backend.js','utf8'),{window,Blob,Date,encodeURIComponent,crypto:{randomUUID:()=> '11111111-1111-4111-8111-111111111111'},fetch:async(url,options)=>{
+    calls.push({url,...options});let data=[];
+    if(url.includes('/token?'))data={access_token:'owner-token',expires_in:3600};
+    else if(url.includes('portfolio_journal_owners'))data=allowOwner?[{user_id:'owner'}]:[];
+    else if(url.includes('/object/sign/'))data={signedURL:'/object/sign/portfolio-journal-media/file?token=short-lived'};
+    else if(options.headers.Prefer)data=[{id:'saved',visibility:'private'}];
+    return {ok:true,status:200,json:async()=>data};
+  }});
+  const backend=window.JournalBackend;
+  await assert.rejects(backend.request('/api/admin/posts'),{status:401});
+  await backend.request('/api/posts');assert.equal(calls.at(-1).headers.Authorization,undefined);assert.match(calls.at(-1).url,/visibility=eq.public/);
+  await backend.request('/api/login',{body:JSON.stringify({email:'owner@example.com',password:'test'})});
+  await backend.request('/api/admin/posts');assert.equal(calls.at(-1).headers.Authorization,'Bearer owner-token');
+  await backend.request('/api/admin/posts',{method:'POST',body:JSON.stringify({title:'Test',category:'Notes',visibility:'private'})});
+  assert.equal(calls.at(-1).method,'POST');assert.equal(JSON.parse(calls.at(-1).body).visibility,'private');
+  const file=new Blob(['photo'],{type:'image/png'});
+  const uploaded=await backend.request('/api/admin/media',{body:file});assert.match(uploaded.url,/^portfolio\/.+\.png$/);assert.equal(calls.at(-1).headers['x-upsert'],'false');
+  await backend.media(uploaded.url,true);assert.equal(JSON.parse(calls.at(-1).body).expiresIn,60);
+  await backend.request('/api/logout');assert.match(calls.at(-1).url,/scope=local/);
+  await assert.rejects(backend.request('/api/session'),{status:401});
+  allowOwner=false;await assert.rejects(backend.request('/api/login',{body:JSON.stringify({email:'other@example.com',password:'test'})}),{status:401});
+  await assert.rejects(backend.request('/api/admin/posts'),{status:401});
+});

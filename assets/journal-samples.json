@@ -1,0 +1,8 @@
+[
+  {"id":"sample-lake","category":"Photos & videos","title":"An imagined Himalayan morning","visibility":"public","text":"AI-generated sample artwork: a quiet lake, pine trees and mountains at dawn. An imagined scene, not a photograph from my travels.","image":"/assets/journal-ai-lake.png","sample":true},
+  {"id":"sample-book","category":"Books","title":"The Little Prince — Antoine de Saint-Exupéry","visibility":"public","text":"Sample reading shelf: a short story about friendship, responsibility and noticing what matters. Add your own reading notes here.","sample":true},
+  {"id":"sample-quote","category":"Quotes","title":"Make room for small beginnings","visibility":"public","text":"“A small step today is a place to begin tomorrow.”\nOriginal sample line written for this journal, ready to replace with words you want to keep.","sample":true},
+  {"id":"sample-notes","category":"Notes","title":"A place for the everyday","visibility":"public","text":"Sample journal prompt: one thing learned, one moment noticed, and one idea to revisit. This is demonstration content, not a personal account.","sample":true},
+  {"id":"sample-book-two","category":"Books","title":"Pride and Prejudice — Jane Austen","visibility":"public","text":"Sample reading shelf: a novel about first impressions, family and changing your mind. Replace this entry with your own thoughts.","sample":true},
+  {"id":"sample-news","category":"News","title":"Building this little corner","visibility":"public","text":"Sample update: this journal has space for personal news, vlogs, photographs and notes. Future entries can be published or kept private from the admin dashboard.","sample":true}
+]

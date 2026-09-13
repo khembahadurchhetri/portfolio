@@ -1,6 +1,14 @@
 # Khem Bahadur Chhetri — Portfolio
 
-## Structure
+## Journal backend (current)
+
+**Vercel/Supabase setup:** The portfolio is now configured to use the shared 1t1g Supabase project. Follow [SUPABASE-SETUP.md](SUPABASE-SETUP.md) to apply the portfolio-only SQL, authorize your owner Auth user and deploy. The local Node/SQLite instructions below are the fallback when no Supabase publishable key is configured.
+
+Run `npm run setup` once to create your owner account, then `npm start` and open `http://localhost:3000`. The dashboard is at `/admin`. Requires Node 24.14+. Run `npm test` for backend integration checks.
+
+See [JOURNAL-SETUP.md](JOURNAL-SETUP.md) for persistent hosting, HTTPS configuration, backups, uploads and public/private publishing. The older static-site notes below describe the original portfolio; static-only deployment does **not** support the new admin backend.
+
+## Original structure
 ```
 index.html               everything: HTML, CSS (in <style>), JS (in <script>)
 assets/khem-photo.jpg    your real photo, used in the hero
