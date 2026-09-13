@@ -30,11 +30,14 @@
       text.textContent = entry.text;
       const read = document.createElement("a");
       read.href = "/entry.html?id=" + encodeURIComponent(entry.id);
-      read.textContent = "Open entry →";
+      read.textContent = "open →";
       card.append(label, title, text);
       if (entry.author_name) {
         const by = document.createElement("small");
-        by.textContent = "Shared by " + entry.author_name;
+        by.className = "journal-author";
+        const name = document.createElement("strong");
+        name.textContent = entry.author_name;
+        by.append("Shared by ", name);
         card.append(by);
       }
       card.append(read);

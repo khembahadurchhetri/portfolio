@@ -1,6 +1,38 @@
 (() => {
   const panel = document.querySelector("#moderation");
   if (!panel) return;
+  function confirmReview(approve, title) {
+    return new Promise((resolve) => {
+      const dialog = document.createElement("dialog");
+      dialog.className = "review-dialog";
+      const heading = document.createElement("h2");
+      heading.id = "review-heading";
+      heading.textContent = approve ? "Publish this journal?" : "Reject this journal?";
+      dialog.setAttribute("aria-labelledby", heading.id);
+      const description = document.createElement("p");
+      description.textContent = approve
+        ? `“${title}” will become public with its author's name and photo.`
+        : `“${title}” will stay unpublished and leave the approval queue.`;
+      const actions = document.createElement("div");
+      actions.className = "actions";
+      const cancel = document.createElement("button");
+      cancel.textContent = "Cancel";
+      cancel.autofocus = true;
+      const submit = document.createElement("button");
+      submit.className = approve ? "primary" : "danger";
+      submit.textContent = approve ? "Approve & publish" : "Reject submission";
+      cancel.onclick = () => dialog.close("cancel");
+      submit.onclick = () => dialog.close("confirm");
+      dialog.addEventListener("close", () => {
+        resolve(dialog.returnValue === "confirm");
+        dialog.remove();
+      }, { once: true });
+      actions.append(cancel, submit);
+      dialog.append(heading, description, actions);
+      panel.append(dialog);
+      dialog.showModal();
+    });
+  }
   const list = panel.querySelector("#submission-list"),
     message = panel.querySelector("#moderation-status");
   async function refresh() {
@@ -45,14 +77,7 @@
           button.type = "button";
           button.textContent = approve ? "Approve & publish" : "Reject";
           button.addEventListener("click", async () => {
-            if (
-              !confirm(
-                approve
-                  ? "Publish this journal with the submitter’s name?"
-                  : "Reject this submission?",
-              )
-            )
-              return;
+            if (!(await confirmReview(approve, entry.title))) return;
             card.querySelectorAll("button").forEach((b) => (b.disabled = true));
             try {
               await window.JournalBackend.request(
@@ -63,6 +88,7 @@
                 },
               );
               await refresh();
+              message.textContent = approve ? "Journal approved and published." : "Submission rejected.";
             } catch (error) {
               message.textContent = error.message;
               card
@@ -89,6 +115,7 @@
   // Clear private submission text whenever the owner workspace is hidden.
   new MutationObserver(() => {
     if (document.querySelector("#workspace").hidden) {
+      panel.querySelector("dialog")?.close("cancel");
       list.replaceChildren();
       message.textContent = "";
     }

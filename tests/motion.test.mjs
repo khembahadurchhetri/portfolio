@@ -1,0 +1,24 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFile} from 'node:fs/promises';
+test('visible animation restarts on focus and page restoration without duplicate loops',async()=>{
+ const source=await readFile('assets/portfolio.js','utf8');
+ const start=source.indexOf('  function animateVisible('),end=source.indexOf('  // Move horizontal',start);
+ const events={},frames=new Map();let sequence=0,observer,steps=0,resumes=0;
+ const control={setAttribute(){},addEventListener:(name,handler)=>events.control=handler};
+ const document={hidden:false,createElement:()=>control,addEventListener:(name,handler)=>events[name]=handler};
+ const motionPreference={matches:false,addEventListener:(name,handler)=>events.motion=handler};
+ const context={document,motionPreference,window:{addEventListener:(name,handler)=>events[name]=handler},IntersectionObserver:class{constructor(callback){observer=callback;}observe(){}},requestAnimationFrame:callback=>{frames.set(++sequence,callback);return sequence;},cancelAnimationFrame:id=>frames.delete(id)};
+ vm.createContext(context);vm.runInContext(source.slice(start,end),context);
+ context.animateVisible({matches:()=>false,before(){}},()=>steps++,()=>resumes++);
+ observer([{isIntersecting:true}]);assert.equal(frames.size,1);
+ events.focus();events.pageshow();assert.equal(frames.size,1);assert.equal(resumes,3);
+ const [id,callback]=frames.entries().next().value;frames.delete(id);callback(16);assert.equal(steps,1);assert.equal(frames.size,1);
+ document.hidden=true;events.visibilitychange();assert.equal(frames.size,0);
+ document.hidden=false;events.visibilitychange();assert.equal(frames.size,1);
+ motionPreference.matches=true;events.focus();assert.equal(frames.size,1);
+ events.control();assert.equal(frames.size,0);assert.equal(control.textContent,'Play motion');
+ events.focus();assert.equal(frames.size,0);
+ events.control();assert.equal(frames.size,1);assert.equal(control.textContent,'Pause motion');
+});

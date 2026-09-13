@@ -227,19 +227,41 @@
     .getElementById("resumeCvBtn")
     .addEventListener("click", () => notifyCvDownload("resume section"));
 
-  function animateVisible(element, frame) {
+  function animateVisible(element, frame, onResume = () => {}) {
     let visible = false,
       request = 0;
+    let paused = false;
+    const control = document.createElement("button");
+    control.type = "button";
+    control.className = "row-motion-toggle";
+    const label = element.matches(".projects-scroll") ? "projects" : element.matches(".facts-scroll") ? "quick facts" : "ticker";
+    function updateControl() {
+      control.textContent = paused ? "Play motion" : "Pause motion";
+      control.setAttribute("aria-label", `${paused ? "Play" : "Pause"} ${label} motion`);
+    }
+    updateControl();
+    if (!element.matches(".ticker-row")) {
+      const header = element.matches(".facts-scroll")
+        ? element.parentElement.querySelector(".facts-header") : null;
+      if (header) header.append(control);
+      else element.before(control);
+    }
+    control.addEventListener("click", () => {
+      paused = !paused;
+      updateControl();
+      schedule();
+    });
     function tick(time) {
       request = 0;
-      if (!visible || document.hidden || motionPreference.matches) return;
+      if (!visible || document.hidden || paused) return;
       frame(time);
       request = requestAnimationFrame(tick);
     }
     function schedule() {
       if (request) cancelAnimationFrame(request);
       request = 0;
-      if (visible && !document.hidden && !motionPreference.matches)
+      onResume();
+      if (visible && !document.hidden && !paused)
         request = requestAnimationFrame(tick);
     }
     new IntersectionObserver((entries) => {
@@ -247,7 +269,8 @@
       schedule();
     }).observe(element);
     document.addEventListener("visibilitychange", schedule);
-    motionPreference.addEventListener("change", schedule);
+    window.addEventListener("pageshow", schedule);
+    window.addEventListener("focus", schedule);
   }
 
   // Move horizontal strips only while visible.
@@ -336,6 +359,11 @@
     window.addEventListener("pointerup", release, { passive: true });
     window.addEventListener("pointercancel", release, { passive: true });
     window.addEventListener("blur", release);
+    window.addEventListener("focus", release);
+    window.addEventListener("pageshow", release);
+    window.addEventListener("pointerdown", (event) => {
+      if (!el.contains(event.target)) release();
+    });
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) release();
     });
@@ -353,7 +381,7 @@
     );
     el.addEventListener("wheel", pause, { passive: true });
     el.addEventListener("keydown", pause);
-    animateVisible(el, step);
+    animateVisible(el, step, release);
   }
 
   document.querySelectorAll(".projects-scroll, .facts-scroll").forEach((el) => {

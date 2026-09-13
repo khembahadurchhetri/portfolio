@@ -1,6 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 export default function SubmissionForm() {
+  const detailsRef = useRef(null);
+  const summaryRef = useRef(null);
   const [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false);
   async function submit(event) {
@@ -33,6 +35,8 @@ export default function SubmissionForm() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Submission failed.");
       form.reset();
+      detailsRef.current.open = false;
+      summaryRef.current.focus();
       setMessage("Thank you! Your journal is awaiting owner approval.");
     } catch (error) {
       setMessage(error.message);
@@ -43,9 +47,9 @@ export default function SubmissionForm() {
   return (
     <section className="community-journal">
       <div className="section-wrap">
-        <details>
-          <summary>
-            Share a journal of your own <span>Send it for review →</span>
+        <details ref={detailsRef}>
+          <summary ref={summaryRef}>
+            Share a journal of your own
           </summary>
           <p>
             Your name and journal will be public only after Khem approves them.
@@ -110,9 +114,9 @@ export default function SubmissionForm() {
             <button className="btn-solid" disabled={busy}>
               {busy ? "Sending…" : "Submit for approval"}
             </button>
-            <p role="status">{message}</p>
           </form>
         </details>
+        <p role="status" aria-live="polite">{message}</p>
       </div>
     </section>
   );

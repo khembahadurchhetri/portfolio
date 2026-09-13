@@ -2,6 +2,9 @@
   background: var(--bg-alt);
   border-bottom: 1px solid var(--border);
 }
+.journal-window,.journal-card,.community-journal form,.community-journal label{min-width:0;max-width:100%}
+.journal-card{overflow-wrap:anywhere}
+@media(max-width:600px){.journal-window-bar,.journal-private{flex-wrap:wrap;gap:.5rem}.journal-window .journal-grid{grid-template-columns:minmax(0,1fr)}.community-journal details{padding:.85rem}.community-journal input,.community-journal textarea,.community-journal select{min-width:0;font-size:16px}}
 .community-journal .section-wrap {
   padding-top: 1rem;
   padding-bottom: 3rem;

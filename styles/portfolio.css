@@ -1379,3 +1379,8 @@ button:focus-visible {
       pointer;
   }
 }
+
+.row-motion-toggle { display: block; margin: .5rem 0 .5rem auto; padding: .35rem .65rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-muted); font: inherit; font-size: .75rem; cursor: pointer; }
+.facts-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .75rem; }
+.facts-header .section-kicker, .facts-header .row-motion-toggle { margin: 0; }
+.fact-card { text-align: left; }

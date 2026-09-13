@@ -2,6 +2,7 @@
 (() => {
   const hero = document.getElementById("hero");
   const layers = [...document.querySelectorAll("[data-depth]")];
+  const sections = [...document.querySelectorAll('#about, #skills, #experience, #projects, #journal, #contact')];
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const mobile = window.matchMedia("(max-width: 768px)");
   let scheduled = false;
@@ -12,6 +13,16 @@
     layers.forEach((layer) => {
       const offset = distance * Number(layer.dataset.depth) * (mobile.matches ? .55 : 1);
       layer.style.setProperty("--layer-y", `${offset.toFixed(2)}px`);
+    });
+    sections.forEach((section) => {
+      const bounds = section.getBoundingClientRect();
+      if (bounds.bottom < 0 || bounds.top > window.innerHeight) return;
+      // Follow the user's scroll directly; no autonomous background animation.
+      // Keep this requested effect active even when decorative hero motion is off.
+      const travel = window.innerHeight * .5 - bounds.top;
+      section.style.setProperty('--flow-y', `${travel * .55}px`);
+      section.style.setProperty('--flow-turn', `${Math.sin(travel / 300) * 45}deg`);
+      section.style.setProperty('--terrain-y', `${travel * .3}px`);
     });
   }
   function schedule() {

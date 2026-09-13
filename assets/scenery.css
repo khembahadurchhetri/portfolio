@@ -1,4 +1,4 @@
-/* A quiet illustrated landscape, with the content kept on solid surfaces. */
+/* Hero landscape and scroll-reactive abstract section backgrounds. */
 html { color-scheme: light; }
 nav {
   background: color-mix(in srgb, var(--surface) 88%, transparent);
@@ -135,46 +135,27 @@ html[data-theme="dark"] :is(.social-row, .footer-links a)[href*="linkedin.com"] 
   .nav-actions { gap: .65rem; }
 }
 
-/* Large translucent triangles drift behind the content, clipped at the edges. */
+/* Terrain and a twisting ribbon travel at opposing speeds while scrolling. */
 #about, #skills, #experience, #projects, #journal, #contact {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
+  position: relative; isolation: isolate; overflow: hidden;
 }
 #about::before, #skills::before, #experience::before, #projects::before, #journal::before, #contact::before {
-  content: "";
-  position: absolute;
-  top: 12%;
-  right: -100px;
-  width: clamp(280px, 38vw, 560px);
-  aspect-ratio: 1;
-  z-index: -1;
-  pointer-events: none;
-  background: var(--text);
-  clip-path: polygon(50% 0, 100% 100%, 0 100%);
-  opacity: .065;
-  transform-origin: 50% 65%;
-  animation: triangle-drift 24s ease-in-out infinite alternate;
+  content: ""; position: absolute; inset: -40px 0; z-index: 0;
+  pointer-events: none; background: url('/assets/scroll-terrain.svg') center / 100% 100% no-repeat;
+  opacity: .3; transform: translate3d(0, var(--terrain-y, 0px), 0) scale(1.08);
 }
-#skills::before, #journal::before {
-  right: auto;
-  left: -120px;
-  top: 25%;
-  animation-delay: -12s;
-  animation-direction: alternate-reverse;
+#about::after, #skills::after, #experience::after, #projects::after, #journal::after, #contact::after {
+  content: ""; position: absolute; top: -80px; right: 0;
+  width: clamp(260px, 36vw, 520px); height: calc(100% + 160px); z-index: 0;
+  pointer-events: none; background: url('/assets/scroll-ribbon.svg') center / 100% 100% no-repeat;
+  opacity: .16; transform: perspective(900px) translate3d(0, var(--flow-y, 0px), 0) rotateY(var(--flow-turn, 0deg)) rotate(-18deg);
 }
-#experience::before, #contact::before { animation-delay: -8s; }
-@keyframes triangle-drift {
-  from { transform: translate3d(-24px, -35px, 0) rotate(-12deg); }
-  to { transform: translate3d(28px, 45px, 0) rotate(14deg); }
+#skills::after, #journal::after { right: auto; left: 0; }
+:is(#about, #skills, #experience, #projects, #journal, #contact) > .section-wrap { position: relative; z-index: 1; }
+@media(max-width:768px) {
+  #about::after, #skills::after, #experience::after, #projects::after, #journal::after, #contact::after { opacity: .12; width: 240px; }
 }
-@media (max-width: 768px) {
-  #about::before, #skills::before, #experience::before, #projects::before, #journal::before, #contact::before {
-    width: 290px;
-    opacity: .05;
-    animation-duration: 30s;
-  }
-}
+
 .project-card { flex-basis: 340px; overflow: hidden; }
 .project-preview { order: -1; display: block; width: calc(100% + 3rem); max-width: none; height: auto; aspect-ratio: 16 / 9; object-fit: cover; margin: -1.5rem -1.5rem .6rem; border-bottom: 1px solid var(--border); }
 .project-preview { flex-shrink: 0; border-radius: 11px 11px 0 0; }
@@ -257,3 +238,5 @@ html[data-theme="dark"] :is(.social-row, .footer-links a)[href*="linkedin.com"] 
   .reveal, .reveal.pending-reveal { opacity: 1; transform: none; transition: none; }
   .hero-photo-frame:hover .hero-photo { transform: none; }
 }
+
+.journal-author{display:flex;align-items:baseline;gap:.35rem;color:var(--text-muted);font-size:.8rem;margin:.6rem 0;flex-shrink:0}.journal-author strong{font-size:.95rem;font-weight:700;color:var(--accent);overflow-wrap:anywhere}

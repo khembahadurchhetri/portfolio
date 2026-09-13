@@ -22,7 +22,7 @@ test('journal renders all entries, filters categories and resets the scroll posi
   await new Promise(resolve=>setImmediate(resolve));
   const grid=elements['.journal-grid'];
   assert.equal(grid.children.length,6);
-  assert.equal(grid.children[0].children[3].textContent,'Open entry \u2192');
+  assert.equal(grid.children[0].children[3].textContent,'open \u2192');
   grid.scrollTop=200;
   elements['.journal-filters'].children.find(b=>b.textContent==='Books').click();
   assert.equal(grid.children.length,3);

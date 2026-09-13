@@ -3,3 +3,10 @@
 #moderation{margin-top:1.5rem}.submission-card{border-top:1px solid var(--line);padding:1rem 0}.submission-body{white-space:pre-wrap;line-height:1.7}.submission-card button{margin-right:.6rem}
 
 .submission-photo{display:block;max-width:100%;max-height:300px;margin-top:1rem;border-radius:10px}
+.review-dialog{width:min(460px,calc(100% - 2rem));max-height:calc(100dvh - 2rem);overflow:auto;padding:1.5rem;border:1px solid var(--line);border-radius:18px;background:var(--surface);color:var(--text);box-shadow:0 24px 80px #0008}
+.review-dialog::backdrop{background:#050b16b3;backdrop-filter:blur(5px)}
+.review-dialog p{line-height:1.65;overflow-wrap:anywhere;color:var(--muted)}
+main,.studio-layout>*{min-width:0}#entry{max-width:780px;margin:auto;overflow-wrap:anywhere}.entry-body,.submission-body,.entry-button,h1,h3{overflow-wrap:anywhere}.journal-author{flex-wrap:wrap}
+@media(max-width:700px){header{flex-wrap:wrap;gap:.8rem}header strong{order:-1;flex-basis:100%}main{padding:1.25rem .75rem}.toolbar,.actions{flex-wrap:wrap;gap:.6rem}.toolbar>*{min-width:0;max-width:100%}.fields input,.fields select,.fields textarea{min-width:0;font-size:16px}#entry h1{font-size:clamp(1.65rem,8vw,2.5rem)}.entry-media{width:100%;height:auto;object-fit:contain}.review-dialog .actions button{flex:1}.submission-card button{margin-bottom:.5rem}}
+
+.journal-author{display:flex;align-items:baseline;gap:.35rem;color:var(--muted);font-size:.8rem;margin:.6rem 0;flex-shrink:0}.journal-author strong{font-size:.95rem;font-weight:700;color:var(--accent);overflow-wrap:anywhere}

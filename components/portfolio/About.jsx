@@ -41,7 +41,9 @@ export default function About() {
             </div>
 
             <div className={"about-right reveal"}>
-              <div className={"section-kicker"}>{"Quick facts"}</div>
+              <div className="facts-header">
+                <div className={"section-kicker"}>{"Quick facts"}</div>
+              </div>
 
               <div className={"facts-scroll"}>
                 <div className={"fact-card"}>

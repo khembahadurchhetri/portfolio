@@ -40,8 +40,11 @@
     target.append(label, title, body);
     if (entry.author_name) {
       const by = document.createElement("p");
-      by.textContent = "Shared by " + entry.author_name;
-      target.append(by);
+      by.className = "journal-author";
+      const name = document.createElement("strong");
+      name.textContent = entry.author_name;
+      by.append("By ", name);
+      target.insertBefore(by, body);
     }
     if (entry.image) {
       const mediaUrl = window.JournalBackend?.enabled
