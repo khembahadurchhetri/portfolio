@@ -263,7 +263,7 @@ form.addEventListener("submit", async (event) => {
     });
     dirty = false;
     edit(saved);
-    status(`Saved as ${saved.visibility}.`);
+    status(saved.visibility === "public" ? "Entry published. It is now visible in your journal." : saved.visibility === "private" ? "Entry saved privately. Only you can see it." : "Draft saved. It is not published yet.");
     try {
       await refresh();
     } catch {
@@ -301,3 +301,5 @@ $("#delete").addEventListener("click", async () => {
     showLogin();
   }
 })();
+
+window.addEventListener("journal:reviewed", () => { if (!$("#workspace").hidden) refresh().catch(error => status(error.message)); });

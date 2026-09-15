@@ -4,7 +4,7 @@ export default function Moderation() {
       <div className="toolbar">
         <h2>Visitor submissions</h2>
         <button type="button" id="refresh-submissions">
-          Load approval queue
+          Refresh queue
         </button>
       </div>
       <p>

@@ -1,3 +1,4 @@
+import { notifyJournalSubmission } from "./notify.js";
 import { createHash, randomUUID } from "node:crypto";
 export async function POST(request) {
   try {
@@ -131,6 +132,7 @@ export async function POST(request) {
         { status: 400 },
       );
     }
+    await notifyJournalSubmission();
     return Response.json({ ok: true });
   } catch {
     return Response.json(

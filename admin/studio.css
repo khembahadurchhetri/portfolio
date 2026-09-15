@@ -17,3 +17,5 @@ main,.studio-layout>*{min-width:0}#entry{max-width:780px;margin:auto;overflow-wr
 .portfolio-photo-preview { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; }
 .portfolio-project-editor { border: 1px solid var(--border, #ccc); border-radius: 10px; padding: 1rem; margin: .8rem 0; }
 .portfolio-project-editor summary { cursor: pointer; font-weight: 600; }
+.admin-toast { position: fixed; z-index: 2000; right: 1rem; bottom: 1rem; width: min(420px, calc(100% - 2rem)); padding: 1rem 1.25rem; color: var(--text); background: var(--surface); border: 1px solid var(--accent); border-radius: 12px; box-shadow: 0 12px 40px #0006; line-height: 1.5; }
+#pending-alert { padding: .5rem .8rem; border: 1px solid var(--accent); border-radius: 99px; font-size: .8rem; text-decoration: none; }

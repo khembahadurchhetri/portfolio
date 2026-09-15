@@ -5,6 +5,7 @@ export default function Studio() {
       <header>
         <a href={"/"}>{"← Portfolio"}</a>
         <strong>{"Portfolio Studio"}</strong>
+        <a id="pending-alert" href="#moderation" hidden>Pending journals</a>
         <button id={"logout"} hidden={true}>
           {"Sign out"}
         </button>

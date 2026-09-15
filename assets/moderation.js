@@ -35,12 +35,28 @@
   }
   const list = panel.querySelector("#submission-list"),
     message = panel.querySelector("#moderation-status");
-  async function refresh() {
-    message.textContent = "Loading submissions…";
+  let known = new Set(), signature = "", busy = false, generation = 0;
+  const workspace = document.querySelector("#workspace");
+  const badge = document.querySelector("#pending-alert");
+  const originalTitle = document.title;
+  async function refresh(silent = false) {
+    if (busy || workspace.hidden || !window.JournalBackend?.enabled || panel.querySelector("dialog") || panel.querySelector("button:disabled")) return;
+    busy = true;
+    const current = generation;
+    if (!silent) message.textContent = "Loading submissions…";
     try {
       const entries = await window.JournalBackend.request(
         "/api/admin/submissions",
       );
+      if (workspace.hidden || current !== generation) return;
+      const newCount = entries.filter(entry => !known.has(entry.id)).length;
+      if (newCount) window.adminNotify?.(`${newCount} journal submissions need your approval.`);
+      known = new Set(entries.map(entry => entry.id));
+      if (badge) { badge.hidden = !entries.length; badge.textContent = `${entries.length} pending journals`; }
+      document.title = entries.length ? `(${entries.length} pending) ${originalTitle}` : originalTitle;
+      const nextSignature = JSON.stringify(entries);
+      if (silent && nextSignature === signature) return;
+      signature = nextSignature;
       list.replaceChildren();
       for (const entry of entries) {
         const card = document.createElement("article");
@@ -87,7 +103,9 @@
                   body: JSON.stringify({ p_id: entry.id, p_approve: approve }),
                 },
               );
+              card.remove();
               await refresh();
+              window.dispatchEvent(new Event("journal:reviewed"));
               message.textContent = approve ? "Journal approved and published." : "Submission rejected.";
             } catch (error) {
               message.textContent = error.message;
@@ -104,17 +122,21 @@
         ? `${entries.length} awaiting approval.`
         : "No pending submissions.";
     } catch (error) {
-      list.replaceChildren();
+      if (workspace.hidden || current !== generation) return;
+      if (!silent) list.replaceChildren();
       message.textContent =
         "Could not load the approval queue. " + error.message;
-    }
+    } finally { busy = false; }
   }
   panel
     .querySelector("#refresh-submissions")
-    .addEventListener("click", refresh);
+    .addEventListener("click", () => refresh());
   // Clear private submission text whenever the owner workspace is hidden.
   new MutationObserver(() => {
     if (document.querySelector("#workspace").hidden) {
+      generation += 1; known.clear(); signature = "";
+      if (badge) badge.hidden = true;
+      document.title = originalTitle;
       panel.querySelector("dialog")?.close("cancel");
       list.replaceChildren();
       message.textContent = "";
@@ -123,4 +145,8 @@
     attributes: true,
     attributeFilter: ["hidden"],
   });
+  window.addEventListener("portfolio:owner", () => refresh());
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(true); });
+  setInterval(() => { if (!document.hidden) refresh(true); }, 30000);
+  if (!workspace.hidden) refresh();
 })();
