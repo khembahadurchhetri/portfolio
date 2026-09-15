@@ -1384,3 +1384,23 @@ button:focus-visible {
 .facts-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .75rem; }
 .facts-header .section-kicker, .facts-header .row-motion-toggle { margin: 0; }
 .fact-card { text-align: left; }
+
+/* Music follows scroll progress along the side rail. */
+.rail-music-btn { pointer-events: auto; }
+.rail-music-btn:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+#trail-rail { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .rail-music-btn.playing { animation: none; } }
+
+/* Toolkit: clear type, open rows, and five small proficiency lights. */
+.toolkit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(2rem, 6vw, 5rem); }
+.toolkit-item { min-width: 0; padding: 1.65rem 0 1.85rem; border-top: 1px solid var(--border); }
+.toolkit-heading { display: flex; align-items: center; gap: .8rem; }
+.toolkit-number { color: var(--text-soft); font: 400 .72rem var(--font-mono); }
+.toolkit-heading h3 { margin: 0; font: 600 clamp(1.05rem, 1.7vw, 1.3rem)/1.3 var(--font-body); letter-spacing: -.025em; color: var(--text); }
+.toolkit-rating { display: flex; flex-shrink: 0; gap: 5px; margin-left: auto; }
+.toolkit-light { display: block; width: 7px; height: 7px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--border); }
+.toolkit-light.is-lit { background: var(--cyber); border-color: var(--cyber); box-shadow: 0 0 7px var(--cyber-soft); }
+.toolkit-tools { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; list-style: none; padding: 0 0 0 2rem; margin: 1.05rem 0 0; }
+.toolkit-tools li { font: 400 .91rem/1.5 var(--font-body); color: var(--text-muted); }
+.toolkit-item:hover .toolkit-light.is-lit { box-shadow: 0 0 9px var(--cyber); }
+@media (max-width: 640px) { .toolkit-grid { grid-template-columns: minmax(0, 1fr); } .toolkit-item { padding: 1.3rem 0; } .toolkit-heading { gap: .65rem; } }

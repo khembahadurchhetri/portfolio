@@ -1,5 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 1000" fill="none">
- <defs><linearGradient id="r" x1="80" y1="0" x2="500" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#5376be"/><stop offset=".48" stop-color="#97dfca"/><stop offset="1" stop-color="#44609b"/></linearGradient></defs>
- <path d="M300-140C850 70-250 170 300 380S850 690 300 900-250 1210 300 1420" stroke="url(#r)" stroke-width="65"/>
- <path d="M300-140C850 70-250 170 300 380S850 690 300 900-250 1210 300 1420" stroke="#cff9e8" stroke-opacity=".65" stroke-width="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 1000" preserveAspectRatio="none" fill="none">
+  <defs>
+    <linearGradient id="ribbon" x1="150" y1="0" x2="450" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5275b8"/>
+      <stop offset=".5" stop-color="#80cdb9"/>
+      <stop offset="1" stop-color="#5275b8"/>
+    </linearGradient>
+  </defs>
+  <!-- Matching positions and tangents at each tile boundary form a continuous strand. -->
+  <path d="M300-1000 C480-750 480-750 300-500 S120-250 300 0 S480 250 300 500 S120 750 300 1000 S480 1250 300 1500"
+    stroke="url(#ribbon)" stroke-width="38"/>
+  <path d="M300-1000 C480-750 480-750 300-500 S120-250 300 0 S480 250 300 500 S120 750 300 1000 S480 1250 300 1500"
+    stroke="#d2f5ec" stroke-opacity=".65" stroke-width="2"/>
 </svg>

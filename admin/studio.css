@@ -10,3 +10,10 @@ main,.studio-layout>*{min-width:0}#entry{max-width:780px;margin:auto;overflow-wr
 @media(max-width:700px){header{flex-wrap:wrap;gap:.8rem}header strong{order:-1;flex-basis:100%}main{padding:1.25rem .75rem}.toolbar,.actions{flex-wrap:wrap;gap:.6rem}.toolbar>*{min-width:0;max-width:100%}.fields input,.fields select,.fields textarea{min-width:0;font-size:16px}#entry h1{font-size:clamp(1.65rem,8vw,2.5rem)}.entry-media{width:100%;height:auto;object-fit:contain}.review-dialog .actions button{flex:1}.submission-card button{margin-bottom:.5rem}}
 
 .journal-author{display:flex;align-items:baseline;gap:.35rem;color:var(--muted);font-size:.8rem;margin:.6rem 0;flex-shrink:0}.journal-author strong{font-size:.95rem;font-weight:700;color:var(--accent);overflow-wrap:anywhere}
+
+#portfolio-panel { margin-bottom: 2rem; }
+.portfolio-fields { min-width: 0; border: 0; padding: 0; margin: 0; }
+.portfolio-fields h3 { margin-top: 1.5rem; }
+.portfolio-photo-preview { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; }
+.portfolio-project-editor { border: 1px solid var(--border, #ccc); border-radius: 10px; padding: 1rem; margin: .8rem 0; }
+.portfolio-project-editor summary { cursor: pointer; font-weight: 600; }

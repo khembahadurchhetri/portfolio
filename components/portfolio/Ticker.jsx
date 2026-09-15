@@ -1,4 +1,7 @@
+"use client";
+import usePortfolio from "../usePortfolio";
 export default function Ticker() {
+  const { cv } = usePortfolio();
   return (
     <>
       <div className={"ticker-block"}>
@@ -59,7 +62,7 @@ export default function Ticker() {
                 {"LinkedIn ↗"}
               </a>
               <a href={"mailto:khemchhetri10@gmail.com"}>{"Email ↗"}</a>
-              <a href={"/assets/Khem_Chhetri_CV.pdf"} download={true}>
+              <a href={cv} download={true}>
                 {"Resume ↗"}
               </a>
               <a
@@ -113,7 +116,7 @@ export default function Ticker() {
               </a>
               <a
                 tabIndex={"-1"}
-                href={"/assets/Khem_Chhetri_CV.pdf"}
+                href={cv}
                 download={true}
               >
                 {"Resume ↗"}

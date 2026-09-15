@@ -1,4 +1,7 @@
+"use client";
+import usePortfolio from "../usePortfolio";
 export default function Resume() {
+  const { cv } = usePortfolio();
   return (
     <>
       <section id={"resume"}>
@@ -19,7 +22,7 @@ export default function Resume() {
 
             <div className={"resume-actions"}>
               <a
-                href={"/assets/Khem_Chhetri_CV.pdf"}
+                href={cv}
                 target={"_blank"}
                 rel={"noopener"}
                 className={"btn-ghost"}
@@ -28,7 +31,7 @@ export default function Resume() {
               </a>
 
               <a
-                href={"/assets/Khem_Chhetri_CV.pdf"}
+                href={cv}
                 download={true}
                 className={"btn-solid"}
                 id={"resumeCvBtn"}

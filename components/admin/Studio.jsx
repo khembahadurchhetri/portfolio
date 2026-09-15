@@ -4,7 +4,7 @@ export default function Studio() {
     <>
       <header>
         <a href={"/"}>{"← Portfolio"}</a>
-        <strong>{"Journal Studio"}</strong>
+        <strong>{"Portfolio Studio"}</strong>
         <button id={"logout"} hidden={true}>
           {"Sign out"}
         </button>
@@ -14,13 +14,13 @@ export default function Studio() {
         <p className={"eyebrow"}>{"Your stories, your space"}</p>
         <h1>{"A little room to create."}</h1>
         <p className={"intro"}>
-          {"Photos, notes, reading lists and everyday moments."}
+          {"Manage your projects, profile photo, CV and journal."}
         </p>
         <p id={"status"} role={"status"} aria-live={"polite"} />
 
         <section id={"login-panel"} className={"panel"}>
           <h2>{"Owner sign in"}</h2>
-          <p>{"Your private journal and publishing tools live here."}</p>
+          <p>{"Your portfolio editing and journal publishing tools live here."}</p>
           <form id={"login"}>
             <label>
               {"Email"}
@@ -45,6 +45,12 @@ export default function Studio() {
         </section>
 
         <section id={"workspace"} hidden={true}>
+          <section className="panel" id="portfolio-panel">
+            <h2>Portfolio settings</h2>
+            <p>Edit your projects, profile photo and CV. Only your owner account can save changes. Saved content and uploaded portfolio files are public.</p>
+            <p id="portfolio-status" role="status" aria-live="polite" />
+            <div id="portfolio-editor" />
+          </section>
           <Moderation />
           <div className={"toolbar"}>
             <h2>{"Your entries"}</h2>

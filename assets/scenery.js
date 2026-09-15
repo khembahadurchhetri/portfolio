@@ -2,9 +2,9 @@
 (() => {
   const hero = document.getElementById("hero");
   const layers = [...document.querySelectorAll("[data-depth]")];
-  const sections = [...document.querySelectorAll('#about, #skills, #experience, #projects, #journal, #contact')];
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const mobile = window.matchMedia("(max-width: 768px)");
+  let pointer = 0;
   let scheduled = false;
   function render() {
     scheduled = false;
@@ -14,22 +14,39 @@
       const offset = distance * Number(layer.dataset.depth) * (mobile.matches ? .55 : 1);
       layer.style.setProperty("--layer-y", `${offset.toFixed(2)}px`);
     });
-    sections.forEach((section) => {
-      const bounds = section.getBoundingClientRect();
-      if (bounds.bottom < 0 || bounds.top > window.innerHeight) return;
-      // Follow the user's scroll directly; no autonomous background animation.
-      // Keep this requested effect active even when decorative hero motion is off.
-      const travel = window.innerHeight * .5 - bounds.top;
-      section.style.setProperty('--flow-y', `${travel * .55}px`);
-      section.style.setProperty('--flow-turn', `${Math.sin(travel / 300) * 45}deg`);
-      section.style.setProperty('--terrain-y', `${travel * .3}px`);
-    });
+    const ribbon = document.getElementById("scrollRibbon");
+    if (ribbon?.parentElement) {
+      const bounds = ribbon.parentElement.getBoundingClientRect();
+      const height = Math.max(0, window.innerHeight - 64);
+      ribbon.style.setProperty("--ribbon-clip-top", `${Math.min(height, Math.max(0, bounds.top - 64))}px`);
+      ribbon.style.setProperty("--ribbon-clip-bottom", `${Math.min(height, Math.max(0, window.innerHeight - bounds.bottom))}px`);
+      ribbon.style.visibility = bounds.top < window.innerHeight && bounds.bottom > 64 ? "visible" : "hidden";
+    }
+    const phase = enabled ? window.scrollY / 320 + pointer * 3.2 : 0;
+    const amplitude = mobile.matches ? 55 : 70;
+    const curve = y => 120 + amplitude * Math.sin(y / 180 + phase);
+    const slope = y => amplitude / 180 * Math.cos(y / 180 + phase);
+    let path = `M${curve(-200).toFixed(2)} -200`;
+    for (let y = -200; y < 1200; y += 100) {
+      const end = y + 100;
+      path += ` C${(curve(y) + slope(y) * 100 / 3).toFixed(2)} ${(y + 100 / 3).toFixed(2)} ${(curve(end) - slope(end) * 100 / 3).toFixed(2)} ${(end - 100 / 3).toFixed(2)} ${curve(end).toFixed(2)} ${end}`;
+    }
+    document.getElementById("ribbonCurve")?.setAttribute("d", path);
+    const highlight = document.getElementById("ribbonHighlight");
+    highlight?.setAttribute("d", path);
+    highlight?.setAttribute("stroke-dashoffset", enabled ? String(-window.scrollY * .7) : "0");
+
   }
   function schedule() {
     if (scheduled) return;
     scheduled = true;
     requestAnimationFrame(render);
   }
+  window.addEventListener("pointermove", event => {
+    if (reducedMotion.matches || event.pointerType === "touch") return;
+    pointer = event.clientX / window.innerWidth - .5;
+    schedule();
+  }, { passive: true });
   window.addEventListener("scroll", schedule, { passive: true });
   window.addEventListener("resize", schedule, { passive: true });
   document.addEventListener("appearancechange", schedule);

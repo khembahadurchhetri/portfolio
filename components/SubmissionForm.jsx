@@ -1,8 +1,21 @@
 "use client";
 import { useRef, useState } from "react";
 export default function SubmissionForm() {
-  const detailsRef = useRef(null);
-  const summaryRef = useRef(null);
+  const dialogRef = useRef(null);
+  const triggerRef = useRef(null);
+  const scrollStyle = useRef("");
+  function openDialog() {
+    scrollStyle.current = document.body.style.overflow;
+    dialogRef.current.showModal();
+    document.body.style.overflow = "hidden";
+  }
+  function closeDialog() {
+    dialogRef.current.close();
+  }
+  function restorePage() {
+    document.body.style.overflow = scrollStyle.current;
+    triggerRef.current?.focus();
+  }
   const [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false);
   async function submit(event) {
@@ -35,8 +48,7 @@ export default function SubmissionForm() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Submission failed.");
       form.reset();
-      detailsRef.current.open = false;
-      summaryRef.current.focus();
+      closeDialog();
       setMessage("Thank you! Your journal is awaiting owner approval.");
     } catch (error) {
       setMessage(error.message);
@@ -47,11 +59,20 @@ export default function SubmissionForm() {
   return (
     <section className="community-journal">
       <div className="section-wrap">
-        <details ref={detailsRef}>
-          <summary ref={summaryRef}>
+        <button className="journal-share-trigger" type="button" ref={triggerRef} onClick={openDialog}>
             Share a journal of your own
-          </summary>
-          <p>
+        </button>
+        <dialog className="journal-dialog" ref={dialogRef} aria-labelledby="journal-submit-title" aria-describedby="journal-submit-description" onClose={restorePage} onClick={(event) => {
+          if (event.target === event.currentTarget) {
+            const bounds = event.currentTarget.getBoundingClientRect();
+            if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) closeDialog();
+          }
+        }}>
+          <div className="journal-dialog-header">
+            <h2 id="journal-submit-title">Share your journal</h2>
+            <button type="button" className="journal-dialog-close" aria-label="Close journal form" onClick={closeDialog}>×</button>
+          </div>
+          <p id="journal-submit-description">
             Your name and journal will be public only after Khem approves them.
           </p>
           <form onSubmit={submit}>
@@ -115,8 +136,9 @@ export default function SubmissionForm() {
               {busy ? "Sending…" : "Submit for approval"}
             </button>
           </form>
-        </details>
-        <p role="status" aria-live="polite">{message}</p>
+          <p role="status" aria-live="polite">{message}</p>
+        </dialog>
+        <p role="status" aria-live="polite">{!busy && message === "Thank you! Your journal is awaiting owner approval." ? message : ""}</p>
       </div>
     </section>
   );

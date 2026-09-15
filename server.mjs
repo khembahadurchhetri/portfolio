@@ -22,6 +22,7 @@ export async function createApp({ dataDir = process.env.DATA_DIR || path.join(ro
     CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, csrf TEXT NOT NULL, expires INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS posts (id TEXT PRIMARY KEY, content TEXT NOT NULL, visibility TEXT NOT NULL, updated TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS media (id TEXT PRIMARY KEY, type TEXT NOT NULL, bytes BLOB NOT NULL);
+    CREATE TABLE IF NOT EXISTS portfolio_media (id TEXT PRIMARY KEY, type TEXT NOT NULL, bytes BLOB NOT NULL);
     CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);`);
   if (!db.prepare("SELECT 1 FROM meta WHERE key='seeded'").get()) {
     const samples = JSON.parse(await readFile(path.join(root, 'assets/journal-samples.json'), 'utf8'));
@@ -87,6 +88,40 @@ export async function createApp({ dataDir = process.env.DATA_DIR || path.join(ro
         return send(200, { csrf });
       }
       if (route === '/api/session' && req.method === 'GET') { const auth = requireOwner(req); return send(200, { csrf: auth.csrf }); }
+      if ((route === '/api/portfolio' || route === '/api/admin/portfolio') && req.method === 'GET') {
+        if (route.startsWith('/api/admin/')) requireOwner(req);
+        const saved = db.prepare("SELECT value FROM meta WHERE key='portfolio'").get();
+        return send(200, saved ? JSON.parse(saved.value) : JSON.parse(await readFile(path.join(root, 'assets/portfolio-defaults.json'), 'utf8')));
+      }
+      if (route === '/api/admin/portfolio' && req.method === 'PUT') {
+        requireOwner(req);
+        const input = await json(req);
+        const validUrl = value => typeof value === 'string' && (/^https:\/\/[^\s]+$/i.test(value) || /^\/(?!\/)[\w/.-]+$/.test(value));
+        if (!input || !validUrl(input.photo) || !validUrl(input.cv) || !Array.isArray(input.projects) || input.projects.length > 40 || input.projects.some(p => !p || typeof p.id !== 'string' || typeof p.title !== 'string' || !p.title.trim() || typeof p.description !== 'string' || !Array.isArray(p.stack) || p.stack.some(tag => typeof tag !== 'string') || !validUrl(p.codeUrl) || (p.liveUrl && !validUrl(p.liveUrl)) || (p.image && !validUrl(p.image)))) fail(400, 'Invalid portfolio content or links.');
+        db.prepare("INSERT OR REPLACE INTO meta VALUES ('portfolio', ?)").run(JSON.stringify(input));
+        return send(200, input);
+      }
+      if (route === '/api/admin/portfolio-media' && req.method === 'POST') {
+        requireOwner(req);
+        const bytes = await body(req, 10 * 1024 * 1024);
+        let type;
+        if (bytes.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) type='image/png';
+        else if (bytes[0]===255 && bytes[1]===216 && bytes[2]===255) type='image/jpeg';
+        else if (bytes.toString('ascii',0,4)==='RIFF' && bytes.toString('ascii',8,12)==='WEBP') type='image/webp';
+        else if (bytes.toString('ascii',0,5)==='%PDF-') type='application/pdf';
+        else fail(415, 'Use a PNG, JPEG, WebP or PDF file.');
+        const id = randomBytes(16).toString('hex');
+        db.prepare('INSERT INTO portfolio_media VALUES (?, ?, ?)').run(id, type, bytes);
+        return send(201, { url: `/portfolio-media/${id}` });
+      }
+      const portfolioMedia = /^\/portfolio-media\/([a-f0-9]{32})$/.exec(route);
+      if (portfolioMedia && ['GET', 'HEAD'].includes(req.method)) {
+        const media = db.prepare('SELECT * FROM portfolio_media WHERE id=?').get(portfolioMedia[1]);
+        if (!media) fail(404, 'File not found.');
+        res.setHeader('Content-Type', media.type);
+        res.setHeader('Content-Length', media.bytes.length);
+        return res.end(req.method === 'HEAD' ? undefined : Buffer.from(media.bytes));
+      }
       if (route === '/api/logout' && req.method === 'POST') {
         db.prepare('DELETE FROM sessions WHERE id=?').run(requireOwner(req).id);
         res.setHeader('Set-Cookie', `journal_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0${secure ? '; Secure' : ''}`);

@@ -72,6 +72,7 @@ function showWorkspace() {
   $("#workspace").hidden = false;
   $("#logout").hidden = false;
   $("#login-panel").hidden = true;
+  window.dispatchEvent(new Event("portfolio:owner"));
 }
 function list() {
   const filter = $("#visibility-filter").value,

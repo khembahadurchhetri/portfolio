@@ -1,0 +1,124 @@
+{
+  "photo": "/assets/khem-photo.jpg",
+  "cv": "/assets/Khem_Chhetri_CV.pdf",
+  "projects": [
+    {
+      "id": "project-1",
+      "title": "HamroChatbot",
+      "description": "Next.js chatbot platform with an embeddable widget, knowledge-base upload, and payment integration for selling chatbot access.",
+      "badge": "AI \u00b7 SaaS",
+      "image": "/assets/hamrochatbot.png",
+      "stack": [
+        "Next.js",
+        "Stripe",
+        "Widget SDK"
+      ],
+      "liveUrl": "https://hamrobot.vercel.app",
+      "codeUrl": "https://github.com/khemeasyinnovation/real-estate-chatbot",
+      "imageClass": "project-preview project-preview--screen project-preview--chat"
+    },
+    {
+      "id": "project-2",
+      "title": "Threft Nepal",
+      "description": "E-commerce app with product upload/delete, cart, login & signup, and a separate admin dashboard.",
+      "badge": "Full Stack",
+      "image": "/assets/threft.png",
+      "stack": [
+        "Next.js",
+        "Auth",
+        "Cart"
+      ],
+      "liveUrl": "https://threftnepal.vercel.app",
+      "codeUrl": "https://github.com/khembahadurchhetri/product-catalog",
+      "imageClass": "project-preview project-preview--screen project-preview--shop"
+    },
+    {
+      "id": "project-3",
+      "title": "Stock Volatility Prediction",
+      "description": "Predicts stock volatility from historical data using classic ML models.",
+      "badge": "AI / ML",
+      "image": "/assets/stockvolatility.png",
+      "stack": [
+        "Python",
+        "Scikit-learn"
+      ],
+      "liveUrl": "https://stockvolatilitydetector.vercel.app",
+      "codeUrl": "https://github.com/khembahadurchhetri/stockvolatilitydetector",
+      "imageClass": "project-preview project-preview--screen project-preview--stock"
+    },
+    {
+      "id": "project-4",
+      "title": "IT Services",
+      "description": "React site for providing IT services.",
+      "badge": "Full Stack",
+      "image": "/assets/itservices.png",
+      "stack": [
+        "PostgreSQL",
+        "Express",
+        "React",
+        "Node"
+      ],
+      "liveUrl": "https://onetyoneg.vercel.app",
+      "codeUrl": "https://github.com/khembahadurchhetri/onetyoneg",
+      "imageClass": "project-preview project-preview--screen project-preview--services"
+    },
+    {
+      "id": "project-5",
+      "title": "Tomato Disease Detection",
+      "description": "CNN-based image classifier that detects tomato leaf disease, wrapped in a Flutter mobile app.",
+      "badge": "AI / ML",
+      "image": "/assets/tomato.png",
+      "stack": [
+        "TensorFlow",
+        "CNN",
+        "Flutter"
+      ],
+      "liveUrl": "",
+      "codeUrl": "https://github.com/khembahadurchhetri",
+      "imageClass": "project-preview project-preview--photo"
+    },
+    {
+      "id": "project-6",
+      "title": "Security Toolkit",
+      "description": "A project concept bringing together network vulnerability assessment, password management, and password strength checking.",
+      "badge": "Cybersecurity",
+      "image": "/assets/passwordmanagement.png",
+      "stack": [
+        "Network security",
+        "Passwords"
+      ],
+      "liveUrl": "",
+      "codeUrl": "https://github.com/khembahadurchhetri",
+      "imageClass": "project-preview project-preview--security"
+    },
+    {
+      "id": "project-7",
+      "title": "Nepal Travel Guide",
+      "description": "A WordPress travel guide for exploring Nepal, with destinations, local experiences, and practical trip planning.",
+      "badge": "WordPress",
+      "image": "/assets/travelguide.png",
+      "stack": [
+        "WordPress",
+        "Travel"
+      ],
+      "liveUrl": "",
+      "codeUrl": "https://github.com/khembahadurchhetri",
+      "imageClass": "project-preview project-preview--photo"
+    },
+    {
+      "id": "project-9",
+      "title": "Journal Studio",
+      "description": "A personal publishing dashboard with owner authentication, photo and video uploads, and public, private or draft entries.",
+      "badge": "Full stack",
+      "image": "",
+      "stack": [
+        "Node.js",
+        "SQLite",
+        "Authentication"
+      ],
+      "liveUrl": "/admin",
+      "codeUrl": "https://github.com/khembahadurchhetri/portfolio",
+      "imageClass": ""
+    }
+  ]
+}

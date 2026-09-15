@@ -25,6 +25,7 @@ export default function Journal() {
             </div>
 
             <div
+              id="journal-categories"
               className={"journal-filters"}
               role={"group"}
               aria-label={"Filter journal"}

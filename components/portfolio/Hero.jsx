@@ -1,5 +1,9 @@
+"use client";
+import usePortfolio from "../usePortfolio";
 import Image from "next/image";
+import TypedName from "./TypedName";
 export default function Hero() {
+  const { photo } = usePortfolio();
   return (
     <>
       <section id={"hero"}>
@@ -108,15 +112,7 @@ export default function Hero() {
         </div>
 
         <div className={"hero-inner"}>
-          <div className={"hero-eyebrow reveal"}>
-            {" Building from Pokhara "}
-          </div>
-
-          <h1 className={"hero-name reveal"}>
-            {"Khem Bahadur"}
-            <br />
-            <span>{"Chhetri"}</span>
-          </h1>
+          <TypedName />
 
           <p className={"hero-desc reveal"}>
             <strong>{"Full Stack Developer"}</strong>
@@ -128,24 +124,44 @@ export default function Hero() {
             <strong>{"Node.js"}</strong>
             {" & "}
             <strong>{"Python"}</strong>
-            {" on the back — with a growing focus on "}
-            <strong>{"cloud"}</strong>
+            {" on the back — with a growing focus on  "}
+            {"cloud"}
             {" and "}
-            <strong>{"cybersecurity"}</strong>
+            {"cybersecurity"}
             {". "}
           </p>
 
-          <div className={"hero-photo-frame reveal"}>
+          <div className="hero-photo-frame reveal signature-portrait"
+            onPointerMove={(event) => {
+              if (event.pointerType === "touch" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+              const card = event.currentTarget;
+              const bounds = card.getBoundingClientRect();
+              const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+              const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+              card.style.setProperty("--portrait-rx", `${(0.5 - y) * 12}deg`);
+              card.style.setProperty("--portrait-ry", `${(x - 0.5) * 16}deg`);
+              card.style.setProperty("--portrait-light-x", `${x * 100}%`);
+              card.style.setProperty("--portrait-light-y", `${y * 100}%`);
+            }}
+            onPointerLeave={(event) => {
+              event.currentTarget.style.setProperty("--portrait-rx", "0deg");
+              event.currentTarget.style.setProperty("--portrait-ry", "0deg");
+            }}>
+            <div className="portrait-shine" aria-hidden="true" />
             <Image
               width={600}
               height={750}
               sizes="(max-width: 768px) 210px, 250px"
               preload
-              src={"/assets/khem-photo.jpg"}
+              src={photo}
+              unoptimized={true}
               alt={"Khem Bahadur Chhetri"}
               className={"hero-photo"}
             />
 
+            <svg className="portrait-signature" viewBox="0 0 150 65" aria-hidden="true" fill="none">
+              <path pathLength="1" d="M22 47 37 10M27 33 56 12M29 30 48 48M58 47 72 13C103 6 96 31 65 32C103 17 100 51 62 48M129 17C108 2 87 46 110 48L131 37M15 58Q78 43 139 53" />
+            </svg>
             <span className={"hero-photo-tag"}>
               {"Pokhara, Nepal · 28°14'N"}
             </span>

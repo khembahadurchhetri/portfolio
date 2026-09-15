@@ -73,6 +73,31 @@
   }
   async function request(route, options = {}) {
     const method = options.method || "GET";
+    if (route === "/api/portfolio" || route === "/api/admin/portfolio") {
+      const auth = route === "/api/admin/portfolio";
+      if (auth) await requireOwner();
+      if (method !== "GET" && !(auth && method === "PUT")) throw new Error("Unsupported portfolio operation.");
+      try {
+        const rows = await remote("/rest/v1/portfolio_content?" + (method === "GET" ? "id=eq.1&select=data" : "on_conflict=id"), {
+          method: method === "PUT" ? "POST" : "GET", auth,
+          ...(method === "PUT" ? { body: { id: 1, data: JSON.parse(options.body) }, headers: { Prefer: "resolution=merge-duplicates,return=representation" } } : {}),
+        });
+        if (method === "PUT" && !rows?.[0]?.data) throw new Error("Portfolio was not saved. Check owner permissions and try again.");
+        return rows?.[0]?.data || null;
+      } catch (error) {
+        if (error.status === 404) throw new Error("Portfolio editing needs the supabase/portfolio-content.sql migration applied to your Supabase project.");
+        throw error;
+      }
+    }
+    if (route === "/api/admin/portfolio-media" && method === "POST") {
+      await requireOwner();
+      const file = options.body;
+      const extensions = { "image/png": "png", "image/jpeg": "jpg", "image/webp": "webp", "application/pdf": "pdf" };
+      if (!extensions[file.type] || file.size > 10 * 1024 * 1024) throw new Error("Choose a PNG, JPEG, WebP or PDF smaller than 10 MB.");
+      const name = `${crypto.randomUUID()}.${extensions[file.type]}`;
+      await remote(`/storage/v1/object/portfolio-assets/${name}`, { method: "POST", body: file, auth: true, headers: { "Content-Type": file.type, "x-upsert": "false" } });
+      return { url: `${endpoint}/storage/v1/object/public/portfolio-assets/${name}` };
+    }
     if (route === "/api/login") {
       const input = JSON.parse(options.body);
       const result = await remote("/auth/v1/token?grant_type=password", {

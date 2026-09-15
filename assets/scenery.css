@@ -135,26 +135,19 @@ html[data-theme="dark"] :is(.social-row, .footer-links a)[href*="linkedin.com"] 
   .nav-actions { gap: .65rem; }
 }
 
-/* Terrain and a twisting ribbon travel at opposing speeds while scrolling. */
-#about, #skills, #experience, #projects, #journal, #contact {
-  position: relative; isolation: isolate; overflow: hidden;
+/* A live SVG curve, contained inside the viewport with room for its full stroke. */
+.portfolio-sections { position: relative; isolation: isolate; }
+.page-ribbon {
+  position: fixed; top: 64px; right: 12px; width: clamp(100px, 18vw, 240px);
+  height: calc(100dvh - 64px); z-index: 1; pointer-events: none; opacity: .14;
+  visibility: hidden;
+  clip-path: inset(var(--ribbon-clip-top, 0px) 0 var(--ribbon-clip-bottom, 0px) 0);
+  mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+  -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
 }
-#about::before, #skills::before, #experience::before, #projects::before, #journal::before, #contact::before {
-  content: ""; position: absolute; inset: -40px 0; z-index: 0;
-  pointer-events: none; background: url('/assets/scroll-terrain.svg') center / 100% 100% no-repeat;
-  opacity: .3; transform: translate3d(0, var(--terrain-y, 0px), 0) scale(1.08);
-}
-#about::after, #skills::after, #experience::after, #projects::after, #journal::after, #contact::after {
-  content: ""; position: absolute; top: -80px; right: 0;
-  width: clamp(260px, 36vw, 520px); height: calc(100% + 160px); z-index: 0;
-  pointer-events: none; background: url('/assets/scroll-ribbon.svg') center / 100% 100% no-repeat;
-  opacity: .16; transform: perspective(900px) translate3d(0, var(--flow-y, 0px), 0) rotateY(var(--flow-turn, 0deg)) rotate(-18deg);
-}
-#skills::after, #journal::after { right: auto; left: 0; }
-:is(#about, #skills, #experience, #projects, #journal, #contact) > .section-wrap { position: relative; z-index: 1; }
-@media(max-width:768px) {
-  #about::after, #skills::after, #experience::after, #projects::after, #journal::after, #contact::after { opacity: .12; width: 240px; }
-}
+.portfolio-sections > section { position: relative; }
+.portfolio-sections > section > .section-wrap { position: relative; z-index: 2; }
+@media (max-width: 768px) { .page-ribbon { right: 6px; width: 100px; opacity: .1; } }
 
 .project-card { flex-basis: 340px; overflow: hidden; }
 .project-preview { order: -1; display: block; width: calc(100% + 3rem); max-width: none; height: auto; aspect-ratio: 16 / 9; object-fit: cover; margin: -1.5rem -1.5rem .6rem; border-bottom: 1px solid var(--border); }
@@ -232,7 +225,7 @@ html[data-theme="dark"] :is(.social-row, .footer-links a)[href*="linkedin.com"] 
   .journal-grid { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
-  #about::before, #skills::before, #experience::before, #projects::before, #journal::before, #contact::before { animation: none; }
+
   .landscape-layer { transform: none !important; }
   .sky-drift, .stars { animation: none; }
   .reveal, .reveal.pending-reveal { opacity: 1; transform: none; transition: none; }
@@ -240,3 +233,42 @@ html[data-theme="dark"] :is(.social-row, .footer-links a)[href*="linkedin.com"] 
 }
 
 .journal-author{display:flex;align-items:baseline;gap:.35rem;color:var(--text-muted);font-size:.8rem;margin:.6rem 0;flex-shrink:0}.journal-author strong{font-size:.95rem;font-weight:700;color:var(--accent);overflow-wrap:anywhere}
+
+/* Small drifting lights and a low-contrast gradient wash behind section content. */
+.ambient-glow { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; contain: paint; }
+.ambient-wash { position: absolute; inset: -10%; background: radial-gradient(ellipse at 20% 35%, rgb(73 135 218 / .18), transparent 48%), radial-gradient(ellipse at 78% 65%, rgb(79 196 166 / .16), transparent 45%); animation: ambient-drift 22s ease-in-out infinite alternate; animation-delay: var(--glow-delay); }
+.ambient-firefly { position: absolute; width: var(--spark-size); height: var(--spark-size); border-radius: 50%; background: #81cbb5; box-shadow: 0 0 5px 2px rgb(104 211 177 / .65), 0 0 16px 3px rgb(104 211 177 / .3); opacity: 0; animation: ambient-twinkle var(--spark-time) ease-in-out infinite; animation-delay: var(--spark-delay); }
+html[data-theme="dark"] .ambient-firefly { background: #d9f8d0; }
+@keyframes ambient-drift { from { transform: translate3d(-2%, -2%, 0) scale(1); } to { transform: translate3d(3%, 3%, 0) scale(1.08); } }
+@keyframes ambient-twinkle { 0%, 100% { opacity: .08; transform: translate3d(0, 8px, 0); } 35%, 45% { opacity: 1; } 75% { opacity: .2; transform: translate3d(var(--spark-x), -16px, 0); } }
+@media (max-width: 600px) { .ambient-firefly:nth-of-type(n+9) { display: none; } }
+@media (prefers-reduced-motion: reduce) { .ambient-wash { animation: none; } .ambient-firefly { display: none; } }
+
+#ribbonHighlight { animation: ribbon-light-travel 7s linear infinite; }
+@keyframes ribbon-light-travel { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1500; } }
+@media (prefers-reduced-motion: reduce) { #ribbonHighlight { animation: none; } }
+
+
+
+/* Natural typing cadence without layout shifts or a repeating introduction. */
+#hero .signature-portrait { transform: perspective(850px) rotateX(var(--portrait-rx, 0deg)) rotateY(var(--portrait-ry, 0deg)); transition: transform 220ms ease-out, box-shadow 220ms ease; box-shadow: 0 18px 45px var(--shadow); isolation: isolate; }
+#hero .signature-portrait:hover { box-shadow: 0 22px 55px var(--shadow), 0 0 0 1px var(--accent); }
+.portrait-shine { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(circle at var(--portrait-light-x, 25%) var(--portrait-light-y, 20%), rgb(255 255 255 / .26), transparent 65%); opacity: .4; transition: opacity .25s; }
+.signature-portrait:hover .portrait-shine { opacity: 1; }
+.portrait-signature { position: absolute; z-index: 3; pointer-events: none; bottom: 12px; right: 10px; width: 115px; height: 50px; filter: drop-shadow(0 2px 3px #000b); }
+.portrait-signature path { stroke: #f0f7ff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: sign-portrait 1.5s ease 1s forwards; }
+@keyframes sign-portrait { to { stroke-dashoffset: 0; } }
+@media (max-width: 768px) { #hero .signature-portrait { border-radius: 24px; } .portrait-signature { width: 95px; bottom: 8px; } }
+@media (prefers-reduced-motion: reduce) {
+  #hero .signature-portrait { transform: none; transition: none; }
+  .portrait-signature path { animation: none; stroke-dashoffset: 0; }
+}
+
+#hero .typing-line { display: block; position: relative; font: inherit; letter-spacing: inherit; }
+#hero .typing-measure { visibility: hidden; font: inherit; }
+#hero .typing-text { position: absolute; inset: 0; font: inherit; }
+.typing-cursor { display: inline-block; width: .045em; height: .85em; margin-left: .06em; vertical-align: -.03em; background: currentColor; animation: typing-blink 900ms step-end infinite; }
+.typing-cursor.is-finished { animation: typing-blink 900ms step-end 3, typing-cursor-hide 1ms 2.7s forwards; }
+@keyframes typing-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes typing-cursor-hide { to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .typing-cursor { display: none; } }

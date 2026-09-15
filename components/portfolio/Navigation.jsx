@@ -6,13 +6,16 @@ export default function Navigation() {
           <div className={"rail-fill"} id={"railFill"} />
         </div>
 
-        <button
-          className={"rail-music-btn"}
-          id={"railMusicBtn"}
-          aria-label={"Play background music"}
-        >
-          {" ▶ "}
-        </button>
+      <button
+        className="rail-music-btn"
+        id="railMusicBtn"
+        type="button"
+        aria-label="Play background music"
+        aria-pressed="false"
+        aria-controls="bgAudio"
+      >
+        {"\u25b6"}
+      </button>
       </div>
 
       <audio
@@ -25,7 +28,7 @@ export default function Navigation() {
       <nav>
         <a href={"#hero"} className={"nav-logo"}>
           <span className={"bracket"}>{"["}</span>
-          {"KBC"}
+          {"Abhimat"}
           <span className={"bracket"}>{"]"}</span>
         </a>
 

@@ -87,6 +87,7 @@
 
     railFill.style.height = progress + "%";
     railMusicBtn.style.top = progress + "%";
+
   }
   window.addEventListener("scroll", updateRail, { passive: true });
   updateRail();
@@ -95,15 +96,27 @@
    MUSIC — the rail button toggles the background track
    ========================================================= */
   const bgAudio = document.getElementById("bgAudio");
-  railMusicBtn.addEventListener("click", () => {
-    if (bgAudio.paused) {
-      bgAudio.play();
-      railMusicBtn.textContent = "⏸";
-      railMusicBtn.classList.add("playing");
-    } else {
-      bgAudio.pause();
-      railMusicBtn.textContent = "▶";
-      railMusicBtn.classList.remove("playing");
+  function syncMusic() {
+    const playing = !bgAudio.paused;
+    railMusicBtn.textContent = playing ? "\u23f8" : "\u25b6";
+    railMusicBtn.classList.toggle("playing", playing);
+    railMusicBtn.setAttribute("aria-pressed", String(playing));
+    railMusicBtn.setAttribute("aria-label", playing ? "Pause background music" : "Play background music");
+  }
+  bgAudio.addEventListener("play", syncMusic);
+  bgAudio.addEventListener("pause", syncMusic);
+  bgAudio.addEventListener("error", () => {
+    syncMusic();
+    railMusicBtn.textContent = "!";
+    railMusicBtn.setAttribute("aria-label", "Music unavailable; click to retry");
+  });
+  railMusicBtn.addEventListener("click", async () => {
+    if (!bgAudio.paused) { bgAudio.pause(); return; }
+    try { await bgAudio.play(); }
+    catch {
+      syncMusic();
+      railMusicBtn.textContent = "!";
+      railMusicBtn.setAttribute("aria-label", "Could not play music; click to retry");
     }
   });
 

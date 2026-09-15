@@ -4,11 +4,12 @@ const common = ["/assets/journal-config.js", "/assets/journal-backend.js"];
 const sources = {
   home: [
     ...common,
+    "/assets/portfolio-content.js",
     "/assets/portfolio.js",
     "/assets/scenery.js",
     "/assets/journal.js",
   ],
-  admin: [...common, "/admin/studio.js", "/assets/moderation.js"],
+  admin: [...common, "/admin/studio.js", "/admin/portfolio.js", "/assets/moderation.js"],
   entry: [...common, "/assets/entry.js"],
 };
 const loading = new Map();
