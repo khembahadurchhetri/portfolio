@@ -299,3 +299,10 @@
     font-size: 16px;
   }
 }
+/* Cards clip their previews, so set touch-action on those nested surfaces too. */
+#journal .journal-card,
+#journal .journal-card * {
+  touch-action: pan-y pinch-zoom;
+  -webkit-user-select: none;
+  user-select: none;
+}

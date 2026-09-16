@@ -54,11 +54,11 @@
       filters.scrollLeft = target.offsetLeft + target.offsetWidth - filters.clientWidth;
   }
 
-  // ===== Card grid: swipe-to-change-category (touch/pen only, not mouse) =====
+  // Card text, links and empty space share the same swipe gesture.
   let swipe = null, suppressClick = false;
   grid.addEventListener("pointerdown", event => {
     if (event.isPrimary === false) return;
-    if (event.pointerType === "mouse") return; // mouse has no drag-swipe UX on the grid
+    if (event.pointerType === "mouse" && event.button !== 0) return;
     suppressClick = false;
     swipe = { x: event.clientX, y: event.clientY, horizontal: false };
   });

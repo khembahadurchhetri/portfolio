@@ -22,8 +22,8 @@ export default function Projects() {
               <p className="project-desc">{project.description}</p>
               <div className="project-stack">{(project.stack || []).map((tag, i) => <span key={i}>{tag}</span>)}</div>
               <div className="project-links">
-                {safePortfolioUrl(project.liveUrl) && <a className="live" href={safePortfolioUrl(project.liveUrl)} target="_blank" rel="noopener noreferrer">Live ?</a>}
-                <a className="code" href={safePortfolioUrl(project.codeUrl, "https://github.com/khembahadurchhetri")} target="_blank" rel="noopener noreferrer">{project.codeUrl === "https://github.com/khembahadurchhetri" ? "GitHub ?" : "Code ?"}</a>
+                {safePortfolioUrl(project.liveUrl) && <a className="live" href={safePortfolioUrl(project.liveUrl)} target="_blank" rel="noopener noreferrer">Live ↗</a>}
+                <a className="code" href={safePortfolioUrl(project.codeUrl, "https://github.com/khembahadurchhetri")} target="_blank" rel="noopener noreferrer">{project.codeUrl === "https://github.com/khembahadurchhetri" ? "GitHub ↗" : "Code ↗"}</a>
               </div>
             </article>
           ))}

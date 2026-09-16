@@ -6,7 +6,7 @@ import { readFile } from 'node:fs/promises';
 test('journal exposes every entry for scrolling and resets scrolling when filtering', async () => {
   class Element {
     constructor(){this.children=[];this.handlers={};this.attrs={};this.textContent='';}
-    append(...items){this.children.push(...items);}
+    append(...items){for(const item of items)this.children.push(...(item.fragment?item.children:[item]));}
     replaceChildren(){this.children=[];}
     setAttribute(k,v){this.attrs[k]=v;}
     addEventListener(k,fn){this.handlers[k]=fn;}
@@ -20,7 +20,7 @@ test('journal exposes every entry for scrolling and resets scrolling when filter
   const media={matches:true,addEventListener(_,fn){this.change=fn;}};
   const entries=Array.from({length:6},(_,i)=>({id:String(i),title:'Entry '+i,category:i%2?'Books':'Notes',text:'Example',sample:true}));
   const code=await readFile('assets/journal.js','utf8');
-  vm.runInNewContext(code,{window:{},document:{querySelector:s=>elements[s],createElement:()=>new Element()},matchMedia:()=>media,fetch:async()=>({ok:true,headers:{get:()=> 'application/json'},json:async()=>entries})});
+  vm.runInNewContext(code,{window:{},document:{querySelector:s=>elements[s],createElement:()=>new Element(),createDocumentFragment:()=>Object.assign(new Element(),{fragment:true})},matchMedia:()=>media,fetch:async()=>({ok:true,headers:{get:()=> 'application/json'},json:async()=>entries})});
   await new Promise(resolve=>setImmediate(resolve));
   const grid=elements['.journal-grid'];
   const filters=elements['.journal-filters'];
@@ -43,8 +43,8 @@ test('journal exposes every entry for scrolling and resets scrolling when filter
   assert.equal(grid.children.length,0);
   assert.equal(grid.textContent,'No entries here yet.');
   const selected = () => filters.children.find(button => button.attrs['aria-pressed'] === 'true').textContent;
-  const gesture = (dx, dy = 0) => {
-    grid.handlers.pointerdown({pointerType:'touch',clientX:100,clientY:100});
+  const gesture = (dx, dy = 0, pointerType = "touch") => {
+    grid.handlers.pointerdown({pointerType,button:0,clientX:100,clientY:100,target:grid.children[0]?.children[2]});
     grid.handlers.pointermove({clientX:100+dx,clientY:100+dy,pointerId:1,preventDefault(){}});
     grid.handlers.pointerup({clientX:100+dx,clientY:100+dy});
   };
@@ -65,4 +65,13 @@ test('journal exposes every entry for scrolling and resets scrolling when filter
   assert.equal(selected(),'Movies','trackpad momentum selects only one category');
   wheel(1400);
   assert.equal(selected(),'Notes');
+  gesture(80, 0, 'mouse');
+  assert.equal(selected(),'Movies','mouse drags starting over entry text change categories');
+  let blocked = false;
+  grid.handlers.click({preventDefault(){blocked=true;},stopImmediatePropagation(){}});
+  assert.equal(blocked,true,'a swipe does not activate an entry link');
+  gesture(0, 0, 'mouse');
+  blocked = false;
+  grid.handlers.click({preventDefault(){blocked=true;},stopImmediatePropagation(){}});
+  assert.equal(blocked,false,'ordinary clicks still open entries');
 });
