@@ -2,7 +2,8 @@
   const filters = document.querySelector(".journal-filters"),
     grid = document.querySelector(".journal-grid");
   if (!filters || !grid) return;
-  // Native touch/trackpad scrolling, plus wheel and mouse-drag support.
+
+  // ===== Filter strip: wheel + mouse-drag + native touch scrolling =====
   filters.addEventListener("wheel", (event) => {
     if (event.ctrlKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
     const before = filters.scrollLeft;
@@ -10,6 +11,7 @@
     filters.scrollLeft += event.deltaY * scale;
     if (filters.scrollLeft !== before) event.preventDefault();
   }, { passive: false });
+
   let drag = null, dragged = false;
   filters.addEventListener("pointerdown", event => {
     if (event.pointerType !== "mouse" || event.button !== 0) return;
@@ -35,8 +37,10 @@
     event.stopImmediatePropagation();
     dragged = false;
   }, true);
+
   let entries = [],
     category = "All";
+
   function changeCategory(direction) {
     const buttons = [...filters.querySelectorAll("button")];
     const index = buttons.findIndex(button => button.textContent === category);
@@ -49,9 +53,12 @@
     else if (target.offsetLeft + target.offsetWidth > filters.scrollLeft + filters.clientWidth)
       filters.scrollLeft = target.offsetLeft + target.offsetWidth - filters.clientWidth;
   }
+
+  // ===== Card grid: swipe-to-change-category (touch/pen only, not mouse) =====
   let swipe = null, suppressClick = false;
   grid.addEventListener("pointerdown", event => {
-    if (event.isPrimary === false || (event.pointerType === "mouse" && event.button !== 0)) return;
+    if (event.isPrimary === false) return;
+    if (event.pointerType === "mouse") return; // mouse has no drag-swipe UX on the grid
     suppressClick = false;
     swipe = { x: event.clientX, y: event.clientY, horizontal: false };
   });
@@ -80,6 +87,7 @@
     event.preventDefault(); event.stopImmediatePropagation(); suppressClick = false;
   }, true);
   grid.addEventListener("dragstart", event => event.preventDefault());
+
   let lastWheel = -Infinity, wheelDistance = 0, wheelChanged = false;
   grid.addEventListener("wheel", event => {
     if (event.ctrlKey || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
@@ -93,11 +101,13 @@
       wheelChanged = true;
     }
   }, { passive: false });
+
   grid.addEventListener("keydown", event => {
     if (event.target !== grid || !["ArrowLeft", "ArrowRight"].includes(event.key)) return;
     event.preventDefault();
     changeCategory(event.key === "ArrowRight" ? 1 : -1);
   });
+
   function render() {
     const selected = entries.filter(
       (entry) => category === "All" || entry.category === category,
@@ -112,6 +122,7 @@
           String(button.textContent === category),
         ),
       );
+    const fragment = document.createDocumentFragment();
     for (const entry of selected) {
       const card = document.createElement("article");
       card.className = "journal-card";
@@ -135,8 +146,9 @@
         card.append(by);
       }
       card.append(read);
-      grid.append(card);
+      fragment.append(card);
     }
+    grid.append(fragment);
     if (!selected.length) grid.textContent = "No entries here yet.";
   }
 
@@ -170,6 +182,7 @@
         return;
       }
     }
+    const fragment = document.createDocumentFragment();
     for (const name of [
       "All",
       ...new Set([
@@ -190,10 +203,12 @@
         category = name;
         render();
       });
-      filters.append(button);
+      fragment.append(button);
     }
+    filters.append(fragment);
     render();
   }
+
   if (typeof IntersectionObserver === "function") {
     const observer = new IntersectionObserver(
       (entries) => {
