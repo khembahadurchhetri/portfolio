@@ -115,9 +115,9 @@ export default function Hero() {
           <TypedName />
 
           <p className={"hero-desc reveal"}>
-            <strong>{"Full Stack Developer"}</strong>
+           
             {
-              " & Computer Engineer. I build fast, well-structured web apps end to end — "
+              "I build fast, well-structured web apps end to end — "
             }
             <strong>{"React/Next.js"}</strong>
             {" on the front, "}
@@ -125,8 +125,7 @@ export default function Hero() {
             {" & "}
             <strong>{"Python"}</strong>
             {" on the back — with a growing focus on  "}
-            {"cloud"}
-            {" and "}
+          
             {"cybersecurity"}
             {". "}
           </p>

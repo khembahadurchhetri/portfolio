@@ -27,9 +27,9 @@ export default function Navigation() {
 
       <nav>
         <a href={"#hero"} className={"nav-logo"}>
-          <span className={"bracket"}>{"["}</span>
+          <span className={"bracket"}>{"<"}</span>
           {"Abhimat"}
-          <span className={"bracket"}>{"]"}</span>
+          <span className={"bracket"}>{"/>"}</span>
         </a>
 
         <ul className={"nav-links"}>
@@ -97,7 +97,7 @@ export default function Navigation() {
 
         <a href={"#contact"}>{"Contact"}</a>
 
-        <p className={"menu-sub"}>{"© 2026 Khem Bahadur Chhetri"}</p>
+        <p className={"menu-sub"}>{"© 2023 Khem Bahadur Chhetri"}</p>
       </div>
     </>
   );
