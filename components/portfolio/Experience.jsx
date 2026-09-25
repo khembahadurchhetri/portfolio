@@ -23,7 +23,7 @@ export default function Experience() {
                 <div className={"exp-role"}>{"Frontend Developer Intern"}</div>
 
                 <div className={"exp-org"}>
-                  {" Easy Innovation, Srijana Chowk, Pokhara · 3 months "}
+                  {" Easy Innovation, Srijana Chowk, Pokhara · 2 months "}
                 </div>
 
                 <div className={"exp-desc"}>

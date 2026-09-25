@@ -66,7 +66,7 @@ export default function Hero() {
           <div className={"landscape-layer landscape-far"} data-depth={"0.30"}>
             <svg
               viewBox={"0 0 1440 400"}
-              preserveAspectRatio={"none"}
+              preserveAspectRatio={"xMidYMid slice"}
               focusable={"false"}
             >
               <path
@@ -88,7 +88,7 @@ export default function Hero() {
           <div className={"landscape-layer landscape-near"} data-depth={"0.48"}>
             <svg
               viewBox={"0 0 1440 320"}
-              preserveAspectRatio={"none"}
+              preserveAspectRatio={"xMidYMid slice"}
               focusable={"false"}
             >
               <path
@@ -150,8 +150,8 @@ export default function Hero() {
             <Image
               width={600}
               height={750}
-              sizes="(max-width: 768px) 210px, 250px"
-              preload
+              sizes="(max-width: 480px) 160px, (max-width: 768px) 210px, 250px"
+              priority
               src={photo}
               unoptimized={true}
               alt={"Khem Bahadur Chhetri"}

@@ -1,7 +1,7 @@
 const skills = [
-  { name: "Frontend", level: 3, tools: ["React", "Next.js", "TypeScript", "Tailwind", "HTML / CSS"] },
-  { name: "Backend", level: 2, tools: ["Node.js", "Express", "Django", "Python"] },
-  { name: "Database & cloud", level: 3, tools: ["PostgreSQL", "MongoDB", "MySQL", "AWS", "Render"] },
+  { name: "Frontend", level: 4, tools: ["React", "Next.js", "TypeScript", "Tailwind", "HTML / CSS"] },
+  { name: "Backend", level: 3, tools: ["Node.js", "Express", "Django", "Python"] },
+  { name: "Database & cloud", level: 4, tools: ["PostgreSQL", "MongoDB", "MySQL", "AWS", "Render"] },
   { name: "AI / ML", level: 3, tools: ["NumPy", "pandas", "TensorFlow", "Keras", "CNN", "OpenCV"] },
   { name: "Dev tools", level: 4, tools: ["Git", "Docker", "Linux", "CI/CD"] },
 ];
