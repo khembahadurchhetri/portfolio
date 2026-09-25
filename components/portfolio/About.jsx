@@ -25,7 +25,7 @@ export default function About() {
 
               <p>
                 {
-                  " My work spans web development, AI/ML experiments, and cybersecurity fundamentals. I care about clean, well-structured code and closing the gap between a working prototype and something production-ready. "
+                  " My work spans web development, AI/ML experiments, and cybersecurity fundamentals."
                 }
               </p>
 
@@ -64,7 +64,7 @@ export default function About() {
                   <div className={"fact-label"}>{"Currently"}</div>
 
                   <div className={"fact-value"}>
-                    {" Learning cloud & deepening cybersecurity "}
+                    {" Deepening cybersecurity "}
                   </div>
                 </div>
 
